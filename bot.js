@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.13.0, developed by Incien104
+// ModeratorBot, v1.13.1, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -10,7 +10,7 @@ var bannedWords = require('./bannedWords.json');
 var scanFilter = require('./scanFilter.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.13.0";
+var botVersion = "v1.13.1";
 var botVersionDate = "11/12/2017";
 
 // Bot login
@@ -479,7 +479,7 @@ bot.on('message', message => {
 						.setColor(colorForEmbed)
 						.setDescription("Temps restant : *"+remainingTime)
 						.setTimestamp()
-						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=17&size=200x100&format=JPEG&key="+process.env.MAP_API)
+						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=15.5&markers="+coords+"&size=300x100&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
 						.setURL(mapURL);
 					// Send messages to persons seeking for that pokemon
