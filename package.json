@@ -1,0 +1,13 @@
+{
+  "name": "Professeur Oak",
+  "version": "1.12.0",
+  "description": "Powerful Pokemon Go Discord Bot",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "author": "Incien104",
+  "dependencies": {
+    "discord.js": "11.2.1"
+  }
+}
