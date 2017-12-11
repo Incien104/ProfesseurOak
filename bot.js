@@ -454,7 +454,9 @@ bot.on('message', message => {
 					var messageWords = message.embeds[0].title.split(' ');
 					var remainingTimeText = message.embeds[0].description.split(': ');
 					var remainingTime = remainingTimeText[1];
-					var mapURL = message.embeds[0].url;					
+					var mapURL = message.embeds[0].url;
+					var textURL = mapURL.split('#');
+					var coords = textURL[1];
 					// Find the pokemon of the alert
 					for (i in messageWords) {
 						wordToTest = messageWords[i].toLowerCase();
@@ -477,6 +479,7 @@ bot.on('message', message => {
 						.setColor(colorForEmbed)
 						.setDescription("Temps restant : *"+remainingTime)
 						.setTimestamp()
+						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=17&size=200x100&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
 						.setURL(mapURL);
 					// Send messages to persons seeking for that pokemon
