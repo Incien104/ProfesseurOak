@@ -138,8 +138,16 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						var botGuild = bot.guilds.find('name', 'PoGo Raids Sherbrooke');
-						var channelToFind = botGuild.channels.find('name', 'scan-pokemons');
+						// Play streams using ytdl-core
+						const ytdl = require('ytdl-core');
+						const streamOptions = { seek: 0, volume: 1 };
+						var voiceChannel = message.guild.channels.find("name","musique");
+						voiceChannel.join()
+							.then(connection => {
+								const stream = ytdl('https://www.youtube.com/watch?v=jVm1NbrXaXc', { filter : 'audioonly' });
+								const dispatcher = connection.playStream(stream, streamOptions);
+							})
+							.catch(console.error);
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
