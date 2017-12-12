@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.13.1, developed by Incien104
+// ModeratorBot, v1.13.2, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -10,8 +10,8 @@ var bannedWords = require('./bannedWords.json');
 var scanFilter = require('./scanFilter.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.13.1";
-var botVersionDate = "11/12/2017";
+var botVersion = "v1.13.2";
+var botVersionDate = "12/12/2017";
 
 // Bot login
 bot.login(process.env.BOT_TOKEN);
@@ -45,6 +45,7 @@ bot.on('guildMemberAdd', member => {
   // Send the message to a designated channel on a server:
   const channel = member.guild.channels.find('name', 'general');
   const channelTwo = member.guild.channels.find('name', 'tutoriel-et-assistance');
+  const channelAdmins = member.guild.channels.find('name', 'admins');
   const server = member.guild.name;
   const serverCount = member.guild.memberCount;
   // Do nothing if the channel wasn't found on this server
@@ -56,6 +57,7 @@ bot.on('guildMemberAdd', member => {
 	// Giving default role
 	let roleDef = member.guild.roles.find("name", "@NoTeam");
 	member.addRole(roleDef).catch(console.error);
+	channelAdmins.send(`Nouveau membre : ${member} !`);
 	botPostLog(`Nouveau membre : ${member} !`);
   }
 });
@@ -409,7 +411,7 @@ bot.on('message', message => {
 			}
 		} else {
 			// Banned Words : check entire message
-			if (message.guild.name === 'PoGo Raids Sherbrooke' && message.channel.name !== "bot-logs" && message.channel.name !== "bot-config" && message.channel.name !== "admins" && message.channel.name !== "rm-chat" && message.channel.name !== "rm-raids" && message.channel.name !== "scan-pokemons" && message.channel.name !== "scan-raids" && !user.roles.find("name","@Bots")) {
+			if (message.guild.name === 'PoGo Raids Sherbrooke' && message.channel.name !== "bot-logs" && message.channel.name !== "bot-config" && message.channel.name !== "admins" && message.channel.name !== "breakfast_club" && message.channel.name !== "underground" && message.channel.name !== "scan-pokemons" && message.channel.name !== "scan-raids" && !user.roles.find("name","@Bots")) {
 				var messageWords = message.content.split(' ');
 				var wordToTest = "";
 				var incorrectLanguage = false;
