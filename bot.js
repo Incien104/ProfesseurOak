@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.13.2, developed by Incien104
+// ModeratorBot, v1.13.3, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -10,7 +10,7 @@ var bannedWords = require('./bannedWords.json');
 var scanFilter = require('./scanFilter.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.13.2";
+var botVersion = "v1.13.3";
 var botVersionDate = "12/12/2017";
 
 // Bot login
@@ -57,7 +57,7 @@ bot.on('guildMemberAdd', member => {
 	// Giving default role
 	let roleDef = member.guild.roles.find("name", "@NoTeam");
 	member.addRole(roleDef).catch(console.error);
-	channelAdmins.send(`@@Admins Nouveau membre : ${member} !`);
+	channelAdmins.send(`<@&370319180534382603> Nouveau membre : ${member} !`);
 	botPostLog(`Nouveau membre : ${member} !`);
   }
 });
