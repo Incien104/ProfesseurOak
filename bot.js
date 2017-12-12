@@ -479,7 +479,7 @@ bot.on('message', message => {
 						.setColor(colorForEmbed)
 						.setDescription("Temps restant : *"+remainingTime)
 						.setTimestamp()
-						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=14&markers="+coords+"&size=300x100&format=JPEG&key="+process.env.MAP_API)
+						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x100&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
 						.setURL(mapURL);
 					// Send messages to persons seeking for that pokemon
