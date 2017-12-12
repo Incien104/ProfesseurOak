@@ -57,7 +57,7 @@ bot.on('guildMemberAdd', member => {
 	// Giving default role
 	let roleDef = member.guild.roles.find("name", "@NoTeam");
 	member.addRole(roleDef).catch(console.error);
-	channelAdmins.send(`Nouveau membre : ${member} !`);
+	channelAdmins.send(`@@Admins Nouveau membre : ${member} !`);
 	botPostLog(`Nouveau membre : ${member} !`);
   }
 });
@@ -138,16 +138,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						// Play streams using ytdl-core
-						const ytdl = require('ytdl-core');
-						const streamOptions = { seek: 0, volume: 1 };
-						var voiceChannel = message.guild.channels.find("name","musique");
-						voiceChannel.join()
-							.then(connection => {
-								const stream = ytdl('https://www.youtube.com/watch?v=jVm1NbrXaXc', { filter : 'audioonly' });
-								const dispatcher = connection.playStream(stream, streamOptions);
-							})
-							.catch(console.error);
+						
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
