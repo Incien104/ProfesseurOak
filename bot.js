@@ -458,7 +458,6 @@ bot.on('message', message => {
 				
 				// Pokedex shiny function
 				case 'oakshiny':
-				/*
 					if (message.channel.name === "pokedex") {
 						var parameter = args[1];
 						if (isInt(parameter) && parameter >= 1 && parameter <= 806) {
@@ -473,14 +472,13 @@ bot.on('message', message => {
 								.setTitle("#"+pokemonNumber)
 								.setColor(colorForEmbed)
 								.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
-								.setImage("http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumberShiny+"-Shiny-"+pokemonNameEn+".png")
+								.setImage("https://pokemongohub.net/sprites/shiny/"+pokemonNumber+".png")
 								.setThumbnail(thumbnail)
 							message.channel.send({embed}).catch(console.error);
 						} else {
 							
 						}
 					}
-				*/
 				break;
 			}
 		} else {
