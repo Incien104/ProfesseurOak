@@ -432,9 +432,9 @@ bot.on('message', message => {
 						} else {
 							var pokemonName = parameter.capitalize();
 							var pokemonNumber = 0;
-							var numPokemon = pokedex_en.indexOf(pokemonName);
+							var numPokemon = pokedex_en.list.indexOf(pokemonName);
 							if (numPokemon === -1) {
-								numPokemon = pokedex_fr.indexOf(pokemonName);
+								numPokemon = pokedex_fr.list.indexOf(pokemonName);
 							}
 							if (numPokemon !== -1) {
 								var pokemonNumber = numPokemon+1;
