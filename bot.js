@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.13.3, developed by Incien104
+// ModeratorBot, v1.14.0, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -8,9 +8,11 @@ var Discord = require('discord.js');
 var db = require('./db.json'); // No use for now
 var bannedWords = require('./bannedWords.json');
 var scanFilter = require('./scanFilter.json');
+var pokedex_fr = require('./pokedex_fr.json');
+var pokedex_en = require('./pokedex_en.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.13.3";
+var botVersion = "v1.14.0";
 var botVersionDate = "12/12/2017";
 
 // Bot login
@@ -407,6 +409,13 @@ bot.on('message', message => {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
 				break;
+				
+				// Pokedex translation function
+				case 'oaktrad':
+					if (message.channel.name === "pokedex") {
+						
+					}
+				break;
 			}
 		} else {
 			// Banned Words : check entire message
@@ -444,7 +453,8 @@ bot.on('message', message => {
 			// Scanned Pokemon Personnal Alert : check Huntr Bot messages to alert people with private messages
 				var wordToTest = "";
 				var pokemonNumber = "";
-				var pokemonName = "";
+				var pokemonNameFr = "";
+				var pokemonNameEn = "";
 				var channelScan = message.channel;
 				var memberToAlert = "";
 				var colorForEmbed = "#43B581";
@@ -464,8 +474,9 @@ bot.on('message', message => {
 						for (j in scanFilter.list) {
 							if (wordToTest === "("+scanFilter.list[j]+")") {
 								pokemonNumber = scanFilter.list[j];
-								pokemonName = messageWords[i-1];								
-								var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonName+".png";
+								pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
+								pokemonNameEn = pokedex_en.list[pokemonNumber-1];								
+								var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
 								break;
 							}
 						}
@@ -475,7 +486,7 @@ bot.on('message', message => {
 					}
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
-						.setTitle("Un "+pokemonName+" vient d'apparaître !")
+						.setTitle("Un "+pokemonNameEn+"/"+pokemonNameFr+" vient d'apparaître !")
 						.setAuthor("Professeur Oak", bot.user.avatarURL)
 						.setColor(colorForEmbed)
 						.setDescription("Temps restant : *"+remainingTime)
@@ -490,15 +501,6 @@ bot.on('message', message => {
 							if (pokemonNumber === contributors.list[k].pokemons[l]) {
 								// Send a private message
 								memberToAlert = message.guild.members.find('id', contributorID);
-								/*
-								if (memberToAlert.roles.find("name","@Instinct")) {
-									colorForEmbed = "#FCD308";
-								} else if (memberToAlert.roles.find("name","@Mystic")) {
-									colorForEmbed = "#057AEB";
-								} else if (memberToAlert.roles.find("name","@Valor")) {
-									colorForEmbed = "#F2170A";
-								}
-								*/
 								if (memberToAlert !== null) {									
 									memberToAlert.send({embed}).catch(console.error);
 									break;
