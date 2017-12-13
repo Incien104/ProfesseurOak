@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.16.1, developed by Incien104
+// ModeratorBot, v1.16.2, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -12,8 +12,8 @@ var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.16.1";
-var botVersionDate = "12/12/2017";
+var botVersion = "v1.16.2";
+var botVersionDate = "13/12/2017";
 
 // Bot login
 bot.login(process.env.BOT_TOKEN);
