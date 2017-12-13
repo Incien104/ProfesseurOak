@@ -427,6 +427,7 @@ bot.on('message', message => {
 								.setColor(colorForEmbed)
 								.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
 								.setThumbnail(thumbnail)
+							message.channel.send({embed}).catch(console.error);
 						} else {
 							
 						}
