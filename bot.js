@@ -423,7 +423,6 @@ bot.on('message', message => {
 							var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
 							var embed = new Discord.RichEmbed()
 								.setTitle("#"+pokemonNumber)
-								.setAuthor("Professeur Oak", bot.user.avatarURL)
 								.setColor(colorForEmbed)
 								.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
 								.setThumbnail(thumbnail)
