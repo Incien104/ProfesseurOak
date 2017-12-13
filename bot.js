@@ -462,7 +462,6 @@ bot.on('message', message => {
 						var parameter = args[1];
 						if (isInt(parameter) && parameter >= 1 && parameter <= 806) {
 							var pokemonNumber = parameter;
-							var pokemonNumberShiny = pokemonNumber + 2000;
 							var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
 							var pokemonNameEn = pokedex_en.list[pokemonNumber-1];
 							// Create Rich Embed
@@ -475,8 +474,32 @@ bot.on('message', message => {
 								.setImage("https://pokemongohub.net/sprites/shiny/"+pokemonNumber+".png")
 								.setThumbnail(thumbnail)
 							message.channel.send({embed}).catch(console.error);
+						} else if (isInt(parameter) && (parameter < 1 || parameter > 806)) {
+							message.channel.send("Ne correspond pas au numéro d'un pokémon !").catch(console.error);
 						} else {
-							
+							var pokemonName = parameter.capitalize();
+							var pokemonNumber = 0;
+							var numPokemon = pokedex_en.list.indexOf(pokemonName);
+							if (numPokemon === -1) {
+								numPokemon = pokedex_fr.list.indexOf(pokemonName);
+							}
+							if (numPokemon !== -1) {
+								var pokemonNumber = numPokemon+1;
+								var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
+								var pokemonNameEn = pokedex_en.list[pokemonNumber-1];
+								// Create Rich Embed
+								var colorForEmbed = "#43B581";
+								var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
+								var embed = new Discord.RichEmbed()
+									.setTitle("#"+pokemonNumber)
+									.setColor(colorForEmbed)
+									.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
+									.setImage("https://pokemongohub.net/sprites/shiny/"+pokemonNumber+".png")
+									.setThumbnail(thumbnail)
+								message.channel.send({embed}).catch(console.error);								
+							} else {
+								message.channel.send("Pokémon introuvable ! Vérifiez l'orthographe...").catch(console.error);
+							}
 						}
 					}
 				break;
