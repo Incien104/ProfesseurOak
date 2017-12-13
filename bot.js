@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.16.0, developed by Incien104
+// ModeratorBot, v1.16.1, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -12,7 +12,7 @@ var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.16.0";
+var botVersion = "v1.16.1";
 var botVersionDate = "12/12/2017";
 
 // Bot login
@@ -427,14 +427,38 @@ bot.on('message', message => {
 								.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
 								.setThumbnail(thumbnail)
 							message.channel.send({embed}).catch(console.error);
+						} else if (isInt(parameter) && (parameter < 1 || parameter > 806)) {
+							message.channel.send("Ne correspond pas au numéro d'un pokémon !").catch(console.error);
 						} else {
-							
+							var pokemonName = parameter.capitalize();
+							var pokemonNumber = 0;
+							var numPokemon = pokedex_en.indexOf(pokemonName);
+							if (numPokemon === -1) {
+								numPokemon = pokedex_fr.indexOf(pokemonName);
+							}
+							if (numPokemon !== -1) {
+								var pokemonNumber = numPokemon+1;
+								var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
+								var pokemonNameEn = pokedex_en.list[pokemonNumber-1];
+								// Create Rich Embed
+								var colorForEmbed = "#43B581";
+								var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
+								var embed = new Discord.RichEmbed()
+									.setTitle("#"+pokemonNumber)
+									.setColor(colorForEmbed)
+									.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
+									.setThumbnail(thumbnail)
+								message.channel.send({embed}).catch(console.error);								
+							} else {
+								message.channel.send("Pokémon introuvable ! Vérifiez l'orthographe...").catch(console.error);
+							}
 						}
 					}
 				break;
 				
 				// Pokedex shiny function
 				case 'oakshiny':
+				/*
 					if (message.channel.name === "pokedex") {
 						var parameter = args[1];
 						if (isInt(parameter) && parameter >= 1 && parameter <= 806) {
@@ -456,6 +480,7 @@ bot.on('message', message => {
 							
 						}
 					}
+				*/
 				break;
 			}
 		} else {
@@ -578,5 +603,11 @@ function botPostLog(messageToPost) {
 // Test for an integer value !
 function isInt(value) {
 	return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
+}
+
+// -------------------------------------------------
+// Capitalize first letter !
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
 }
 // =================================================
