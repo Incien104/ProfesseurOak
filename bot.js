@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.15.0, developed by Incien104
+// ModeratorBot, v1.16.0, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -12,7 +12,7 @@ var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.15.0";
+var botVersion = "v1.16.0";
 var botVersionDate = "12/12/2017";
 
 // Bot login
@@ -425,6 +425,31 @@ bot.on('message', message => {
 								.setTitle("#"+pokemonNumber)
 								.setColor(colorForEmbed)
 								.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
+								.setThumbnail(thumbnail)
+							message.channel.send({embed}).catch(console.error);
+						} else {
+							
+						}
+					}
+				break;
+				
+				// Pokedex shiny function
+				case 'oakshiny':
+					if (message.channel.name === "pokedex") {
+						var parameter = args[1];
+						if (isInt(parameter) && parameter >= 1 && parameter <= 806) {
+							var pokemonNumber = parameter;
+							var pokemonNumberShiny = pokemonNumber + 2000;
+							var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
+							var pokemonNameEn = pokedex_en.list[pokemonNumber-1];
+							// Create Rich Embed
+							var colorForEmbed = "#43B581";
+							var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
+							var embed = new Discord.RichEmbed()
+								.setTitle("#"+pokemonNumber)
+								.setColor(colorForEmbed)
+								.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
+								.setImage("http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumberShiny+"-Shiny-"+pokemonNameEn+".png")
 								.setThumbnail(thumbnail)
 							message.channel.send({embed}).catch(console.error);
 						} else {
