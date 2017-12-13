@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.14.0, developed by Incien104
+// ModeratorBot, v1.15.0, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -12,7 +12,7 @@ var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.14.0";
+var botVersion = "v1.15.0";
 var botVersionDate = "12/12/2017";
 
 // Bot login
@@ -413,7 +413,23 @@ bot.on('message', message => {
 				// Pokedex translation function
 				case 'oaktrad':
 					if (message.channel.name === "pokedex") {
-						
+						var parameter = args[1];
+						if (isInt(parameter) && parameter >= 1 && parameter <= 806) {
+							var pokemonNumber = parameter;
+							var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
+							var pokemonNameEn = pokedex_en.list[pokemonNumber-1];
+							// Create Rich Embed
+							var colorForEmbed = "#43B581";
+							var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
+							var embed = new Discord.RichEmbed()
+								.setTitle("#"+pokemonNumber)
+								.setAuthor("Professeur Oak", bot.user.avatarURL)
+								.setColor(colorForEmbed)
+								.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
+								.setThumbnail(thumbnail)
+						} else {
+							
+						}
 					}
 				break;
 			}
@@ -531,5 +547,11 @@ function botPostLog(messageToPost) {
 	const logsChannel = botGuild.channels.find('name', 'bot-logs');
 	logsChannel.send('*['+dateQuebec+']* : **'+messageToPost+'**');
 	console.log(messageToPost);
+}
+
+// -------------------------------------------------
+// Test for an integer value !
+function isInt(value) {
+	return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
 }
 // =================================================
