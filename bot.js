@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.16.2, developed by Incien104
+// ModeratorBot, v1.17.0, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -10,10 +10,11 @@ var bannedWords = require('./bannedWords.json');
 var scanFilter = require('./scanFilter.json');
 var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
+var mega_primal_xy = require('./mega_primal_xy.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.16.2";
-var botVersionDate = "13/12/2017";
+var botVersion = "v1.17.0";
+var botVersionDate = "14/12/2017";
 
 // Bot login
 bot.login(process.env.BOT_TOKEN);
@@ -464,6 +465,14 @@ bot.on('message', message => {
 							var pokemonNumber = parameter;
 							var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
 							var pokemonNameEn = pokedex_en.list[pokemonNumber-1];
+							var pokemonNumberZeros = null;
+							if (pokemonNumber < 10) {
+								pokemonNumberZeros = "00"+pokemonNumber;
+							} else if (pokemonNumber >= 10 && pokemonNumber < 100) {
+								pokemonNumberZeros = "0"+pokemonNumber;
+							} else {
+								pokemonNumberZeros = pokemonNumber;
+							}
 							// Create Rich Embed
 							var colorForEmbed = "#43B581";
 							var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
@@ -471,7 +480,7 @@ bot.on('message', message => {
 								.setTitle("#"+pokemonNumber)
 								.setColor(colorForEmbed)
 								.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
-								.setImage("https://pokemongohub.net/sprites/shiny/"+pokemonNumber+".png")
+								.setImage("http://www.psypokes.com/dex/shiny/"+pokemonNumberZeros+".png")
 								.setThumbnail(thumbnail)
 							message.channel.send({embed}).catch(console.error);
 						} else if (isInt(parameter) && (parameter < 1 || parameter > 806)) {
@@ -487,6 +496,14 @@ bot.on('message', message => {
 								var pokemonNumber = numPokemon+1;
 								var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
 								var pokemonNameEn = pokedex_en.list[pokemonNumber-1];
+								var pokemonNumberZeros = null;
+								if (pokemonNumber < 10) {
+									pokemonNumberZeros = "00"+pokemonNumber;
+								} else if (pokemonNumber >= 10 && pokemonNumber < 100) {
+									pokemonNumberZeros = "0"+pokemonNumber;
+								} else {
+									pokemonNumberZeros = pokemonNumber;
+								}
 								// Create Rich Embed
 								var colorForEmbed = "#43B581";
 								var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
@@ -494,12 +511,96 @@ bot.on('message', message => {
 									.setTitle("#"+pokemonNumber)
 									.setColor(colorForEmbed)
 									.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
-									.setImage("https://pokemongohub.net/sprites/shiny/"+pokemonNumber+".png")
+									.setImage("http://www.psypokes.com/dex/shiny/"+pokemonNumberZeros+".png")
 									.setThumbnail(thumbnail)
 								message.channel.send({embed}).catch(console.error);								
 							} else {
 								message.channel.send("Pokémon introuvable ! Vérifiez l'orthographe...").catch(console.error);
 							}
+						}
+					}
+				break;
+				
+				// Pokedex mega function
+				case 'oakmega':
+					if (message.channel.name === "pokedex") {
+						var parameter = args[1];
+						var listMega = null;
+						if (parameter === null || parameter === undefined) {
+							listMega = "Méga-Évolution :\n";
+							for (i in mega_primal_xy.mega) {
+								listeMega = listeMega+"#"+mega_primal_xy.mega[i]+" Méga-"+pokedex_en.list[mega_primal_xy.mega[i]-1];
+								if (mega_primal_xy.xy.indexOf(mega_primal_xy.mega[i]) !== -1) {
+									listeMega = listeMega+" X/Y";
+								}
+								listeMega = listeMega+", ";
+							}
+							listMega = listMega+"\n\nPrimo-Résurgence :\n";
+							for (i in mega_primal_xy.primal) {
+								listeMega = listeMega+"#"+mega_primal_xy.primal[i]+" Primo-"+pokedex_en.list[mega_primal_xy.primal[i]-1];
+								listeMega = listeMega+", ";
+							}
+							message.channel.send(listMega).catch(console.error);
+						} else if (isInt(parameter) && (mega_primal_xy.mega.indexOf(parameter) !== -1 || mega_primal_xy.primal.indexOf(parameter) !== -1)) {
+							var pokemonNumber = parameter;
+							var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
+							var pokemonNameEn = pokedex_en.list[pokemonNumber-1];
+							var pokemonNumberZeros = null;
+							if (pokemonNumber < 10) {
+								pokemonNumberZeros = "00"+pokemonNumber;
+							} else if (pokemonNumber >= 10 && pokemonNumber < 100) {
+								pokemonNumberZeros = "0"+pokemonNumber;
+							} else {
+								pokemonNumberZeros = pokemonNumber;
+							}
+							var forme = null;
+							var suffixe = null;
+							if (mega_primal_xy.xy.indexOf(pokemonNumber) === -1) {
+								if (mega_primal_xy.mega.indexOf(pokemonNumber) !== -1) {
+									var forme = "Méga-";
+									var suffixe = "_mega";
+								} else {
+									var forme = "Primo-";
+									var suffixe = "_primal";
+								}
+								// Create Rich Embed
+								var colorForEmbed = "#43B581";
+								var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
+								var embed = new Discord.RichEmbed()
+									.setTitle("#"+pokemonNumber)
+									.setColor(colorForEmbed)
+									.setDescription(forme+pokemonNameFr+" (fr) - "+forme+pokemonNameEn+" (en)\nForme Méga/Antique : ")
+									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe".png")
+									.setThumbnail(thumbnail)
+								message.channel.send({embed}).catch(console.error);
+							} else {
+								var forme = "Méga-";
+								var suffixe = "_xmega";
+								// Create Rich Embed
+								var colorForEmbed = "#43B581";
+								var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
+								var embed = new Discord.RichEmbed()
+									.setTitle("#"+pokemonNumber)
+									.setColor(colorForEmbed)
+									.setDescription(forme+pokemonNameFr+" X (fr) - "+forme+pokemonNameEn+" X (en)\nForme Méga/Antique : ")
+									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe".png")
+									.setThumbnail(thumbnail)
+								message.channel.send({embed}).catch(console.error);
+								forme = "Méga-";
+								suffixe = "_ymega";
+								// Create Rich Embed
+								embed = new Discord.RichEmbed()
+									.setTitle("#"+pokemonNumber)
+									.setColor(colorForEmbed)
+									.setDescription(forme+pokemonNameFr+" Y (fr) - "+forme+pokemonNameEn+" Y (en)\nForme Méga/Antique : ")
+									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe".png")
+									.setThumbnail(thumbnail)
+								message.channel.send({embed}).catch(console.error);
+							}
+						} else if (isInt(parameter) && (mega_primal_xy.mega.indexOf(mega_primal_xy.mega[i]) === -1 && mega_primal_xy.primal.indexOf(mega_primal_xy.primal[i]) === -1)) {
+							message.channel.send("Ne correspond pas au numéro d'un pokémon ou n'a pas de forme Méga!").catch(console.error);
+						} else {
+							message.channel.send("Entrez le numéro du pokémon pour voir sa forme Méga/Antique...").catch(console.error);
 						}
 					}
 				break;
