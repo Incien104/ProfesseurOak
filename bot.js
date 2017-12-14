@@ -529,16 +529,16 @@ bot.on('message', message => {
 						if (parameter === null || parameter === undefined) {
 							listMega = "Méga-Évolution :\n";
 							for (i in mega_primal_xy.mega) {
-								listeMega = listeMega+"#"+mega_primal_xy.mega[i]+" Méga-"+pokedex_en.list[mega_primal_xy.mega[i]-1];
+								listMega = listMega+"#"+mega_primal_xy.mega[i]+" Méga-"+pokedex_en.list[mega_primal_xy.mega[i]-1];
 								if (mega_primal_xy.xy.indexOf(mega_primal_xy.mega[i]) !== -1) {
-									listeMega = listeMega+" X/Y";
+									listMega = listMega+" X/Y";
 								}
-								listeMega = listeMega+", ";
+								listMega = listMega+", ";
 							}
 							listMega = listMega+"\n\nPrimo-Résurgence :\n";
 							for (i in mega_primal_xy.primal) {
-								listeMega = listeMega+"#"+mega_primal_xy.primal[i]+" Primo-"+pokedex_en.list[mega_primal_xy.primal[i]-1];
-								listeMega = listeMega+", ";
+								listMega = listMega+"#"+mega_primal_xy.primal[i]+" Primo-"+pokedex_en.list[mega_primal_xy.primal[i]-1];
+								listMega = listMega+", ";
 							}
 							message.channel.send(listMega).catch(console.error);
 						} else if (isInt(parameter) && (mega_primal_xy.mega.indexOf(parameter) !== -1 || mega_primal_xy.primal.indexOf(parameter) !== -1)) {
