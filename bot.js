@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.17.0, developed by Incien104
+// ModeratorBot, v1.17.1, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -13,7 +13,7 @@ var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.17.0";
+var botVersion = "v1.17.1";
 var botVersionDate = "14/12/2017";
 
 // Bot login
@@ -685,17 +685,18 @@ bot.on('message', message => {
 					// Send messages to persons seeking for that pokemon
 					for (k in contributors.list) {
 						contributorID = contributors.list[k].id;
-						for (l in contributors.list[k].pokemons) {
-							if (pokemonNumber === contributors.list[k].pokemons[l]) {
-								// Send a private message
-								memberToAlert = message.guild.members.find('id', contributorID);
-								if (memberToAlert !== null) {									
-									memberToAlert.send({embed}).catch(console.error);
-									break;
-								}
-								else {
-									console.log(memberToAlert+" membre introuvable !");
-									break;
+						if (contributors.list[k].activated === true) {
+							for (l in contributors.list[k].pokemons) {
+								if (pokemonNumber === contributors.list[k].pokemons[l]) {
+									// Send a private message
+									memberToAlert = message.guild.members.find('id', contributorID);
+									if (memberToAlert !== null) {									
+										memberToAlert.send({embed}).catch(console.error);
+										break;
+									}
+									else {
+										break;
+									}
 								}
 							}
 						}
