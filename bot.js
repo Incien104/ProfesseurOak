@@ -570,7 +570,7 @@ bot.on('message', message => {
 									.setTitle("#"+pokemonNumber)
 									.setColor(colorForEmbed)
 									.setDescription(forme+pokemonNameFr+" (fr) - "+forme+pokemonNameEn+" (en)\nForme Méga/Antique : ")
-									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe".png")
+									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe+".png")
 									.setThumbnail(thumbnail)
 								message.channel.send({embed}).catch(console.error);
 							} else {
@@ -583,7 +583,7 @@ bot.on('message', message => {
 									.setTitle("#"+pokemonNumber)
 									.setColor(colorForEmbed)
 									.setDescription(forme+pokemonNameFr+" X (fr) - "+forme+pokemonNameEn+" X (en)\nForme Méga/Antique : ")
-									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe".png")
+									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe+".png")
 									.setThumbnail(thumbnail)
 								message.channel.send({embed}).catch(console.error);
 								forme = "Méga-";
@@ -593,7 +593,7 @@ bot.on('message', message => {
 									.setTitle("#"+pokemonNumber)
 									.setColor(colorForEmbed)
 									.setDescription(forme+pokemonNameFr+" Y (fr) - "+forme+pokemonNameEn+" Y (en)\nForme Méga/Antique : ")
-									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe".png")
+									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe+".png")
 									.setThumbnail(thumbnail)
 								message.channel.send({embed}).catch(console.error);
 							}
