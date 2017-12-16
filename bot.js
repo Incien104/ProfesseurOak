@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.17.2, developed by Incien104
+// ModeratorBot, v1.17.3, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -13,7 +13,7 @@ var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.17.2";
+var botVersion = "v1.17.3";
 var botVersionDate = "16/12/2017";
 
 // Bot login
@@ -652,28 +652,18 @@ bot.on('message', message => {
 				// Read message embeds
 				if (message.embeds[0] !== undefined) {
 					// Get informations from the bot's message
-					var messageWords = message.embeds[0].title.split(' ');
+					var argsTitle = message.embeds[0].title.split('(');
+					argsTitle = argsTitle[1].split(')');
+					pokemonNumber = argsTitle[0];
 					var remainingTimeText = message.embeds[0].description.split(': ');
 					var remainingTime = remainingTimeText[1];
 					var mapURL = message.embeds[0].url;
 					var textURL = mapURL.split('#');
 					var coords = textURL[1];
 					// Find the pokemon of the alert
-					for (i in messageWords) {
-						wordToTest = messageWords[i].toLowerCase();
-						for (j in scanFilter.list) {
-							if (wordToTest === "("+scanFilter.list[j]+")") {
-								pokemonNumber = scanFilter.list[j];
-								pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
-								pokemonNameEn = pokedex_en.list[pokemonNumber-1];								
-								var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
-								break;
-							}
-						}
-						if (pokemonNumber !== "") {
-							break;
-						}
-					}
+					pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
+					pokemonNameEn = pokedex_en.list[pokemonNumber-1];								
+					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
 						.setTitle("Un "+pokemonNameEn+"/"+pokemonNameFr+" vient d'apparaître !")
@@ -692,10 +682,6 @@ bot.on('message', message => {
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
 								memberToAlert.send({embed}).catch(console.error);
-								break;
-							}
-							else {
-								break;
 							}
 						}
 					}
