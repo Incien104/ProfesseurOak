@@ -670,7 +670,7 @@ bot.on('message', message => {
 					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
-						.setTitle("Un "+pokemonNameEn+"/"+pokemonNameFr+" vient d'apparaître !")
+						.setTitle("Un "+pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") vient d'apparaître !")
 						.setAuthor("Professeur Oak", bot.user.avatarURL)
 						.setColor(colorForEmbed)
 						.setDescription("Temps restant : *"+remainingTime)
