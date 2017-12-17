@@ -655,7 +655,6 @@ bot.on('message', message => {
 					var argsTitle = message.embeds[0].title.split('(');
 					argsTitle = argsTitle[1].split(')');
 					pokemonNumber = argsTitle[0];
-					botPostLog("Numéro récupéré :"+pokemonNumber);
 					var remainingTimeText = message.embeds[0].description.split(': ');
 					var remainingTime = remainingTimeText[1];
 					var mapURL = message.embeds[0].url;
@@ -676,9 +675,7 @@ bot.on('message', message => {
 						.setThumbnail(thumbnail)
 						.setURL(mapURL);
 					// Send messages to persons seeking for that pokemon
-					var botGuildTest = bot.guilds.find('name', 'PoGo Raids Sherbrooke');
-					var logsChannelTest = botGuildTest.channels.find('name', 'bot-logs');
-					logsChannelTest.send({embed});
+					var contributorID = "";
 					for (k in contributors.list) {
 						contributorID = contributors.list[k].id;
 						if (contributors.list[k].activated === true && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1) {
