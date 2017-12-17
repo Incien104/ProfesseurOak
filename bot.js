@@ -639,13 +639,11 @@ bot.on('message', message => {
 				}				
 			} else if (message.channel.name === "scan-pokemons") {
 			// ------------------------------------------------------------------------------------------------
-			// Scanned Pokemon Personnal Alert : check Huntr Bot messages to alert people with private messages
+			// Scanned Pokemon Personal Alert : check HuntrBot messages to alert people with private messages
 			// ------------------------------------------------------------------------------------------------
-				var wordToTest = "";
 				var pokemonNumber = "";
 				var pokemonNameFr = "";
 				var pokemonNameEn = "";
-				var channelScan = message.channel;
 				var memberToAlert = "";
 				var colorForEmbed = "#43B581";
 				
@@ -654,13 +652,19 @@ bot.on('message', message => {
 					// Get informations from the bot's message
 					var argsTitle = message.embeds[0].title.split('(');
 					argsTitle = argsTitle[1].split(')');
-					pokemonNumber = argsTitle[0];
+					var argsPokemonNumber = argsTitle[0];
 					var remainingTimeText = message.embeds[0].description.split(': ');
 					var remainingTime = remainingTimeText[1];
 					var mapURL = message.embeds[0].url;
 					var textURL = mapURL.split('#');
 					var coords = textURL[1];
 					// Find the pokemon of the alert
+					for (j in scanFilter.list) {
+						if ("("+argsPokemonNumber+")" === "("+scanFilter.list[j]+")") {
+							pokemonNumber = scanFilter.list[j];
+							break;
+						}
+					}
 					pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
 					pokemonNameEn = pokedex_en.list[pokemonNumber-1];								
 					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
@@ -683,11 +687,9 @@ bot.on('message', message => {
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
 								memberToAlert.send({embed}).catch(console.error);
-								break;
 							}
 							else {
 								botPostLog(contributorID+" est introuvable");
-								break;
 							}
 						}
 					}
