@@ -683,14 +683,16 @@ bot.on('message', message => {
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
 								memberToAlert.send({embed}).catch(console.error);
-							} else {
+								break;
+							}
+							else {
 								botPostLog(contributorID+" est introuvable");
+								break;
 							}
 						}
 					}
 				}
 			}
-			
 		}
 	}
 });
