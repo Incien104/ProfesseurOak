@@ -676,6 +676,7 @@ bot.on('message', message => {
 						.setThumbnail(thumbnail)
 						.setURL(mapURL);
 					// Send messages to persons seeking for that pokemon
+					botPostLog({embed});
 					for (k in contributors.list) {
 						contributorID = contributors.list[k].id;
 						if (contributors.list[k].activated === true && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1) {
