@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.17.4, developed by Incien104
+// ModeratorBot, v1.17.5, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -13,8 +13,8 @@ var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.17.4";
-var botVersionDate = "16/12/2017";
+var botVersion = "v1.17.5";
+var botVersionDate = "18/12/2017";
 
 // Bot login
 bot.login(process.env.BOT_TOKEN);
@@ -134,6 +134,10 @@ bot.on('message', message => {
 						- !superunmute @utilisateur : permet de unmute un utilisateur sur tout le serveur (*admins seulement*)\n\
 						- !starthuntr : redémarre et configure le bot PokeHuntr dans le chan #scan-pokemons (*admins seulement*)\n\
 						- !startgymhunter : redémarre et configure le bot GymHuntr dans le chan #scan-raids (*admins seulement*)\n\
+						- !oaktrad #/nom pokémon : permet d'avoir le nom en français et en anglais (*salon pokedex seulement*)\n\
+						- !oakshiny #/nom pokémon : permet de voir la forme shiny (*salon pokedex seulement*)\n\
+						- !oakmega : donne la liste des méga-évolutions et primo-résurgeances (*salon pokedex seulement*)\n\
+						- !oakmega #/nom pokémon : permet de voir la forme méga ou antique (*salon pokedex seulement*)\n\
 						");
 					}
 				break;
@@ -159,7 +163,7 @@ bot.on('message', message => {
 	
 								if (!channelAnnouncements) return;
 								// Send the message, mentioning the members
-								channelAnnouncements.send(`<@&371096330614996993> Pour ceux qui n'ont pas encore choisi leur équipe, veuillez contacter un administrateur pour qu'il puisse vous donner les accès au chat de votre équipe.`).catch(console.error);
+								channelAnnouncements.send(`<@&371096330614996993> Pour ceux qui ne sont pas intégrés leur équipe, veuillez contacter un administrateur pour qu'il puisse vous donner les accès au salon de votre équipe.`).catch(console.error);
 								botPostLog('Annonce aux NoTeam effectuée');
 							break;
 							case 'nests':
