@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.17.5, developed by Incien104
+// ModeratorBot, v1.18.0, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -13,7 +13,7 @@ var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.17.5";
+var botVersion = "v1.18.0";
 var botVersionDate = "18/12/2017";
 
 // Bot login
@@ -672,6 +672,24 @@ bot.on('message', message => {
 					pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
 					pokemonNameEn = pokedex_en.list[pokemonNumber-1];								
 					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
+					// Define the zone
+					var coordsSplited = coords.split(',');
+					var latGPS = coordsSplited[0];
+					var lonGPS = coordsSplited[1];
+					var areasNumber = 0;
+					if ((latGPS >= 45.353965 && latGPS < 45.403884) && (lonGPS >= -72.021852 && lonGPS < -71.960569)) {
+						areasNumber = 1;
+					} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.960569 && lonGPS < -71.907869)) {
+						areasNumber = 2;
+					} else if ((latGPS >= 45.367474 && latGPS < 45.394000) && (lonGPS >= -71.960569 && lonGPS < -71.879201)) {
+						areasNumber = 3;
+					} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.907869 && lonGPS < -71.879201)) {
+						areasNumber = 4;
+					} else if ((latGPS >= 45.348174 && latGPS < 45.382306) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
+						areasNumber = 5;
+					} else if ((latGPS >= 45.382306 && latGPS < 45.429429) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
+						areasNumber = 6;
+					}
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
 						.setTitle("Un "+pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") vient d'apparaître !")
@@ -686,7 +704,7 @@ bot.on('message', message => {
 					var contributorID = "";
 					for (k in contributors.list) {
 						contributorID = contributors.list[k].id;
-						if (contributors.list[k].activated === true && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1) {
+						if (contributors.list[k].activated === true && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && contributors.list[k].areas.indexOf(areasNumber) !== -1) {
 							// Send a private message
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
