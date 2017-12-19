@@ -710,10 +710,10 @@ bot.on('message', message => {
 					}
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
-						.setTitle("Un "+pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") vient d'apparaître !")
+						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") à "+areasName+" !")
 						.setAuthor("Professeur Oak", bot.user.avatarURL)
 						.setColor(colorForEmbed)
-						.setDescription("Disparaît à : "+disappearingTime+"\n*Temps restant : "+remainingTime+"\nZone : "+areasName)
+						.setDescription("Disparaît à **"+disappearingTime+"**\n*Temps restant : "+remainingTime)
 						.setTimestamp()
 						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
