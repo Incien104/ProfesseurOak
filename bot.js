@@ -1,5 +1,5 @@
 // ** Description **
-// ModeratorBot, v1.18.0, developed by Incien104
+// ModeratorBot, v1.18.1, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
@@ -13,8 +13,8 @@ var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
 var contributors = require('./contributors.json');
 var bot = new Discord.Client();
-var botVersion = "v1.18.0";
-var botVersionDate = "18/12/2017";
+var botVersion = "v1.18.1";
+var botVersionDate = "19/12/2017";
 
 // Bot login
 bot.login(process.env.BOT_TOKEN);
@@ -662,13 +662,25 @@ bot.on('message', message => {
 					var mapURL = message.embeds[0].url;
 					var textURL = mapURL.split('#');
 					var coords = textURL[1];
+					var remainingTimeSplit = remainingTime.split('min');
+					var minutes = parseInt(remainingTimeSplit[0]);
+					//var remainingTimeSplit2 = remainingTimeSplit[1].split(' sec');
+					var seconds = parseInt(remainingTimeSplit[1]);
 					// Find the pokemon of the alert
+					pokemonNumber = parseInt(argsPokemonNumber);
+					var t = new Date();	
+					t = t - 5*60*60*1000 + minutes*60*1000 + seconds*1000;
+					var disappearingTime = new Date(t);
+					disappearingTime = disappearingTime.toString();
+					disappearingTime = disappearingTime.substring(16,disappearingTime.length-15);
+					/*
 					for (j in scanFilter.list) {
 						if ("("+argsPokemonNumber+")" === "("+scanFilter.list[j]+")") {
 							pokemonNumber = scanFilter.list[j];
 							break;
 						}
 					}
+					*/
 					pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
 					pokemonNameEn = pokedex_en.list[pokemonNumber-1];								
 					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
@@ -679,23 +691,29 @@ bot.on('message', message => {
 					var areasNumber = 0;
 					if ((latGPS >= 45.353965 && latGPS < 45.403884) && (lonGPS >= -72.021852 && lonGPS < -71.960569)) {
 						areasNumber = 1;
+						areasName = "Rock Forest";
 					} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.960569 && lonGPS < -71.907869)) {
 						areasNumber = 2;
+						areasName = "Nord";
 					} else if ((latGPS >= 45.367474 && latGPS < 45.394000) && (lonGPS >= -71.960569 && lonGPS < -71.879201)) {
 						areasNumber = 3;
+						areasName = "UdeS/Bellevue";
 					} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.907869 && lonGPS < -71.879201)) {
 						areasNumber = 4;
+						areasName = "Centro/Marais";
 					} else if ((latGPS >= 45.348174 && latGPS < 45.382306) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
 						areasNumber = 5;
+						areasName = "Lennox";
 					} else if ((latGPS >= 45.382306 && latGPS < 45.429429) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
 						areasNumber = 6;
+						areasName = "Fleurimont";
 					}
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
 						.setTitle("Un "+pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") vient d'apparaître !")
 						.setAuthor("Professeur Oak", bot.user.avatarURL)
 						.setColor(colorForEmbed)
-						.setDescription("Temps restant : *"+remainingTime)
+						.setDescription("\nDisparaît à : "+disappearingTime+"(*Temps restant : "+remainingTime+")\nZone : "+areasName)
 						.setTimestamp()
 						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
@@ -704,7 +722,7 @@ bot.on('message', message => {
 					var contributorID = "";
 					for (k in contributors.list) {
 						contributorID = contributors.list[k].id;
-						if (contributors.list[k].activated === true && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && contributors.list[k].areas.indexOf(areasNumber) !== -1) {
+						if (contributors.list[k].activated === true && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && (contributors.list[k].areas.indexOf(areasNumber) !== -1 || pokemonNumber === 201)) {
 							// Send a private message
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
