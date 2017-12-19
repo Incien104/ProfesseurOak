@@ -658,7 +658,7 @@ bot.on('message', message => {
 					argsTitle = argsTitle[1].split(')');
 					var argsPokemonNumber = argsTitle[0];
 					var remainingTimeText = message.embeds[0].description.split(': ');
-					var remainingTime = remainingTimeText[1];
+					var remainingTime = remainingTimeText[1].substring(0,remainingTimeText[1].length-1);
 					var mapURL = message.embeds[0].url;
 					var textURL = mapURL.split('#');
 					var coords = textURL[1];
@@ -691,29 +691,29 @@ bot.on('message', message => {
 					var areasNumber = 0;
 					if ((latGPS >= 45.353965 && latGPS < 45.403884) && (lonGPS >= -72.021852 && lonGPS < -71.960569)) {
 						areasNumber = 1;
-						areasName = "Rock Forest";
+						areasName = "à Rock Forest";
 					} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.960569 && lonGPS < -71.907869)) {
 						areasNumber = 2;
-						areasName = "Nord";
+						areasName = "dans le Nord";
 					} else if ((latGPS >= 45.367474 && latGPS < 45.394000) && (lonGPS >= -71.960569 && lonGPS < -71.879201)) {
 						areasNumber = 3;
-						areasName = "UdeS/Bellevue";
+						areasName = "à UdeS/Bellevue";
 					} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.907869 && lonGPS < -71.879201)) {
 						areasNumber = 4;
-						areasName = "Centro/Marais";
+						areasName = "au Centro/Marais";
 					} else if ((latGPS >= 45.348174 && latGPS < 45.382306) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
 						areasNumber = 5;
-						areasName = "Lennox";
+						areasName = "à Lennox";
 					} else if ((latGPS >= 45.382306 && latGPS < 45.429429) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
 						areasNumber = 6;
-						areasName = "Fleurimont";
+						areasName = "à Fleurimont";
 					}
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
-						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") à "+areasName+" !")
+						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
 						.setAuthor("Professeur Oak", bot.user.avatarURL)
 						.setColor(colorForEmbed)
-						.setDescription("Disparaît à **"+disappearingTime+"**\n*Temps restant : "+remainingTime)
+						.setDescription("Disparaît à **"+disappearingTime+"**\nTemps restant : __"+remainingTime+"__")
 						.setTimestamp()
 						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
