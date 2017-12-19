@@ -4,6 +4,10 @@
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
+const botVersion = "v1.18.1";
+const botVersionDate = "19/12/2017";
+const timeUTCQuebec = 5; // Hours from UTC to have the right time
+
 var Discord = require('discord.js');
 var db = require('./db.json'); // No use for now
 var bannedWords = require('./bannedWords.json');
@@ -12,9 +16,8 @@ var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
 var contributors = require('./contributors.json');
+
 var bot = new Discord.Client();
-var botVersion = "v1.18.1";
-var botVersionDate = "19/12/2017";
 
 // Bot login
 bot.login(process.env.BOT_TOKEN);
@@ -669,7 +672,7 @@ bot.on('message', message => {
 					// Find the pokemon of the alert
 					pokemonNumber = parseInt(argsPokemonNumber);
 					var t = new Date();	
-					t = t - 5*60*60*1000 + minutes*60*1000 + seconds*1000;
+					t = t - timeUTCQuebec*60*60*1000 + minutes*60*1000 + seconds*1000;
 					var disappearingTime = new Date(t);
 					disappearingTime = disappearingTime.toString();
 					disappearingTime = disappearingTime.substring(16,disappearingTime.length-18);
@@ -743,7 +746,7 @@ bot.on('message', message => {
 // Bot's logs in a log channel !
 function botPostLog(messageToPost) {
 	var d = new Date();	
-	d = d - 5*60*60*1000;
+	d = d - timeUTCQuebec*60*60*1000;
 	var dateQuebec = new Date(d);
 	dateQuebec = dateQuebec.toString();
 	dateQuebec = dateQuebec.substring(0,dateQuebec.length-15);
