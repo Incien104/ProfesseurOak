@@ -727,8 +727,8 @@ bot.on('message', message => {
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
 								memberToAlert.send({embed})
-								.then(msgA => console.log("Member ID : "+contributorID+" - Channel Type/ID : "+msgA.type+"/"+msgA.id))
-								.catch(console.error);
+								.catch(msgA => console.log("Member ID : "+contributorID+" - Channel Type/ID : "+msgA.type+"/"+msgA.id));
+								//.catch(console.error);
 							}
 							else {
 								botPostLog(contributorID+" est introuvable");
