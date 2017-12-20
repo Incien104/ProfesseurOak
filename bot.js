@@ -668,7 +668,11 @@ bot.on('message', message => {
 					var remainingTimeSplit = remainingTime.split(' min ');
 					var minutes = parseInt(remainingTimeSplit[0]);
 					var seconds = parseInt(remainingTimeSplit[1]);
-					remainingTime = minutes+":"+remainingTimeSplit[1];
+					if (seconds < 10) {
+						remainingTime = minutes+":0"+seconds;
+					} else {
+						remainingTime = minutes+":"+seconds;
+					}
 					// Find the pokemon of the alert
 					pokemonNumber = parseInt(argsPokemonNumber);
 					var t = new Date();	
