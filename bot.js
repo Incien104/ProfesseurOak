@@ -676,6 +676,7 @@ bot.on('message', message => {
 					var disappearingTime = new Date(t);
 					disappearingTime = disappearingTime.toString();
 					disappearingTime = disappearingTime.substring(16,disappearingTime.length-18);
+					disappearingTime = disappearingTime.replace(":"," h ");
 					/*
 					for (j in scanFilter.list) {
 						if ("("+argsPokemonNumber+")" === "("+scanFilter.list[j]+")") {
@@ -716,7 +717,7 @@ bot.on('message', message => {
 						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
 						.setAuthor("Professeur Oak", bot.user.avatarURL)
 						.setColor(colorForEmbed)
-						.setDescription("Disparaît à **"+disappearingTime+"**\nTemps restant : __"+remainingTime+"__")
+						.setDescription("Disparaît à  **"+disappearingTime+"**\nTemps restant : __"+remainingTime+"__")
 						.setTimestamp()
 						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
