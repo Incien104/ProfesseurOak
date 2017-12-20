@@ -727,7 +727,7 @@ bot.on('message', message => {
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
 								memberToAlert.send({embed})
-								.catch(msgA => console.log("Member ID : "+contributorID+" - Channel Type/ID : "+msgA.type+"/"+msgA.id));
+								.catch(console.log("Message impossible to send to : "+contributorID);
 								//.catch(console.error);
 							}
 							else {
