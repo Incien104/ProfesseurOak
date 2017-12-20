@@ -665,9 +665,10 @@ bot.on('message', message => {
 					var mapURL = message.embeds[0].url;
 					var textURL = mapURL.split('#');
 					var coords = textURL[1];
-					var remainingTimeSplit = remainingTime.split('min');
+					var remainingTimeSplit = remainingTime.split(' min ');
 					var minutes = parseInt(remainingTimeSplit[0]);
 					var seconds = parseInt(remainingTimeSplit[1]);
+					remainingTime = minutes+":"+remainingTimeSplit[1];
 					// Find the pokemon of the alert
 					pokemonNumber = parseInt(argsPokemonNumber);
 					var t = new Date();	
@@ -708,7 +709,7 @@ bot.on('message', message => {
 						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
 						.setAuthor("Professeur Oak", bot.user.avatarURL)
 						.setColor(colorForEmbed)
-						.setDescription("Disparaît à **"+disappearingTime+"**  (reste : __"+minutes+":"+seconds+"__)")
+						.setDescription("Disparaît à **"+disappearingTime+"**  (reste : **"+remainingTime+"**)")
 						.setTimestamp()
 						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
