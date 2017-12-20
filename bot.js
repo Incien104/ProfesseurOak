@@ -662,6 +662,7 @@ bot.on('message', message => {
 					var argsPokemonNumber = argsTitle[0];
 					var remainingTimeText = message.embeds[0].description.split(': ');
 					var remainingTime = remainingTimeText[1].substring(0,remainingTimeText[1].length-5);
+					var thumbnail = message.embeds[0].thumbnail;
 					var mapURL = message.embeds[0].url;
 					var textURL = mapURL.split('#');
 					var coords = textURL[1];
@@ -679,7 +680,7 @@ bot.on('message', message => {
 					disappearingTime = disappearingTime.replace(":"," h ");
 					pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
 					pokemonNameEn = pokedex_en.list[pokemonNumber-1];								
-					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
+					// var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
 					// Define the zone
 					var coordsSplited = coords.split(',');
 					var latGPS = coordsSplited[0];
