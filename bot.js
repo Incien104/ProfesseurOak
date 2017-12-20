@@ -727,7 +727,7 @@ bot.on('message', message => {
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
 								memberToAlert.send({embed})
-								.then(msg => console.log("Member ID : "+contributorID+" - Channel Type/ID : "+msg.type+"/"+msg.id))
+								.then(msgA => console.log("Member ID : "+contributorID+" - Channel Type/ID : "+msgA.type+"/"+msgA.id))
 								.catch(console.error);
 							}
 							else {
