@@ -662,13 +662,11 @@ bot.on('message', message => {
 					var argsPokemonNumber = argsTitle[0];
 					var remainingTimeText = message.embeds[0].description.split(': ');
 					var remainingTime = remainingTimeText[1].substring(0,remainingTimeText[1].length-5);
-					remainingTime = remainingTime.replace(" min ",":");
 					var mapURL = message.embeds[0].url;
 					var textURL = mapURL.split('#');
 					var coords = textURL[1];
 					var remainingTimeSplit = remainingTime.split('min');
 					var minutes = parseInt(remainingTimeSplit[0]);
-					//var remainingTimeSplit2 = remainingTimeSplit[1].split(' sec');
 					var seconds = parseInt(remainingTimeSplit[1]);
 					// Find the pokemon of the alert
 					pokemonNumber = parseInt(argsPokemonNumber);
@@ -678,14 +676,6 @@ bot.on('message', message => {
 					disappearingTime = disappearingTime.toString();
 					disappearingTime = disappearingTime.substring(16,disappearingTime.length-18);
 					disappearingTime = disappearingTime.replace(":"," h ");
-					/*
-					for (j in scanFilter.list) {
-						if ("("+argsPokemonNumber+")" === "("+scanFilter.list[j]+")") {
-							pokemonNumber = scanFilter.list[j];
-							break;
-						}
-					}
-					*/
 					pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
 					pokemonNameEn = pokedex_en.list[pokemonNumber-1];								
 					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
@@ -718,7 +708,7 @@ bot.on('message', message => {
 						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
 						.setAuthor("Professeur Oak", bot.user.avatarURL)
 						.setColor(colorForEmbed)
-						.setDescription("Disparaît à **"+disappearingTime+"**  (reste : __"+remainingTime+"__)")
+						.setDescription("Disparaît à **"+disappearingTime+"**  (reste : __"+minutes+":"+seconds+"__)")
 						.setTimestamp()
 						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
