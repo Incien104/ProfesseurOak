@@ -743,7 +743,10 @@ bot.on('message', message => {
 			switch(cmd) {				
 				// Commands to see contributor informations
 				case 'infoscan':
-					message.channel.send("test");
+					var memberInfo = contributors.list.find('id',message.author.id);
+					if (memberInfo !== undefined) {
+						message.channel.send("Activé : "+memberInfo.activated+"\nZones : "+memberInfo.areas+"\nPokémons : "+memberInfo.pokemons);
+					}
 				break;
 			}
 		}
