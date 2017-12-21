@@ -1,15 +1,15 @@
 // ** Description **
-// ModeratorBot, v1.18.1, developed by Incien104
+// ModeratorBot, v1.18.2, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v1.18.1";
-const botVersionDate = "19/12/2017";
+const botVersion = "v1.18.2";
+const botVersionDate = "20/12/2017";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
-var db = require('./db.json'); // No use for now
+var db = require('./db.json'); // Not used for now
 var bannedWords = require('./bannedWords.json');
 var scanFilter = require('./scanFilter.json');
 var pokedex_fr = require('./pokedex_fr.json');
@@ -78,8 +78,8 @@ bot.on('guildMemberRemove', member => {
   if (!channel) return;
   // Send the message, mentioning the member
   if (member.guild.name === 'PoGo Raids Sherbrooke') {
-	channel.send(`${member} *vient de partir. Bye bye...* :vulcan: `).catch(console.error);
-	botPostLog(`${member} a quitté ou a été expulsé/banni !`);
+	channel.send(member.displayName+" *vient de partir. Bye bye...* :vulcan: ").catch(console.error);
+	botPostLog(member.displayName+" a quitté ou a été expulsé/banni !");
   }
 });
 
@@ -399,7 +399,7 @@ bot.on('message', message => {
 						
 						channelHuntr.send("!setup 45.39652136952787,-71.88354492187501");
 						channelHuntr.send("!radius 10");
-						channelHuntr.send("!filter 25,65,68,76,81,88,89,94,101,103,106,107,108,112,113,114,128,129,130,131,134,135,136,137,143,147,148,149,154,157,160,169,176,179,180,181,201,203,227,237,241,242,246,247,248,302,353,355");
+						channelHuntr.send("!filter "+scanFilter.list);
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -416,6 +416,11 @@ bot.on('message', message => {
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
+				break;
+				
+				// Commands to start GymHuntr Bot
+				case 'infoscan':
+					message.channel.send("test");
 				break;
 				
 				// Pokedex translation function
@@ -711,10 +716,8 @@ bot.on('message', message => {
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
 						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
-						.setAuthor("Professeur Oak", bot.user.avatarURL)
 						.setColor(colorForEmbed)
 						.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)")
-						.setTimestamp()
 						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
 						.setURL(mapURL);
