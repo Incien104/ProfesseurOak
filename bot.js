@@ -682,8 +682,9 @@ bot.on('message', message => {
 					disappearingTime = disappearingTime.substring(16,disappearingTime.length-18);
 					disappearingTime = disappearingTime.replace(":"," h ");
 					pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
-					pokemonNameEn = pokedex_en.list[pokemonNumber-1];								
-					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+					pokemonNameEn = pokedex_en.list[pokemonNumber-1];
+					var thumbnail = "https://poketoolset.com/assets/img/pokemon/images/"+pokemonNumber+".png?width=60&height=60";
+					// var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
 					// Define the zone
 					var coordsSplited = coords.split(',');
 					var latGPS = coordsSplited[0];
