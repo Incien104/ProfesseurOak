@@ -1,10 +1,10 @@
 // ** Description **
-// ModeratorBot, v1.18.2, developed by Incien104
+// ModeratorBot, v1.19.0, developed by Incien104
 // GPL 3.0, Nov. 2017
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v1.18.2";
+const botVersion = "v1.19.0";
 const botVersionDate = "20/12/2017";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
@@ -418,11 +418,6 @@ bot.on('message', message => {
 					}
 				break;
 				
-				// Commands to start GymHuntr Bot
-				case 'infoscan':
-					message.channel.send("test");
-				break;
-				
 				// Pokedex translation function
 				case 'oaktrad':
 					if (message.channel.name === "pokedex") {
@@ -433,7 +428,7 @@ bot.on('message', message => {
 							var pokemonNameEn = pokedex_en.list[pokemonNumber-1];
 							// Create Rich Embed
 							var colorForEmbed = "#43B581";
-							var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
+							var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
 							var embed = new Discord.RichEmbed()
 								.setTitle("#"+pokemonNumber)
 								.setColor(colorForEmbed)
@@ -737,6 +732,19 @@ bot.on('message', message => {
 						}
 					}
 				}
+			}
+		}
+	} else {
+		// Commands to the bot : starting with !
+		if (message.content.substring(0, 1) === '!') {
+			var args = message.content.substring(1).split(' ');
+			var cmd = args[0];
+        
+			switch(cmd) {				
+				// Commands to see contributor informations
+				case 'infoscan':
+					message.channel.send("test");
+				break;
 			}
 		}
 	}
