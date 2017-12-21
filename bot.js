@@ -745,7 +745,7 @@ bot.on('message', message => {
 				case 'infoscan':
 					for (k in contributors.list) {
 						if (contributors.list[k].id === message.author.id) {
-							message.channel.send("Activé : "+contributors.list[k].activated+"\nZones : "+contributors.list[k].areas+"\nPokémons : "+contributors.list[k].pokemons).catch(console.error);
+							message.channel.send("Activé : "+contributors.list[k].activated+"\nZones : "+contributors.list[k].areas+"\nNotification perso : "+contributors.list[k].pokemons+"\n\nScan global : "+scanFilter.list).catch(console.error);
 							break;
 						}
 					}
