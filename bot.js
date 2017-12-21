@@ -428,7 +428,7 @@ bot.on('message', message => {
 							var pokemonNameEn = pokedex_en.list[pokemonNumber-1];
 							// Create Rich Embed
 							var colorForEmbed = "#43B581";
-							var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+							var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
 							var embed = new Discord.RichEmbed()
 								.setTitle("#"+pokemonNumber)
 								.setColor(colorForEmbed)
@@ -683,7 +683,7 @@ bot.on('message', message => {
 					disappearingTime = disappearingTime.replace(":"," h ");
 					pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
 					pokemonNameEn = pokedex_en.list[pokemonNumber-1];								
-					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-120-120/"+pokemonNumber+"-"+pokemonNameEn+".png";
+					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
 					// Define the zone
 					var coordsSplited = coords.split(',');
 					var latGPS = coordsSplited[0];
