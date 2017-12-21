@@ -743,9 +743,11 @@ bot.on('message', message => {
 			switch(cmd) {				
 				// Commands to see contributor informations
 				case 'infoscan':
-					var memberInfo = contributors.list.find('id',message.author.id);
-					if (memberInfo !== undefined) {
-						message.channel.send("Activé : "+memberInfo.activated+"\nZones : "+memberInfo.areas+"\nPokémons : "+memberInfo.pokemons);
+					for (k in contributors.list) {
+						if (contributors.list[k].id === message.author.id) {
+							message.channel.send("Activé : "+contributors.list[k].activated+"\nZones : "+contributors.list[k].areas+"\nPokémons : "+contributors.list[k].pokemons).catch(console.error);
+							break;
+						}
 					}
 				break;
 			}
