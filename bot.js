@@ -528,6 +528,30 @@ bot.on('message', message => {
 					}
 				break;
 				
+				// Pokedex Unown Alphabet function
+				case 'oakunown':
+					if (message.channel.name === "pokedex") {
+						// Create Rich Embed
+						var colorForEmbed = "#43B581";
+						var embed = new Discord.RichEmbed()
+							.setTitle("Formes de Unown/Zarbi (201) : ")
+							.setColor(colorForEmbed)
+							.setImage("https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/unown_alphabet.png")
+						message.channel.send({embed}).catch(console.error);
+					}
+				break;
+				case 'oakzarbi':
+					if (message.channel.name === "pokedex") {
+						// Create Rich Embed
+						var colorForEmbed = "#43B581";
+						var embed = new Discord.RichEmbed()
+							.setTitle("Formes de Unown/Zarbi (201) : ")
+							.setColor(colorForEmbed)
+							.setImage("https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/unown_alphabet.png")
+						message.channel.send({embed}).catch(console.error);
+					}
+				break;
+				
 				// Pokedex mega function
 				case 'oakmega':
 					if (message.channel.name === "pokedex") {
