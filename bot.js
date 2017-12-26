@@ -1,11 +1,11 @@
 // ** Description **
-// ModeratorBot, v1.19.0, developed by Incien104
-// GPL 3.0, Nov. 2017
+// ModeratorBot, v2.0.0, developed by Incien104
+// GPL 3.0, Oct. 2017 - Dec. 2017
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v1.19.0";
-const botVersionDate = "20/12/2017";
+const botVersion = "v2.0.0";
+const botVersionDate = "26/12/2017";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -15,7 +15,6 @@ var scanFilter = require('./scanFilter.json');
 var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
-var contributors = require('./contributors.json');
 
 var bot = new Discord.Client();
 
@@ -677,6 +676,7 @@ bot.on('message', message => {
 				var pokemonNameEn = "";
 				var memberToAlert = "";
 				var colorForEmbed = "#43B581";
+				var contributors = require('https://professeur-oak.000webhostapp.com/functions/contributors.json');
 				
 				// Read message embeds
 				if (message.embeds[0] !== undefined) {
@@ -750,7 +750,7 @@ bot.on('message', message => {
 					var contributorID = "";
 					for (k in contributors.list) {
 						contributorID = contributors.list[k].id;
-						if (contributors.list[k].activated === true && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && (contributors.list[k].areas.indexOf(areasNumber) !== -1 || pokemonNumber === 201)) {
+						if (contributors.list[k].activated === 1 && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && (contributors.list[k].areas.indexOf(areasNumber) !== -1 || pokemonNumber === 201)) {
 							// Send a private message
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
