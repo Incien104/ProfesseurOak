@@ -148,7 +148,14 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						
+						function reqListener () {
+							console.log(this.responseText);
+						}
+						var oReq = new XMLHttpRequest();
+						oReq.addEventListener("load", reqListener);
+						oReq.open("GET", "https://professeur-oak.000webhostapp.com/functions/contributors.json");
+						oReq.send();
+						console.log(oReq);
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
