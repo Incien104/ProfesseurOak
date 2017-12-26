@@ -676,7 +676,13 @@ bot.on('message', message => {
 				var pokemonNameEn = "";
 				var memberToAlert = "";
 				var colorForEmbed = "#43B581";
-				var contributors = require('https://professeur-oak.000webhostapp.com/functions/contributors.json');
+				var contributors = require('contributors');
+				contributors.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', function (error, response, body) {
+					if (!error && response.statusCode == 200) {
+						var contributors = body;
+						// Continue with your processing here.
+					}
+				});
 				
 				// Read message embeds
 				if (message.embeds[0] !== undefined) {
