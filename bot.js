@@ -148,7 +148,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						
+						getContributorsFile("erreur");
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -813,7 +813,7 @@ String.prototype.capitalize = function() {
 
 // -------------------------------------------------
 // Get contributors.json !
-function getContributorsFile() {
+function getContributorsFile(erreur) {
 	var https = require('https');
 	https.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', (res) => {
 	var { statusCode } = res;
