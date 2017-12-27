@@ -851,5 +851,6 @@ function getContributorsFile(contributors_backup) {
 	console.error(`Got error: ${e.message}`);
 	return contributors_backup;
 	});
+}
 	
 // =================================================
