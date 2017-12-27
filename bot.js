@@ -148,7 +148,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						var contributorList2 = getContributorsFile();
+						var contributorList2 = getTest();
 						console.log(contributorList2);
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
@@ -850,6 +850,22 @@ function getContributorsFile() {
 	console.error(`Got error: ${e.message}`);
 	});
 	return contributorList;
+}
+
+function getTest(callback) {
+	var https = require('https');
+    return https.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', function(response) {
+        // Continuously update stream with data
+        var body = '';
+        response.on('data', function(d) {
+            body += d;
+        });
+        response.on('end', function() {
+            // Data reception is done, do whatever with it!
+            var parsed = JSON.parse(body);
+            callback(parsed);
+        });
+    });
 }
 	
 // =================================================
