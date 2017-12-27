@@ -148,8 +148,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						var testVar = getContributorsFile();
-						console.log(testVar.list["Incien"].areas);
+						getContributorsFile();
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -845,7 +844,6 @@ function getContributorsFile() {
 			console.error(e.message);
 			}
 		});
-		return parsedData;
 	}).on('error', (e) => {
 	console.error(`Got error: ${e.message}`);
 	});
