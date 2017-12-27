@@ -149,7 +149,7 @@ bot.on('message', message => {
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
 						var contributors2 = getContributorsFile("erreur");
-						console.log(contributors2);
+						console.log(contributors2.list["Incien"].id);
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
