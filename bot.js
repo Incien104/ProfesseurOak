@@ -1,11 +1,11 @@
 // ** Description **
-// ModeratorBot, v2.0.0, developed by Incien104
+// ModeratorBot, v2.1.0, developed by Incien104
 // GPL 3.0, Oct. 2017 - Dec. 2017
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v2.0.0";
-const botVersionDate = "26/12/2017";
+const botVersion = "v2.1.0";
+const botVersionDate = "27/12/2017";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -15,8 +15,9 @@ var scanFilter = require('./scanFilter.json');
 var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
-var contributors = require('./contributors.json');
-
+var contributors_backup = require('./contributors.json');
+var contributors;
+	
 var bot = new Discord.Client();
 
 // Bot login
@@ -24,22 +25,32 @@ bot.login(process.env.BOT_TOKEN);
 
 // Bot start on Heroku server, including settings for scheduled announcements
 bot.on('ready', () => {
-    // Scheduled announcements
-	/*
-    var myVar = setInterval(noTeamAlert, 86400000); // Every 24h
-    const botGuild = bot.guilds.find('name', 'PoGo Raids Sherbrooke');
-    const channelAnnouncements = botGuild.channels.find('name', 'general');
+    // Scheduled Contributors JSON file loading
+    var intervalLoadJSON = setInterval(loadJSONFile, 1800000); // Every 30min
 	
-    function noTeamAlert() {        
-        if (!channelAnnouncements) return;
-        // Send the message, mentioning the member
-        channelAnnouncements.send(`<@&371096330614996993> Pour ceux qui n'ont pas encore choisi leur équipe, tapez simplement **!equipe instinct**, **!equipe mystic** ou **!equipe valor**, ici, dans le chat ${channelAnnouncements}.`).catch(console.error);
-    	botPostLog('Annonce aux NoTeam au 24h effectuée');
+    function loadJSONFile() {        
+        getContributorsFile()
+			.then(response => {
+				contributors = response;
+				botPostLog("Fichier JSON distant chargé.");
+			})
+			.catch(error => {
+				contributors = contributors_backup;
+				botPostLog("Erreur au chargement de fichier JSON distant. Backup sur Github chargé.");
+			});
     }
-	*/
     
     // Bot ready !
 	botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
+	getContributorsFile()
+		.then(response => {
+			contributors = response;
+			botPostLog("Fichier JSON distant chargé.");
+		})
+		.catch(error => {
+			contributors = contributors_backup;
+			botPostLog("Erreur au chargement de fichier JSON distant. Backup sur Github chargé.");
+		});
 });
 
 // =================================================
@@ -148,13 +159,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						getContributorsFile()
-						.then(response => {
-							console.log(response);
-						})
-						.catch(error => {
-							console.log("erreur");
-						});
+						
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -821,7 +826,6 @@ String.prototype.capitalize = function() {
 // Get contributors.json !
 function getContributorsFile() {
 	var https = require('https');
-	var tic = Date.now();
 	return new Promise((resolve,reject)=>{
 		https.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', (res) => {
 			var { statusCode } = res;
