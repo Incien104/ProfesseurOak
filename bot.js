@@ -15,7 +15,7 @@ var scanFilter = require('./scanFilter.json');
 var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
-var contributors_backup = require('./contributors.json');
+var contributors = require('./contributors.json');
 
 var bot = new Discord.Client();
 
@@ -677,9 +677,6 @@ bot.on('message', message => {
 				var pokemonNameEn = "";
 				var memberToAlert = "";
 				var colorForEmbed = "#43B581";
-				var contributors = getContributorsFile('');
-				console.log('');
-				console.log(contributors);
 				
 				// Read message embeds
 				if (message.embeds[0] !== undefined) {
@@ -816,7 +813,7 @@ String.prototype.capitalize = function() {
 
 // -------------------------------------------------
 // Get contributors.json !
-function getContributorsFile(contributors_backup) {
+function getContributorsFile() {
 	var https = require('https');
 	https.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', (res) => {
 	var { statusCode } = res;
@@ -834,7 +831,6 @@ function getContributorsFile(contributors_backup) {
 		console.error(error.message);
 		// consume response data to free up memory
 		res.resume();
-		return contributors_backup;
 	}
 	
 	res.setEncoding('utf8');
@@ -851,7 +847,6 @@ function getContributorsFile(contributors_backup) {
 	});
 	}).on('error', (e) => {
 	console.error(`Got error: ${e.message}`);
-	return contributors_backup;
 	});
 }
 	
