@@ -148,7 +148,13 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						
+						getContributorsFile()
+						.then(response => {
+							console.log(response);
+						})
+						.catch(error => {
+							console.log("erreur");
+						});
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -815,37 +821,41 @@ String.prototype.capitalize = function() {
 // Get contributors.json !
 function getContributorsFile() {
 	var https = require('https');
-	https.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', (res) => {
-		var { statusCode } = res;
-		var contentType = res.headers['content-type'];
-		
-		let error;
-		if (statusCode !== 200) {
-			error = new Error('Request Failed.\n' +
-							`Status Code: ${statusCode}`);
-		} else if (!/^application\/json/.test(contentType)) {
-			error = new Error('Invalid content-type.\n' +
-							`Expected application/json but received ${contentType}`);
-		}
-		if (error) {
-			console.error(error.message);
-			// consume response data to free up memory
-			res.resume();
-		}
-		
-		res.setEncoding('utf8');
-		let rawData = '';
-		res.on('data', (chunk) => { rawData += chunk; });
-		res.on('end', () => {
-			try {
-			const parsedData = JSON.parse(rawData);
-			} catch (e) {
-			console.error(e.message);
+	var tic = Date.now();
+	return new Promise((resolve,reject)=>{
+		https.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', (res) => {
+			var { statusCode } = res;
+			var contentType = res.headers['content-type'];
+			
+			let error;
+			if (statusCode !== 200) {
+				error = new Error('Request Failed.\n' +
+								`Status Code: ${statusCode}`);
+			} else if (!/^application\/json/.test(contentType)) {
+				error = new Error('Invalid content-type.\n' +
+								`Expected application/json but received ${contentType}`);
 			}
+			if (error) {
+				console.error(error.message);
+				// consume response data to free up memory
+				res.resume();
+			}
+			
+			res.setEncoding('utf8');
+			let rawData = '';
+			res.on('data', (chunk) => { rawData += chunk; });
+			res.on('end', () => {
+				try {
+				const parsedData = JSON.parse(rawData);
+					resolve(parsedData);					
+				} catch (e) {
+					reject(e.message);
+				}
+			});
+		}).on('error', (e) => {
+		reject(`Got error: ${e.message}`);
 		});
-	}).on('error', (e) => {
-	console.error(`Got error: ${e.message}`);
-	});
+	})
 }
 	
 // =================================================
