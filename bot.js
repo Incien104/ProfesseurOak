@@ -16,6 +16,7 @@ var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
 var contributors = require('./contributors.json');
+var contributorsList = null;
 
 var bot = new Discord.Client();
 
@@ -148,8 +149,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						var contributorList2 = getContributorsFile();
-						console.log(contributorList2);
+						console.log(contributorList);
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -814,6 +814,11 @@ String.prototype.capitalize = function() {
 
 // -------------------------------------------------
 // Get contributors.json !
+
+function makeContributorsList(parsedData) {
+		contributorsList = parsedData;
+}
+
 function getContributorsFile() {
 	var https = require('https');
 	return https.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', (res) => {
@@ -840,6 +845,7 @@ function getContributorsFile() {
 		res.on('end', () => {
 			try {
 			const parsedData = JSON.parse(rawData);
+			makeContributorsList(parsedData);
 			} catch (e) {
 			console.error(e.message);
 			}
