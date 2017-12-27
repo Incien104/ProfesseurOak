@@ -149,7 +149,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						console.log(contributorList);
+						console.log(contributorsList);
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
