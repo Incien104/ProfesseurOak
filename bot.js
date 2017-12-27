@@ -840,7 +840,7 @@ function getContributorsFile() {
 	res.on('end', () => {
 		try {
 		const parsedData = JSON.parse(rawData);
-		return parsedData;
+		console.log(parsedData.list["Incien"]);
 		} catch (e) {
 		console.error(e.message);
 		}
