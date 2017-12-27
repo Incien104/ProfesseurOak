@@ -15,7 +15,7 @@ var scanFilter = require('./scanFilter.json');
 var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
-var contributors = require('./contributors.json');
+var contributors_backup = require('./contributors.json');
 
 var bot = new Discord.Client();
 
@@ -148,40 +148,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						var https = require('https');
-						https.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', (res) => {
-						const { statusCode } = res;
-						const contentType = res.headers['content-type'];
 						
-						let error;
-						if (statusCode !== 200) {
-							error = new Error('Request Failed.\n' +
-											`Status Code: ${statusCode}`);
-						} else if (!/^application\/json/.test(contentType)) {
-							error = new Error('Invalid content-type.\n' +
-											`Expected application/json but received ${contentType}`);
-						}
-						if (error) {
-							console.error(error.message);
-							// consume response data to free up memory
-							res.resume();
-							return;
-						}
-						
-						res.setEncoding('utf8');
-						let rawData = '';
-						res.on('data', (chunk) => { rawData += chunk; });
-						res.on('end', () => {
-							try {
-							const parsedData = JSON.parse(rawData);
-							console.log(parsedData);
-							} catch (e) {
-							console.error(e.message);
-							}
-						});
-						}).on('error', (e) => {
-						console.error(`Got error: ${e.message}`);
-						});
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -710,6 +677,7 @@ bot.on('message', message => {
 				var pokemonNameEn = "";
 				var memberToAlert = "";
 				var colorForEmbed = "#43B581";
+				var contributors = getContributorsFile('');
 				
 				// Read message embeds
 				if (message.embeds[0] !== undefined) {
@@ -843,4 +811,45 @@ function isInt(value) {
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+// -------------------------------------------------
+// Get contributors.json !
+function getContributorsFile(contributors_backup) {
+	var https = require('https');
+	https.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', (res) => {
+	var { statusCode } = res;
+	var contentType = res.headers['content-type'];
+	
+	let error;
+	if (statusCode !== 200) {
+		error = new Error('Request Failed.\n' +
+						`Status Code: ${statusCode}`);
+	} else if (!/^application\/json/.test(contentType)) {
+		error = new Error('Invalid content-type.\n' +
+						`Expected application/json but received ${contentType}`);
+	}
+	if (error) {
+		console.error(error.message);
+		// consume response data to free up memory
+		res.resume();
+		return contributors_backup;
+	}
+	
+	res.setEncoding('utf8');
+	let rawData = '';
+	res.on('data', (chunk) => { rawData += chunk; });
+	res.on('end', () => {
+		try {
+		const parsedData = JSON.parse(rawData);
+		return parsedData;
+		//console.log(parsedData);
+		} catch (e) {
+		console.error(e.message);
+		}
+	});
+	}).on('error', (e) => {
+	console.error(`Got error: ${e.message}`);
+	return contributors_backup;
+	});
+	
 // =================================================
