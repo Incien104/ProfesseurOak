@@ -827,7 +827,7 @@ String.prototype.capitalize = function() {
 function getContributorsFile() {
 	var https = require('https');
 	return new Promise((resolve,reject)=>{
-		https.get('https://professeur-oak.000webhostapp.com/functions/contributors.json', (res) => {
+		https.get(process.env.REMOTE_JSON, (res) => {
 			var { statusCode } = res;
 			var contentType = res.headers['content-type'];
 			
