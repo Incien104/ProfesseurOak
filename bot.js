@@ -26,13 +26,11 @@ bot.login(process.env.BOT_TOKEN);
 // Bot start on Heroku server, including settings for scheduled announcements
 bot.on('ready', () => {
     // Scheduled Contributors JSON file loading
-    var intervalLoadJSON = setInterval(loadJSONFile, 1800000); // Every 30min
-	
+    var intervalLoadJSON = setInterval(loadJSONFile, 1800000); // Every 30min	
     function loadJSONFile() {        
         getContributorsFile()
 			.then(response => {
 				contributors = response;
-				botPostLog("Fichier JSON distant chargé.");
 			})
 			.catch(error => {
 				contributors = contributors_backup;
