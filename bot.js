@@ -1,11 +1,11 @@
 // ** Description **
-// ModeratorBot, v2.1.0, developed by Incien104
+// ModeratorBot, v2.1.1, developed by Incien104
 // GPL 3.0, Oct. 2017 - Dec. 2017
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v2.1.0";
-const botVersionDate = "27/12/2017";
+const botVersion = "v2.1.1";
+const botVersionDate = "29/12/2017";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -34,7 +34,7 @@ bot.on('ready', () => {
 			})
 			.catch(error => {
 				contributors = contributors_backup;
-				botPostLog("Erreur au chargement de fichier JSON distant. Backup sur Github chargé.");
+				botPostLog("Erreur au chargement de fichier JSON distant ("+response+"). Backup sur Github chargé.");
 			});
     }
     
