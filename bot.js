@@ -823,6 +823,7 @@ String.prototype.capitalize = function() {
 // -------------------------------------------------
 // Get contributors.json !
 function getContributorsFile() {
+	var http = require('http');
 	return new Promise((resolve,reject)=>{
 		http.get(process.env.REMOTE_JSON, (res) => {
 			var { statusCode } = res;
