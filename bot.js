@@ -833,7 +833,7 @@ function getContributorsFile() {
 			if (statusCode !== 200) {
 				error = new Error('Échec de la requête. ' +
 								`Code status : ${statusCode}`);
-			} else if (!/^application\/json/.test(contentType)) {
+			} else if (!/^text\/html/.test(contentType)) {
 				error = new Error('Type de contenu invalide : ' +
 								`Attendu application/json, reçu ${contentType}`);
 			}
