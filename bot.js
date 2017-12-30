@@ -5,7 +5,7 @@
 
 // Init
 const botVersion = "v2.1.1";
-const botVersionDate = "29/12/2017";
+const botVersionDate = "30/12/2017";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -823,9 +823,9 @@ String.prototype.capitalize = function() {
 // -------------------------------------------------
 // Get contributors.json !
 function getContributorsFile() {
-	var https = require('https');
+	var http = require('http');
 	return new Promise((resolve,reject)=>{
-		https.get(process.env.REMOTE_JSON, (res) => {
+		http.get(process.env.REMOTE_JSON, (res) => {
 			var { statusCode } = res;
 			var contentType = res.headers['content-type'];
 			
