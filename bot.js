@@ -34,7 +34,7 @@ bot.on('ready', () => {
 			})
 			.catch(error => {
 				contributors = contributors_backup;
-				botPostLog("Erreur au chargement de fichier JSON distant ("+response+"). Backup sur Github chargé.");
+				botPostLog("Erreur au chargement de fichier JSON distant ("+error+"). Backup sur Github chargé.");
 			});
     }
     
@@ -47,7 +47,7 @@ bot.on('ready', () => {
 		})
 		.catch(error => {
 			contributors = contributors_backup;
-			botPostLog("Erreur au chargement de fichier JSON distant ("+response+"). Backup sur Github chargé.");
+			botPostLog("Erreur au chargement de fichier JSON distant ("+error+"). Backup sur Github chargé.");
 		});
 });
 
@@ -832,7 +832,7 @@ function getContributorsFile() {
 			let error;
 			if (statusCode !== 200) {
 				error = new Error('Échec de la requête. ' +
-								`code status : ${statusCode}`);
+								`Code status : ${statusCode}`);
 			} else if (!/^application\/json/.test(contentType)) {
 				error = new Error('Type de contenu invalide : ' +
 								`Attendu application/json, reçu ${contentType}`);
