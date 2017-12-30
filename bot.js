@@ -824,8 +824,15 @@ String.prototype.capitalize = function() {
 // Get contributors.json !
 function getContributorsFile() {
 	var http = require('http');
+	var options = {
+		host: process.env.REMOTE_JSON,
+		path: '/functions/contributors.json',
+		headers: {
+        'Content-Type': 'application/json'
+		}
+	};
 	return new Promise((resolve,reject)=>{
-		http.get(process.env.REMOTE_JSON, (res) => {
+		http.get(options, (res) => {
 			var { statusCode } = res;
 			var contentType = res.headers['content-type'];
 			
