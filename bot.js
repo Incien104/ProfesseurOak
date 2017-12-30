@@ -833,10 +833,10 @@ function getContributorsFile() {
 			if (statusCode !== 200) {
 				error = new Error('Échec de la requête. ' +
 								`Code status : ${statusCode}`);
-			} else if (!/^text\/html/.test(contentType)) {
+			} /*else if (!/^application\/json/.test(contentType)) {
 				error = new Error('Type de contenu invalide : ' +
 								`Attendu application/json, reçu ${contentType}`);
-			}
+			}*/
 			if (error) {
 				console.error(error.message);
 				// consume response data to free up memory
@@ -848,6 +848,7 @@ function getContributorsFile() {
 			res.on('data', (chunk) => { rawData += chunk; });
 			res.on('end', () => {
 				try {
+					console.log(rawData);
 				const parsedData = JSON.parse(rawData);
 					resolve(parsedData);					
 				} catch (e) {
