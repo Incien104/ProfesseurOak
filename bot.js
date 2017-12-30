@@ -848,8 +848,7 @@ function getContributorsFile() {
 			res.on('data', (chunk) => { rawData += chunk; });
 			res.on('end', () => {
 				try {
-					console.log(rawData);
-				const parsedData = JSON.parse(rawData);
+					const parsedData = JSON.parse(rawData);
 					resolve(parsedData);					
 				} catch (e) {
 					reject(e.message);
