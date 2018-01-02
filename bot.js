@@ -1,11 +1,11 @@
 // ** Description **
-// ModeratorBot, v2.1.1, developed by Incien104
-// GPL 3.0, Oct. 2017 - Dec. 2017
+// ModeratorBot, v2.2.0, developed by Incien104
+// GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v2.1.1";
-const botVersionDate = "30/12/2017";
+const botVersion = "v2.2.0";
+const botVersionDate = "01/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -67,8 +67,8 @@ bot.on('guildMemberAdd', member => {
   if (!channel) return;
   // Send the message, mentioning the member
   if (member.guild.name === 'PoGo Raids Sherbrooke') {
-	channel.send(`-----------------------------------------------------\n**Bienvenue ${member} sur la plateforme ${server} !!!** Je suis le Professeur Oak !\nTu es le **${serverCount}ème** dresseur à nous rejoindre.\n\nPour pouvoir écrire des messages, pense bien à valider l'adresse mail de ton compte Discord !\nPrend le temps de consulter les règles du chat ainsi que le fonctionnement de Discord dans le chat ${channelTwo} !\n__Les administrateurs vont te contacter par message privé afin de te donner les accès au chat de ton équipe.__\n\n**N'oublis pas qu'ici le respect entre joueurs est primordial** :wink: \n\nExplore les différents chat sur ta gauche, il y a tout pour les dresseurs de Sherbrooke !\nSi tu as des questions ou des soucis, contacte un des __administrateurs__ (leur pseudo est de couleur mauve) ou un des __modérateurs__ (pseudo de couleur verte claire).\n\nHave Fun !\n-----------------------------------------------------`).catch(console.error);
-	member.send(`-----------------------------------------------------\n**Bienvenue ${member} sur la plateforme ${server} !!!** Je suis le Professeur Oak !\nTu es le **${serverCount}ème** dresseur à nous rejoindre.\n\nPour pouvoir écrire des messages, pense bien à valider l'adresse mail de ton compte Discord !\nPrend le temps de consulter les règles du chat ainsi que le fonctionnement de Discord dans le chat ${channelTwo} !\n__Les administrateurs vont te contacter par message privé afin de te donner les accès au chat de ton équipe.__\n\n**N'oublis pas qu'ici le respect entre joueurs est primordial** :wink: \n\nExplore les différents channels, il y a tout pour les dresseurs de Sherbrooke !\nSi tu as des questions ou des soucis, contacte un des __administrateurs__ (leur pseudo est de couleur mauve) ou un des __modérateurs__ (pseudo de couleur verte claire).\n\nHave Fun !\n-----------------------------------------------------`).catch(console.error);
+	channel.send(`${member} est arrivé ! Bienvenue au **${serverCount}ème** dresseur à nous rejoindre ! :tada:`).catch(console.error);
+	member.send(`-----------------------------------------------------\n**Bienvenue ${member} sur la plateforme ${server} !!!** Je suis le Professeur Oak !\nTu es le **${serverCount}ème** dresseur à nous rejoindre.\n\nPour pouvoir écrire des messages, pense bien à valider l'adresse mail de ton compte Discord !\nPrend le temps de consulter les règles du chat ainsi que le fonctionnement de Discord dans les salons adéquats !\n__Les administrateurs vont te contacter par message privé afin de te donner les accès au chat de ton équipe.__\n\n**N'oublis pas qu'ici le respect entre joueurs est primordial** :wink: \n\nExplore les différents channels, il y a tout pour les dresseurs de Sherbrooke !\nSi tu as des questions ou des soucis, contacte un des __administrateurs__ (leur pseudo est de couleur mauve) ou un des __modérateurs__ (pseudo de couleur verte claire).\n\nHave Fun !\n-----------------------------------------------------`).catch(console.error);
 	// Giving default role
 	let roleDef = member.guild.roles.find("name", "@NoTeam");
 	member.addRole(roleDef).catch(console.error);
@@ -702,9 +702,9 @@ bot.on('message', message => {
 					var minutes = parseInt(remainingTimeSplit[0]);
 					var seconds = parseInt(remainingTimeSplit[1]);
 					if (seconds < 10) {
-						remainingTime = minutes+":0"+seconds;
+						remainingTime = minutes+"m 0"+seconds+"s";
 					} else {
-						remainingTime = minutes+":"+seconds;
+						remainingTime = minutes+"m "+seconds+"s";
 					}
 					
 					// Find the pokemon of the alert
