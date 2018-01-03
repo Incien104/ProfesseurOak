@@ -663,8 +663,7 @@ bot.on('message', message => {
 				for (i in messageWords) {
 					wordToTest = messageWords[i].toLowerCase();
 					if (bannedWords.list.indexOf(wordToTest) !== -1) {
-							incorrectLanguage = true;
-						}
+						incorrectLanguage = true;
 					}
 				}
 			
@@ -769,8 +768,7 @@ bot.on('message', message => {
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
 								memberToAlert.send({embed}).catch(console.error);
-							}
-							else {
+							} else {
 								botPostLog(contributorID+" est introuvable");
 							}
 						}
