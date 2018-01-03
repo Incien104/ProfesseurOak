@@ -1,0 +1,13 @@
+{
+	"guildName": "PoGo Raids Sherbrooke"
+	"chanBotLog": "bot-logs",
+	"chanBotConfig": "bot-config",
+	"chanAdmins": "admins",
+	"chanGeneral": "general",
+	"chanFreeFromBannedWords": ["bot-logs","admins","breakfast_club","underground","scan-pokemons","scan-raids"],
+	"chanScanPokemon": "scan-pokemons",
+	"chanScanRaid": "scan-raids",
+	"chanPokedex": "pokedex",
+	"chanNests": "nests",
+	"chanTuto": "tutoriel-et-assistance"
+}

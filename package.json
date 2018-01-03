@@ -1,6 +1,6 @@
 {
   "name": "Professeur Oak",
-  "version": "1.16.2",
+  "version": "2.3.0",
   "description": "Powerful Pokemon Go Discord Bot",
   "main": "bot.js",
   "scripts": {

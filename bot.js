@@ -1,15 +1,15 @@
 // ** Description **
-// ModeratorBot, v2.2.0, developed by Incien104
+// ModeratorBot, v2.3.0, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v2.2.0";
-const botVersionDate = "01/01/2018";
+const botVersion = "v2.3.0";
+const botVersionDate = "02/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
-var db = require('./db.json'); // Not used for now
+var chansLists = require('./chansLists.json');
 var bannedWords = require('./bannedWords.json');
 var scanFilter = require('./scanFilter.json');
 var pokedex_fr = require('./pokedex_fr.json');
@@ -58,15 +58,14 @@ bot.on('ready', () => {
 // Create an event listener for new guild members
 bot.on('guildMemberAdd', member => {
   // Send the message to a designated channel on a server:
-  const channel = member.guild.channels.find('name', 'general');
-  const channelTwo = member.guild.channels.find('name', 'tutoriel-et-assistance');
-  const channelAdmins = member.guild.channels.find('name', 'admins');
+  const channel = member.guild.channels.find('name', chansLists.chanGeneral);
+  const channelAdmins = member.guild.channels.find('name', chansLists.chanAdmins);
   const server = member.guild.name;
   const serverCount = member.guild.memberCount;
   // Do nothing if the channel wasn't found on this server
   if (!channel) return;
   // Send the message, mentioning the member
-  if (member.guild.name === 'PoGo Raids Sherbrooke') {
+  if (member.guild.name === chansLists.guildName) {
 	channel.send(`${member} est arrivé ! Bienvenue au **${serverCount}ème** dresseur à nous rejoindre ! :tada:`).catch(console.error);
 	member.send(`-----------------------------------------------------\n**Bienvenue ${member} sur la plateforme ${server} !!!** Je suis le Professeur Oak !\nTu es le **${serverCount}ème** dresseur à nous rejoindre.\n\nPour pouvoir écrire des messages, pense bien à valider l'adresse mail de ton compte Discord !\nPrend le temps de consulter les règles du chat ainsi que le fonctionnement de Discord dans les salons adéquats !\n__Les administrateurs vont te contacter par message privé afin de te donner les accès au chat de ton équipe.__\n\n**N'oublis pas qu'ici le respect entre joueurs est primordial** :wink: \n\nExplore les différents channels, il y a tout pour les dresseurs de Sherbrooke !\nSi tu as des questions ou des soucis, contacte un des __administrateurs__ (leur pseudo est de couleur mauve) ou un des __modérateurs__ (pseudo de couleur verte claire).\n\nHave Fun !\n-----------------------------------------------------`).catch(console.error);
 	// Giving default role
@@ -81,12 +80,11 @@ bot.on('guildMemberAdd', member => {
 // Create an event listener for leaving/kicked out guild members
 bot.on('guildMemberRemove', member => {
   // Send the message to a designated channel on a server:
-  const channel = member.guild.channels.find('name', 'general');
-  const server = member.guild.name;
+  const channel = member.guild.channels.find('name', chansLists.chanGeneral);
   // Do nothing if the channel wasn't found on this server
   if (!channel) return;
   // Send the message, mentioning the member
-  if (member.guild.name === 'PoGo Raids Sherbrooke') {
+  if (member.guild.name === chansLists.guildName) {
 	channel.send(member.displayName+" *vient de partir. Bye bye...* :vulcan: ").catch(console.error);
 	botPostLog(member.displayName+" a quitté ou a été expulsé/banni !");
   }
@@ -97,7 +95,7 @@ bot.on('guildMemberRemove', member => {
 bot.on('guildMemberUpdate', (oldMember,newMember) => {
   // Send the message, mentioning the member
   var previousNickname = oldMember.nickname;
-  if (newMember.guild.name === 'PoGo Raids Sherbrooke' && previousNickname !== null && oldMember.nickname !== newMember.nickname) {
+  if (newMember.guild.name === chansLists.guildName && previousNickname !== null && oldMember.nickname !== newMember.nickname) {
 	botPostLog('__'+previousNickname+`__ a changé son pseudo pour ${newMember} !`);
   }
 });
@@ -110,7 +108,7 @@ bot.on('message', message => {
 		var userRoles = user.roles; // roles as a Role Collection
 		
 		// Commands to the bot : starting with !
-		if (message.content.substring(0, 1) === '!' && message.guild.name === 'PoGo Raids Sherbrooke') {
+		if (message.content.substring(0, 1) === '!' && message.guild.name === chansLists.guildName) {
 			var args = message.content.substring(1).split(' ');
 			var cmd = args[0];
 	
@@ -130,9 +128,8 @@ bot.on('message', message => {
 				
 				// Help function
 				case 'oakhelp':
-					const channelHelp = user.guild.channels.find('name', 'bot-config');
-					if (userRoles.find("name","@Admins") && message.channel.id === channelHelp.id) {						
-						channelHelp.send("Fonctions :\n\
+					if (userRoles.find("name","@Admins") && message.channel.name === chansLists.chanBotConfig) {						
+						message.channel.send("Fonctions :\n\
 						- !oakhelp : revoie les fonctions disponibles (*admins seulement*)\n\
 						- !oakping : vérifie si le bot fonctionne et retourne le numéro de version (*admins seulement*)\n\
 						- !oaktest : permet de tester la dernière fonction en développement (actuellement **Clear**) (*admins seulement*)\n\
@@ -150,6 +147,15 @@ bot.on('message', message => {
 						- !oakshiny #/nom pokémon : permet de voir la forme shiny (*salon pokedex seulement*)\n\
 						- !oakmega : donne la liste des méga-évolutions et primo-résurgeances (*salon pokedex seulement*)\n\
 						- !oakmega #/nom pokémon : permet de voir la forme méga ou antique (*salon pokedex seulement*)\n\
+						- !oakunown ou !oakzarbi : affiche la liste des formes de Unown/Zarbi (*salon pokedex seulement*)\n\
+						");
+					} else if (message.channel.name === chansLists.chanPokedex) {						
+						message.channel.send("Fonctions :\n\
+						- !oaktrad #/nom pokémon : permet d'avoir le nom en français et en anglais (*salon pokedex seulement*)\n\
+						- !oakshiny #/nom pokémon : permet de voir la forme shiny (*salon pokedex seulement*)\n\
+						- !oakmega : donne la liste des méga-évolutions et primo-résurgeances (*salon pokedex seulement*)\n\
+						- !oakmega #/nom pokémon : permet de voir la forme méga ou antique (*salon pokedex seulement*)\n\
+						- !oakunown ou !oakzarbi : affiche la liste des formes de Unown/Zarbi (*salon pokedex seulement*)\n\
 						");
 					}
 				break;
@@ -167,11 +173,11 @@ bot.on('message', message => {
 				case 'annonce':
 					if (userRoles.find("name","@Admins")) {
 						var announce = args[1];
-						var botGuild = bot.guilds.find('name', 'PoGo Raids Sherbrooke');
+						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						
 						switch(announce) {
 							case 'noteam':
-								var channelAnnouncements = botGuild.channels.find('name', 'general');
+								var channelAnnouncements = botGuild.channels.find('name', chansLists.chanGeneral);
 	
 								if (!channelAnnouncements) return;
 								// Send the message, mentioning the members
@@ -179,7 +185,7 @@ bot.on('message', message => {
 								botPostLog('Annonce aux NoTeam effectuée');
 							break;
 							case 'nests':
-								var channelAnnouncements = botGuild.channels.find('name', 'nests');
+								var channelAnnouncements = botGuild.channels.find('name', chansLists.chanNests);
 	
 								if (!channelAnnouncements) return;
 								// Send the message, mentioning the members
@@ -403,8 +409,8 @@ bot.on('message', message => {
 				// Commands to start Huntr Bot
 				case 'starthuntr':
 					if (userRoles.find("name","@Admins")) {
-						var botGuild = bot.guilds.find('name', 'PoGo Raids Sherbrooke');
-						var channelHuntr = botGuild.channels.find('name', 'scan-pokemons');
+						var botGuild = bot.guilds.find('name', chansLists.guildName);
+						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanPokemon);
 						
 						channelHuntr.send("!setup 45.39652136952787,-71.88354492187501");
 						channelHuntr.send("!radius 10");
@@ -417,8 +423,8 @@ bot.on('message', message => {
 				// Commands to start GymHuntr Bot
 				case 'startgymhuntr':
 					if (userRoles.find("name","@Admins")) {
-						var botGuild = bot.guilds.find('name', 'PoGo Raids Sherbrooke');
-						var channelHuntr = botGuild.channels.find('name', 'scan-raids');
+						var botGuild = bot.guilds.find('name', chansLists.guildName);
+						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanRaid);
 						
 						channelHuntr.send("!setup 45.39652136952787,-71.88354492187501");
 						channelHuntr.send("!radius 10");
@@ -429,7 +435,7 @@ bot.on('message', message => {
 				
 				// Pokedex translation function
 				case 'oaktrad':
-					if (message.channel.name === "pokedex") {
+					if (message.channel.name === chansLists.chanPokedex) {
 						var parameter = args[1];
 						if (isInt(parameter) && parameter >= 1 && parameter <= 806) {
 							var pokemonNumber = parameter;
@@ -475,7 +481,7 @@ bot.on('message', message => {
 				
 				// Pokedex shiny function
 				case 'oakshiny':
-					if (message.channel.name === "pokedex") {
+					if (message.channel.name === chansLists.chanPokedex) {
 						var parameter = args[1];
 						if (isInt(parameter) && parameter >= 1 && parameter <= 806) {
 							var pokemonNumber = parameter;
@@ -539,7 +545,7 @@ bot.on('message', message => {
 				
 				// Pokedex Unown Alphabet function
 				case 'oakunown':
-					if (message.channel.name === "pokedex") {
+					if (message.channel.name === chansLists.chanPokedex) {
 						// Create Rich Embed
 						var colorForEmbed = "#43B581";
 						var embed = new Discord.RichEmbed()
@@ -550,7 +556,7 @@ bot.on('message', message => {
 					}
 				break;
 				case 'oakzarbi':
-					if (message.channel.name === "pokedex") {
+					if (message.channel.name === chansLists.chanPokedex) {
 						// Create Rich Embed
 						var colorForEmbed = "#43B581";
 						var embed = new Discord.RichEmbed()
@@ -563,7 +569,7 @@ bot.on('message', message => {
 				
 				// Pokedex mega function
 				case 'oakmega':
-					if (message.channel.name === "pokedex") {
+					if (message.channel.name === chansLists.chanPokedex) {
 						var parameter = args[1];
 						var listMega = null;
 						if (parameter === null || parameter === undefined) {
@@ -647,7 +653,7 @@ bot.on('message', message => {
 			}
 		} else {
 			// Banned Words : check entire message
-			if (message.guild.name === 'PoGo Raids Sherbrooke' && message.channel.name !== "bot-logs" && message.channel.name !== "bot-config" && message.channel.name !== "admins" && message.channel.name !== "breakfast_club" && message.channel.name !== "underground" && message.channel.name !== "scan-pokemons" && message.channel.name !== "scan-raids" && !user.roles.find("name","@Bots")) {
+			if (message.guild.name === chansLists.guildName && chansLists.chanFreeFromBannedWords.indexOf(message.channel.name) === -1 && !user.roles.find("name","@Bots")) {
 				var messageWords = message.content.split(' ');
 				var wordToTest = "";
 				var incorrectLanguage = false;
@@ -656,8 +662,7 @@ bot.on('message', message => {
 			
 				for (i in messageWords) {
 					wordToTest = messageWords[i].toLowerCase();
-					for (j in bannedWords.list) {
-						if (wordToTest === bannedWords.list[j]) {
+					if (bannedWords.list.indexOf(wordToTest) !== -1) {
 							incorrectLanguage = true;
 						}
 					}
@@ -677,7 +682,7 @@ bot.on('message', message => {
 						})
 						.catch(console.error);
 				}				
-			} else if (message.channel.name === "scan-pokemons") {
+			} else if (message.channel.name === chansLists.chanScanPokemon) {
 			// ------------------------------------------------------------------------------------------------
 			// Scanned Pokemon Personal Alert : check HuntrBot messages to alert people with private messages
 			// ------------------------------------------------------------------------------------------------
@@ -802,8 +807,8 @@ function botPostLog(messageToPost) {
 	var dateQuebec = new Date(d);
 	dateQuebec = dateQuebec.toString();
 	dateQuebec = dateQuebec.substring(0,dateQuebec.length-15);
-	const botGuild = bot.guilds.find('name', 'PoGo Raids Sherbrooke');
-	const logsChannel = botGuild.channels.find('name', 'bot-logs');
+	const botGuild = bot.guilds.find('name', chansLists.guildName);
+	const logsChannel = botGuild.channels.find('name', chansLists.chanBotLog);
 	logsChannel.send('*['+dateQuebec+']* : **'+messageToPost+'**');
 	console.log(messageToPost);
 }
