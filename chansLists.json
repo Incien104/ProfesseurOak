@@ -4,7 +4,7 @@
 	"chanBotConfig": "bot-config",
 	"chanAdmins": "admins",
 	"chanGeneral": "general",
-	"chanFreeFromBannedWords": ["bot-logs","admins","breakfast_club","underground","scan-pokemons","scan-raids"],
+	"chanFreeFromBannedWords": ["bot-logs","bot-config","admins","breakfast_club","underground","scan-pokemons","scan-raids"],
 	"chanScanPokemon": "scan-pokemons",
 	"chanScanRaid": "scan-raids",
 	"chanPokedex": "pokedex",
