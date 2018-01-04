@@ -1,11 +1,11 @@
 // ** Description **
-// ModeratorBot, v2.3.0, developed by Incien104
+// ModeratorBot, v2.4.0, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v2.3.0";
-const botVersionDate = "02/01/2018";
+const botVersion = "v2.4.0";
+const botVersionDate = "04/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -163,7 +163,33 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
+						// Create Rich Embed									
+						var embed = new Discord.RichEmbed()
+							.setTitle("Un Incien sauvage apparaît !!!")
+							.setColor(colorForEmbed)
+							.setImage('./img/incien.gif')
+						message.channel.send({embed}).catch(console.error);
+						/*
+						var token = process.env.HEROKU_API_KEY;
+						var appName = 'professeur-oak';
+						var dynoName = 'worker';
 						
+						var request = require('request');
+						
+						request.delete(
+							{
+								url: 'https://api.heroku.com/apps/' + appName + '/dynos/',
+								headers: {
+									'Content-Type': 'application/json',
+									'Accept': 'application/vnd.heroku+json; version=3',
+									'Authorization': 'Bearer ' + token
+								}
+							},
+							function(error, response, body) {
+								console.log(response);
+							}
+						);
+						*/
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -650,6 +676,18 @@ bot.on('message', message => {
 						}
 					}
 				break;
+			}
+		} else if (message.content.substring(0, 1) === '?pokedex' && message.guild.name === chansLists.guildName) {
+			var args = message.content.substring(1).split(' ');
+			var cmd = args[0];
+			
+			if (message.channel.name === chansLists.chanPokedex && (cmd === "Incien" || cmd === "incien")) {
+				// Create Rich Embed									
+				var embed = new Discord.RichEmbed()
+					.setTitle("Un Incien sauvage apparaît !!!")
+					.setColor(colorForEmbed)
+					.setImage('./img/incien.gif')
+				message.channel.send({embed}).catch(console.error);
 			}
 		} else {
 			// Banned Words : check entire message
