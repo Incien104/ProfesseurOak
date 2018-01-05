@@ -163,13 +163,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						var http = require('http');
-						var options = {method: 'HEAD', host: 'huntr.gg', path: '/poke/903846e5aacb31da6f2990a71af8a66ac973379a346be2d3fc82b1428975248cbd838d9550a4c602fc2b39d8fe0082fc'};
-						var req = http.request(options, function(res) {
-							console.log(JSON.stringify(res.headers));
-						}
-						);
-						req.end();
+						
 						/*
 						var token = process.env.HEROKU_API_KEY;
 						var appName = 'professeur-oak';
@@ -733,15 +727,15 @@ bot.on('message', message => {
 				
 				// Read message embeds
 				if (message.embeds[0] !== undefined) {
-					// Get informations from the bot's message
+					// Get informations from the bot's message					
 					var argsTitle = message.embeds[0].title.split('(');
 					argsTitle = argsTitle[1].split(')');
 					var argsPokemonNumber = argsTitle[0];
 					var remainingTimeText = message.embeds[0].description.split(': ');
 					var remainingTime = remainingTimeText[1].substring(0,remainingTimeText[1].length-5);
 					var mapURL = message.embeds[0].url;
-					var textURL = mapURL.split('#');
-					//var coords = textURL[1];
+					var textURL = mapURL.split('/poke/');
+					var number = textURL[1];
 					var remainingTimeSplit = remainingTime.split(' min ');
 					var minutes = parseInt(remainingTimeSplit[0]);
 					var seconds = parseInt(remainingTimeSplit[1]);
@@ -750,71 +744,80 @@ bot.on('message', message => {
 					} else {
 						remainingTime = minutes+"m "+seconds+"s";
 					}
-					
-					// Find the pokemon of the alert
-					pokemonNumber = parseInt(argsPokemonNumber);
-					var t = new Date();	
-					t = t - timeUTCQuebec*60*60*1000 + minutes*60*1000 + seconds*1000;
-					var disappearingTime = new Date(t);
-					disappearingTime = disappearingTime.toString();
-					disappearingTime = disappearingTime.substring(16,disappearingTime.length-18);
-					disappearingTime = disappearingTime.replace(":"," h ");
-					pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
-					pokemonNameEn = pokedex_en.list[pokemonNumber-1];
-					var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
-					// var thumbnail = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/pokemon_thumbnails/"+pokemonNumber+".png";
-					// var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-					
-					// Define the zone
-					var areasNumber = 0;
-					var areasName = "à Sherbrooke";
-					/*var coordsSplited = coords.split(',');
-					var latGPS = coordsSplited[0];
-					var lonGPS = coordsSplited[1];
-					if ((latGPS >= 45.353965 && latGPS < 45.403884) && (lonGPS >= -72.021852 && lonGPS < -71.960569)) {
-						areasNumber = 1;
-						areasName = "à Rock Forest";
-					} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.960569 && lonGPS < -71.907869)) {
-						areasNumber = 2;
-						areasName = "dans le Nord";
-					} else if ((latGPS >= 45.367474 && latGPS < 45.394000) && (lonGPS >= -71.960569 && lonGPS < -71.879201)) {
-						areasNumber = 3;
-						areasName = "à UdeS/Bellevue";
-					} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.907869 && lonGPS < -71.879201)) {
-						areasNumber = 4;
-						areasName = "au Centro/Marais";
-					} else if ((latGPS >= 45.348174 && latGPS < 45.382306) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
-						areasNumber = 5;
-						areasName = "à Lennox";
-					} else if ((latGPS >= 45.382306 && latGPS < 45.429429) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
-						areasNumber = 6;
-						areasName = "à Fleurimont";
-					}
-					*/
-					
-					// Create Rich Embed									
-					var embed = new Discord.RichEmbed()
-						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
-						.setColor(colorForEmbed)
-						.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)")
-						//.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
-						.setThumbnail(thumbnail)
-						.setURL(mapURL);
-						
-					// Send messages to persons seeking for that pokemon
-					var contributorID = "";
-					for (k in contributors.list) {
-						contributorID = contributors.list[k].id;
-						if (contributors.list[k].activated === 1 && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && (contributors.list[k].areas.indexOf(areasNumber) !== -1 || pokemonNumber === 201)) {
-							// Send a private message
-							memberToAlert = message.guild.members.find('id', contributorID);
-							if (memberToAlert !== null) {									
-								memberToAlert.send({embed}).catch(console.error);
-							} else {
-								botPostLog(contributorID+" est introuvable");
+					// Get coords from URL then prepare and send message
+					getGPSCoords(number)
+						.then(response => {
+							var coordsText = response;
+							var coords = coordsText.split('#');
+							coords = coords[1];
+							// Find the pokemon of the alert
+							pokemonNumber = parseInt(argsPokemonNumber);
+							var t = new Date();	
+							t = t - timeUTCQuebec*60*60*1000 + minutes*60*1000 + seconds*1000;
+							var disappearingTime = new Date(t);
+							disappearingTime = disappearingTime.toString();
+							disappearingTime = disappearingTime.substring(16,disappearingTime.length-18);
+							disappearingTime = disappearingTime.replace(":"," h ");
+							pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
+							pokemonNameEn = pokedex_en.list[pokemonNumber-1];
+							var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
+							// var thumbnail = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/pokemon_thumbnails/"+pokemonNumber+".png";
+							// var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+							
+							// Define the zone
+							var areasNumber = 0;
+							var areasName = "à Sherbrooke";
+							var coordsSplited = coords.split(',');
+							var latGPS = coordsSplited[0];
+							var lonGPS = coordsSplited[1];
+							if ((latGPS >= 45.353965 && latGPS < 45.403884) && (lonGPS >= -72.021852 && lonGPS < -71.960569)) {
+								areasNumber = 1;
+								areasName = "à Rock Forest";
+							} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.960569 && lonGPS < -71.907869)) {
+								areasNumber = 2;
+								areasName = "dans le Nord";
+							} else if ((latGPS >= 45.367474 && latGPS < 45.394000) && (lonGPS >= -71.960569 && lonGPS < -71.879201)) {
+								areasNumber = 3;
+								areasName = "à UdeS/Bellevue";
+							} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.907869 && lonGPS < -71.879201)) {
+								areasNumber = 4;
+								areasName = "au Centro/Marais";
+							} else if ((latGPS >= 45.348174 && latGPS < 45.382306) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
+								areasNumber = 5;
+								areasName = "à Lennox";
+							} else if ((latGPS >= 45.382306 && latGPS < 45.429429) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
+								areasNumber = 6;
+								areasName = "à Fleurimont";
 							}
-						}
-					}
+							
+							// Create Rich Embed									
+							var embed = new Discord.RichEmbed()
+								.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
+								.setColor(colorForEmbed)
+								.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)")
+								//.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
+								.setThumbnail(thumbnail)
+								.setURL(mapURL);
+								
+							// Send messages to persons seeking for that pokemon
+							var contributorID = "";
+							for (k in contributors.list) {
+								contributorID = contributors.list[k].id;
+								if (contributors.list[k].activated === 1 && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && (contributors.list[k].areas.indexOf(areasNumber) !== -1 || pokemonNumber === 201)) {
+									// Send a private message
+									memberToAlert = message.guild.members.find('id', contributorID);
+									if (memberToAlert !== null) {									
+										memberToAlert.send({embed}).catch(console.error);
+									} else {
+										botPostLog(contributorID+" est introuvable");
+									}
+								}
+							}
+
+						})
+						.catch(error => {
+							botPostLog("Erreur à l'envoi des notifications.");
+						});
 				}
 			}
 		}
@@ -904,5 +907,27 @@ function getContributorsFile() {
 		});
 	})
 }
-	
+}
+
+// -------------------------------------------------
+// Get GPS coords !
+function getGPSCoords(number) {
+	var http = require('http');
+	var pathNumber = "/poke/"+number;
+	var options = {method: 'HEAD', host: 'huntr.gg', path: pathNumber};
+	return new Promise((resolve,reject)=>{
+		http.request(options, (res) => {
+			try {
+				var parsedHeaders = JSON.parse(res.headers);
+				var urlWithCoords = parsedHeaders.location;
+				resolve(urlWithCoords);					
+			} catch (e) {
+				reject(e.message);
+			}
+		}
+		);
+		req.end();
+	)}
+}
+
 // =================================================
