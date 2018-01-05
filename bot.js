@@ -914,15 +914,11 @@ function getGPSCoords(number) {
 	var http = require('http');
 	var pathNumber = "/poke/"+number;
 	var options = {method: 'HEAD', host: 'huntr.gg', path: pathNumber};
-	return new Promise((resolve,reject)=>{
+	return new Promise((resolve)=>{
 		http.request(options, function(res) {
-			try {
-				var parsedHeaders = JSON.parse(res.headers);
-				var urlWithCoords = parsedHeaders.location;
-				resolve(urlWithCoords);					
-			} catch (e) {
-				reject(e.message);
-			}
+			var parsedHeaders = JSON.parse(res.headers);
+			var urlWithCoords = parsedHeaders.location;
+			resolve(urlWithCoords);
 		}
 		);
 		req.end();
