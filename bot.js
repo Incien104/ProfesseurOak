@@ -907,7 +907,6 @@ function getContributorsFile() {
 		});
 	})
 }
-}
 
 // -------------------------------------------------
 // Get GPS coords !
