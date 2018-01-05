@@ -745,8 +745,8 @@ bot.on('message', message => {
 						remainingTime = minutes+"m "+seconds+"s";
 					}
 					// Get coords from URL then prepare and send message
-					getGPSCoords(number)
-						.then(response => {
+					getGPSCoords(number);
+						/*.then(response => {
 							var coordsText = response;
 							var coords = coordsText.split('#');
 							coords = coords[1];
@@ -818,6 +818,7 @@ bot.on('message', message => {
 						.catch(error => {
 							botPostLog("Erreur à l'envoi des notifications.");
 						});
+						*/
 				}
 			}
 		}
