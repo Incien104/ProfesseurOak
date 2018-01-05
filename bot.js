@@ -765,10 +765,10 @@ bot.on('message', message => {
 					// var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
 					
 					// Define the zone
-					//var coordsSplited = coords.split(',');
-					//var latGPS = coordsSplited[0];
-					//var lonGPS = coordsSplited[1];
 					var areasNumber = 0;
+					/*var coordsSplited = coords.split(',');
+					var latGPS = coordsSplited[0];
+					var lonGPS = coordsSplited[1];
 					if ((latGPS >= 45.353965 && latGPS < 45.403884) && (lonGPS >= -72.021852 && lonGPS < -71.960569)) {
 						areasNumber = 1;
 						areasName = "à Rock Forest";
@@ -788,6 +788,7 @@ bot.on('message', message => {
 						areasNumber = 6;
 						areasName = "à Fleurimont";
 					}
+					*/
 					
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
