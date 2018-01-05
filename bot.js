@@ -166,7 +166,7 @@ bot.on('message', message => {
 						// Create Rich Embed									
 						var embed = new Discord.RichEmbed()
 							.setTitle("Un Incien sauvage apparaît !!!")
-							.setColor(colorForEmbed)
+							.setColor("#43B581")
 							.setImage('./img/incien.gif')
 						message.channel.send({embed}).catch(console.error);
 						/*
@@ -686,7 +686,7 @@ bot.on('message', message => {
 				// Create Rich Embed									
 				var embed = new Discord.RichEmbed()
 					.setTitle("Un Incien sauvage apparaît !!!")
-					.setColor(colorForEmbed)
+					.setColor("#43B581")
 					.setImage('./img/incien.gif')
 				message.channel.send({embed}).catch(console.error);
 			}
