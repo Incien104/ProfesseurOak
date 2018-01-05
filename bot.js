@@ -163,12 +163,13 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						// Create Rich Embed									
-						var embed = new Discord.RichEmbed()
-							.setTitle("Un Incien sauvage apparaît !!!")
-							.setColor("#43B581")
-							.setImage('https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/incien.gif')
-						message.channel.send({embed}).catch(console.error);
+						var http = require('http');
+						var options = {method: 'HEAD', host: 'http://huntr.gg/', port: 80, path: '/poke/903846e5aacb31da6f2990a71af8a66ac973379a346be2d3fc82b1428975248cbd838d9550a4c602fc2b39d8fe0082fc'};
+						var req = http.request(options, function(res) {
+							console.log(JSON.stringify(res.headers));
+						}
+						);
+						req.end();
 						/*
 						var token = process.env.HEROKU_API_KEY;
 						var appName = 'professeur-oak';
