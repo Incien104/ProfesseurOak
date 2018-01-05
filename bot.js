@@ -164,7 +164,7 @@ bot.on('message', message => {
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
 						var http = require('http');
-						var options = {method: 'HEAD', host: 'http://huntr.gg/', port: 80, path: '/poke/903846e5aacb31da6f2990a71af8a66ac973379a346be2d3fc82b1428975248cbd838d9550a4c602fc2b39d8fe0082fc'};
+						var options = {method: 'HEAD', host: 'huntr.gg', path: '/poke/903846e5aacb31da6f2990a71af8a66ac973379a346be2d3fc82b1428975248cbd838d9550a4c602fc2b39d8fe0082fc'};
 						var req = http.request(options, function(res) {
 							console.log(JSON.stringify(res.headers));
 						}
