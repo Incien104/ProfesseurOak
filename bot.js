@@ -919,6 +919,7 @@ function getGPSCoords(number) {
 			try {
 				var parsedHeaders = JSON.parse(res.headers);
 				var urlWithCoords = parsedHeaders.location;
+				console.log(urlWithCoords);
 				resolve(urlWithCoords);
 			} catch (e) {
 				reject(e.message);
