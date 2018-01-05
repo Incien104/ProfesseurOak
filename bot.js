@@ -677,11 +677,12 @@ bot.on('message', message => {
 					}
 				break;
 			}
-		} else if (message.content.substring(0, 1) === '?pokedex' && message.guild.name === chansLists.guildName) {
+		} else if (message.content.substring(0, 1) === '?' && message.guild.name === chansLists.guildName) {
 			var args = message.content.substring(1).split(' ');
 			var cmd = args[0];
+			var cmd2 = args[1];
 			
-			if (message.channel.name === chansLists.chanPokedex && (cmd === "Incien" || cmd === "incien")) {
+			if (message.channel.name === chansLists.chanPokedex && cmd === "pokedex" && (cmd2 === "Incien" || cmd2 === "incien")) {
 				// Create Rich Embed									
 				var embed = new Discord.RichEmbed()
 					.setTitle("Un Incien sauvage apparaît !!!")
