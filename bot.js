@@ -915,7 +915,7 @@ function getGPSCoords(number) {
 	var pathNumber = "/poke/"+number;
 	var options = {method: 'HEAD', host: 'huntr.gg', path: pathNumber};
 	return new Promise((resolve,reject)=>{
-	http.request(options, function(res) {
+	http.request(options, (res) => {
 		try {
 			var parsedHeaders = JSON.parse(res.headers);
 			var urlWithCoords = parsedHeaders.location;
@@ -924,7 +924,6 @@ function getGPSCoords(number) {
 			reject(e.message);
 		}
 	});
-	)};
 }
 
 // =================================================
