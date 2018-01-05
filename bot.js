@@ -677,7 +677,7 @@ bot.on('message', message => {
 					}
 				break;
 			}
-		} else if (message.content.substring(0, 1) === '?' && message.guild.name === chansLists.guildName) {
+		/*} else if (message.content.substring(0, 1) === '?' && message.guild.name === chansLists.guildName) {
 			var args = message.content.substring(1).split(' ');
 			var cmd = args[0];
 			var cmd2 = args[1];
@@ -690,6 +690,7 @@ bot.on('message', message => {
 					.setImage('./img/incien.gif')
 				message.channel.send({embed}).catch(console.error);
 			}
+		*/
 		} else {
 			// Banned Words : check entire message
 			if (message.guild.name === chansLists.guildName && chansLists.chanFreeFromBannedWords.indexOf(message.channel.name) === -1 && !user.roles.find("name","@Bots")) {
