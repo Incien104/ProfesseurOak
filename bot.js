@@ -740,7 +740,7 @@ bot.on('message', message => {
 					var remainingTime = remainingTimeText[1].substring(0,remainingTimeText[1].length-5);
 					var mapURL = message.embeds[0].url;
 					var textURL = mapURL.split('#');
-					var coords = textURL[1];
+					//var coords = textURL[1];
 					var remainingTimeSplit = remainingTime.split(' min ');
 					var minutes = parseInt(remainingTimeSplit[0]);
 					var seconds = parseInt(remainingTimeSplit[1]);
@@ -765,9 +765,9 @@ bot.on('message', message => {
 					// var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
 					
 					// Define the zone
-					var coordsSplited = coords.split(',');
-					var latGPS = coordsSplited[0];
-					var lonGPS = coordsSplited[1];
+					//var coordsSplited = coords.split(',');
+					//var latGPS = coordsSplited[0];
+					//var lonGPS = coordsSplited[1];
 					var areasNumber = 0;
 					if ((latGPS >= 45.353965 && latGPS < 45.403884) && (lonGPS >= -72.021852 && lonGPS < -71.960569)) {
 						areasNumber = 1;
@@ -794,7 +794,7 @@ bot.on('message', message => {
 						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
 						.setColor(colorForEmbed)
 						.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)")
-						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
+						//.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
 						.setThumbnail(thumbnail)
 						.setURL(mapURL);
 						
