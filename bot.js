@@ -910,7 +910,7 @@ function getContributorsFile() {
 
 // -------------------------------------------------
 // Get GPS coords !
-function getGPSCoords(number) {
+/*function getGPSCoords(number) {
 	var http = require('http');
 	var pathNumber = "/poke/"+number;
 	var options = {method: 'HEAD', host: 'huntr.gg', path: pathNumber};
@@ -926,6 +926,18 @@ function getGPSCoords(number) {
 			}
 		});
 	})
+}
+*/
+function getGPSCoords(number) {
+	var http = require('http');
+	var pathNumber = "/poke/"+number;
+	var options = {method: 'HEAD', host: 'huntr.gg', path: pathNumber};
+	http.request(options, (res) => {
+		console.log(res.headers);
+		var parsedHeaders = JSON.parse(res.headers);
+		var urlWithCoords = parsedHeaders.location;
+		console.log(urlWithCoords);
+	});
 }
 
 // =================================================
