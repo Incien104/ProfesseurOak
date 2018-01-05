@@ -766,6 +766,7 @@ bot.on('message', message => {
 					
 					// Define the zone
 					var areasNumber = 0;
+					var areasName = "à Sherbrooke";
 					/*var coordsSplited = coords.split(',');
 					var latGPS = coordsSplited[0];
 					var lonGPS = coordsSplited[1];
