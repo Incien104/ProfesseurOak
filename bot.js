@@ -163,8 +163,6 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						
-						/*
 						var token = process.env.HEROKU_API_KEY;
 						var appName = 'professeur-oak';
 						var dynoName = 'worker';
@@ -184,7 +182,6 @@ bot.on('message', message => {
 								console.log(response);
 							}
 						);
-						*/
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
