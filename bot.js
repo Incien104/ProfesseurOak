@@ -750,8 +750,9 @@ bot.on('message', message => {
 					var options = {method: 'HEAD', host: 'huntr.gg', path: pathURL};
 					var req = http.request(options, function(res) {
 						console.log(res.headers);
-						var parsedHeaders = JSON.parse(res.headers);
-						var urlWithCoords = parsedHeaders.location;
+						var parsedHeaders = JSON.stringify(res.headers);
+						var urlWithCoords = parsedHeaders.split('https://pokefetch.com/#');
+						urlWithCoords = urlWithCoords[1];
 						console.log(urlWithCoords);
 					});
 					req.end();
