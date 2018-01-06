@@ -793,6 +793,10 @@ bot.on('message', message => {
 								areasNumber = 6;
 								areasName = "à Fleurimont";
 							}
+							if (areasNumber === 0) {
+								console.log(Erreur de coordonnées :);
+								console.log(coords);
+							}
 							
 							// Create Rich Embed									
 							var embed = new Discord.RichEmbed()
