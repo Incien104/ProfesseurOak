@@ -753,6 +753,8 @@ bot.on('message', message => {
 						var parsedHeaders = JSON.stringify(res.headers);
 						var urlWithCoords = parsedHeaders.split('https://pokefetch.com/#');
 						urlWithCoords = urlWithCoords[1];
+						urlWithCoords = urlWithCoords.split('","');
+						urlWithCoords = urlWithCoords[0];
 						console.log(urlWithCoords);
 					});
 					req.end();
