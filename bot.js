@@ -794,7 +794,7 @@ bot.on('message', message => {
 								areasName = "à Fleurimont";
 							}
 							if (areasNumber === 0) {
-								console.log(Erreur de coordonnées :);
+								console.log("Erreur de coordonnées :");
 								console.log(coords);
 							}
 							
