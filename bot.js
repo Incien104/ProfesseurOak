@@ -57,7 +57,7 @@ bot.on('ready', () => {
 				}
 			},
 			function(error, response, body) {
-				console.log("<=== 12h restart requested ! ===>");
+				botPostLog("Commande de redémarrage aux 12h effectuée !");
 			}
 		);
     }
