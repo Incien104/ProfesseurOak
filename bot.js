@@ -798,7 +798,7 @@ bot.on('message', message => {
 							.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
 							.setColor(colorForEmbed)
 							.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)")
-							//.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
+							.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
 							.setThumbnail(thumbnail)
 							.setURL(mapURL);
 							
