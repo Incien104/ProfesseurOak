@@ -205,7 +205,7 @@ bot.on('message', message => {
 	
 								if (!channelAnnouncements) return;
 								// Send the message, mentioning the members
-								channelAnnouncements.send(`<@&371096330614996993> Pour ceux qui ne sont pas intégrés leur équipe, veuillez contacter un administrateur pour qu'il puisse vous donner les accès au salon de votre équipe.`).catch(console.error);
+								channelAnnouncements.send(`<@&371096330614996993> Pour ceux qui ne sont pas encore intégrés à leur équipe, veuillez envoyer par message privé un screenshot de votre écran de joueur (où l'on voit pseudo, niveau et équipe) à un administrateur, pour qu'il puisse vous donner les accès au salon privilégié de votre couleur ! :wink:`).catch(console.error);
 								botPostLog('Annonce aux NoTeam effectuée');
 							break;
 							case 'nests':
