@@ -1,10 +1,10 @@
 // ** Description **
-// ModeratorBot, v2.5.0, developed by Incien104
+// ModeratorBot, v2.5.1, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v2.5.0";
+const botVersion = "v2.5.1";
 const botVersionDate = "05/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
@@ -747,75 +747,80 @@ bot.on('message', message => {
 					// Get coords from URL then prepare and send message
 					var http = require('http');
 					var options = {method: 'HEAD', host: 'huntr.gg', path: pathURL};
-					var req = http.request(options, function(res) {
-						var parsedHeaders = JSON.stringify(res.headers);
-						var urlWithCoords = parsedHeaders.split('https://pokefetch.com/#');
-						urlWithCoords = urlWithCoords[1];
-						urlWithCoords = urlWithCoords.split('","');
-						coords = urlWithCoords[0];
-						// Find the pokemon of the alert
-						pokemonNumber = parseInt(argsPokemonNumber);
-						var t = new Date();	
-						t = t - timeUTCQuebec*60*60*1000 + minutes*60*1000 + seconds*1000;
-						var disappearingTime = new Date(t);
-						disappearingTime = disappearingTime.toString();
-						disappearingTime = disappearingTime.substring(16,disappearingTime.length-18);
-						disappearingTime = disappearingTime.replace(":"," h ");
-						pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
-						pokemonNameEn = pokedex_en.list[pokemonNumber-1];
-						var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
-						// var thumbnail = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/pokemon_thumbnails/"+pokemonNumber+".png";
-						// var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-						
-						// Define the zone
-						var areasNumber = 0;
-						var areasName = "à Sherbrooke";
-						var coordsSplited = coords.split(',');
-						var latGPS = coordsSplited[0];
-						var lonGPS = coordsSplited[1];
-						if ((latGPS >= 45.353965 && latGPS < 45.403884) && (lonGPS >= -72.021852 && lonGPS < -71.960569)) {
-							areasNumber = 1;
-							areasName = "à Rock Forest";
-						} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.960569 && lonGPS < -71.907869)) {
-							areasNumber = 2;
-							areasName = "dans le Nord";
-						} else if ((latGPS >= 45.367474 && latGPS < 45.394000) && (lonGPS >= -71.960569 && lonGPS < -71.879201)) {
-							areasNumber = 3;
-							areasName = "à UdeS/Bellevue";
-						} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.907869 && lonGPS < -71.879201)) {
-							areasNumber = 4;
-							areasName = "au Centro/Marais";
-						} else if ((latGPS >= 45.348174 && latGPS < 45.382306) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
-							areasNumber = 5;
-							areasName = "à Lennox";
-						} else if ((latGPS >= 45.382306 && latGPS < 45.429429) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
-							areasNumber = 6;
-							areasName = "à Fleurimont";
-						}
-						
-						// Create Rich Embed									
-						var embed = new Discord.RichEmbed()
-							.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
-							.setColor(colorForEmbed)
-							.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)")
-							.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
-							.setThumbnail(thumbnail)
-							.setURL(mapURL);
+					var req = http.request(options, (res) => {
+						if (res.statusCode === 200) {
+							var parsedHeaders = JSON.stringify(res.headers);
+							var urlWithCoords = parsedHeaders.split('https://pokefetch.com/#');
+							urlWithCoords = urlWithCoords[1];
+							urlWithCoords = urlWithCoords.split('","');
+							coords = urlWithCoords[0];
+							// Find the pokemon of the alert
+							pokemonNumber = parseInt(argsPokemonNumber);
+							var t = new Date();	
+							t = t - timeUTCQuebec*60*60*1000 + minutes*60*1000 + seconds*1000;
+							var disappearingTime = new Date(t);
+							disappearingTime = disappearingTime.toString();
+							disappearingTime = disappearingTime.substring(16,disappearingTime.length-18);
+							disappearingTime = disappearingTime.replace(":"," h ");
+							pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
+							pokemonNameEn = pokedex_en.list[pokemonNumber-1];
+							var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
+							// var thumbnail = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/pokemon_thumbnails/"+pokemonNumber+".png";
+							// var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
 							
-						// Send messages to persons seeking for that pokemon
-						var contributorID = "";
-						for (k in contributors.list) {
-							contributorID = contributors.list[k].id;
-							if (contributors.list[k].activated === 1 && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && (contributors.list[k].areas.indexOf(areasNumber) !== -1 || pokemonNumber === 201)) {
-								// Send a private message
-								memberToAlert = message.guild.members.find('id', contributorID);
-								if (memberToAlert !== null) {									
-									memberToAlert.send({embed}).catch(console.error);
-								} else {
-									botPostLog(contributorID+" est introuvable");
+							// Define the zone
+							var areasNumber = 0;
+							var areasName = "à Sherbrooke";
+							var coordsSplited = coords.split(',');
+							var latGPS = coordsSplited[0];
+							var lonGPS = coordsSplited[1];
+							if ((latGPS >= 45.353965 && latGPS < 45.403884) && (lonGPS >= -72.021852 && lonGPS < -71.960569)) {
+								areasNumber = 1;
+								areasName = "à Rock Forest";
+							} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.960569 && lonGPS < -71.907869)) {
+								areasNumber = 2;
+								areasName = "dans le Nord";
+							} else if ((latGPS >= 45.367474 && latGPS < 45.394000) && (lonGPS >= -71.960569 && lonGPS < -71.879201)) {
+								areasNumber = 3;
+								areasName = "à UdeS/Bellevue";
+							} else if ((latGPS >= 45.394000 && latGPS < 45.421478) && (lonGPS >= -71.907869 && lonGPS < -71.879201)) {
+								areasNumber = 4;
+								areasName = "au Centro/Marais";
+							} else if ((latGPS >= 45.348174 && latGPS < 45.382306) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
+								areasNumber = 5;
+								areasName = "à Lennox";
+							} else if ((latGPS >= 45.382306 && latGPS < 45.429429) && (lonGPS >= -71.879201 && lonGPS < -71.817060)) {
+								areasNumber = 6;
+								areasName = "à Fleurimont";
+							}
+							
+							// Create Rich Embed									
+							var embed = new Discord.RichEmbed()
+								.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
+								.setColor(colorForEmbed)
+								.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)")
+								.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
+								.setThumbnail(thumbnail)
+								.setURL(mapURL);
+								
+							// Send messages to persons seeking for that pokemon
+							var contributorID = "";
+							for (k in contributors.list) {
+								contributorID = contributors.list[k].id;
+								if (contributors.list[k].activated === 1 && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && (contributors.list[k].areas.indexOf(areasNumber) !== -1 || pokemonNumber === 201)) {
+									// Send a private message
+									memberToAlert = message.guild.members.find('id', contributorID);
+									if (memberToAlert !== null) {									
+										memberToAlert.send({embed}).catch(console.error);
+									} else {
+										botPostLog(contributorID+" est introuvable");
+									}
 								}
 							}
 						}
+					});
+					req.on('error', (e) => {
+						console.error(`Problem with request: ${e.message}`);
 					});
 					req.end();
 				}
