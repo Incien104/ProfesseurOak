@@ -1,11 +1,11 @@
 // ** Description **
-// ModeratorBot, v2.5.1, developed by Incien104
+// ModeratorBot, v2.5.2, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v2.5.1";
-const botVersionDate = "05/01/2018";
+const botVersion = "v2.5.2";
+const botVersionDate = "06/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -25,7 +25,7 @@ bot.login(process.env.BOT_TOKEN);
 
 // Bot start on Heroku server, including settings for scheduled announcements
 bot.on('ready', () => {
-    // Scheduled Contributors JSON file loading
+    // 15min scheduled contributors JSON file loading
     var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min	
     function loadJSONFile() {        
         getContributorsFile()
@@ -36,6 +36,30 @@ bot.on('ready', () => {
 				contributors = contributors_backup;
 				botPostLog("Erreur au chargement de fichier JSON distant ("+error+"). Backup sur Github chargé.");
 			});
+    }
+	
+	// 12h scheduled app restarting
+    var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h	
+    function appRestart() {        
+        var token = process.env.HEROKU_API_KEY;
+		var appName = 'professeur-oak';
+		var dynoName = 'worker';
+		
+		var request = require('request');
+		
+		request.delete(
+			{
+				url: 'https://api.heroku.com/apps/' + appName + '/dynos/',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/vnd.heroku+json; version=3',
+					'Authorization': 'Bearer ' + token
+				}
+			},
+			function(error, response, body) {
+				console.log("<=== 12h restart requested ! ===>");
+			}
+		);
     }
     
     // Bot ready !
@@ -163,25 +187,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						var token = process.env.HEROKU_API_KEY;
-						var appName = 'professeur-oak';
-						var dynoName = 'worker';
 						
-						var request = require('request');
-						
-						request.delete(
-							{
-								url: 'https://api.heroku.com/apps/' + appName + '/dynos/',
-								headers: {
-									'Content-Type': 'application/json',
-									'Accept': 'application/vnd.heroku+json; version=3',
-									'Authorization': 'Bearer ' + token
-								}
-							},
-							function(error, response, body) {
-								console.log(response);
-							}
-						);
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
