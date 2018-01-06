@@ -734,8 +734,8 @@ bot.on('message', message => {
 					var remainingTimeText = message.embeds[0].description.split(': ');
 					var remainingTime = remainingTimeText[1].substring(0,remainingTimeText[1].length-5);
 					var mapURL = message.embeds[0].url;
-					var textURL = mapURL.split('/poke/');
-					var number = textURL[1];
+					var textURL = mapURL.split('huntr.gg');
+					var pathURL = textURL[1];
 					var remainingTimeSplit = remainingTime.split(' min ');
 					var minutes = parseInt(remainingTimeSplit[0]);
 					var seconds = parseInt(remainingTimeSplit[1]);
@@ -745,7 +745,17 @@ bot.on('message', message => {
 						remainingTime = minutes+"m "+seconds+"s";
 					}
 					// Get coords from URL then prepare and send message
-					getGPSCoords(number);
+					console.log(pathURL);
+					var http = require('http');
+					var options = {method: 'HEAD', host: 'huntr.gg', path: pathURL};
+					var req = http.request(options, function(res) {
+						console.log(res.headers);
+						var parsedHeaders = JSON.parse(res.headers);
+						var urlWithCoords = parsedHeaders.location;
+						console.log(urlWithCoords);
+					});
+					req.end();
+					//getGPSCoords(number);
 						/*.then(response => {
 							var coordsText = response;
 							var coords = coordsText.split('#');
