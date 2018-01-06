@@ -817,6 +817,9 @@ bot.on('message', message => {
 									}
 								}
 							}
+							console.log("Message send !")
+						} else {
+							console.log("Wrong connection !")
 						}
 					});
 					req.on('error', (e) => {
