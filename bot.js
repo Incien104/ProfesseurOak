@@ -808,7 +808,7 @@ bot.on('message', message => {
 							// Send a private message
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
-								memberToAlert.send({embed}).catch(console.log('Un envoi n\'a pas abouti.'));
+								memberToAlert.send({embed}).catch("Envoi non abouti : "+contributorID);
 							} else {
 								botPostLog(contributorID+" est introuvable");
 							}
