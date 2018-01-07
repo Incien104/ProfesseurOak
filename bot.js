@@ -729,7 +729,7 @@ bot.on('message', message => {
 				var colorForEmbed = "#43B581";
 				
 				// Read message embeds
-				if (message.embeds[0] !== undefined) {
+				if (0) { //message.embeds[0] !== undefined
 					// Get informations from the bot's message					
 					var argsTitle = message.embeds[0].title.split('(');
 					argsTitle = argsTitle[1].split(')');
