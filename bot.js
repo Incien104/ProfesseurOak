@@ -1,11 +1,11 @@
 // ** Description **
-// ModeratorBot, v2.5.2, developed by Incien104
+// ModeratorBot, v2.5.3, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v2.5.2";
-const botVersionDate = "06/01/2018";
+const botVersion = "v2.5.3";
+const botVersionDate = "07/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -39,28 +39,7 @@ bot.on('ready', () => {
     }
 	
 	// 12h scheduled app restarting
-    var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h	
-    function appRestart() {        
-        var token = process.env.HEROKU_API_KEY;
-		var appName = 'professeur-oak';
-		var dynoName = 'worker';
-		
-		var request = require('request');
-		
-		request.delete(
-			{
-				url: 'https://api.heroku.com/apps/' + appName + '/dynos/',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/vnd.heroku+json; version=3',
-					'Authorization': 'Bearer ' + token
-				}
-			},
-			function(error, response, body) {
-				botPostLog("Commande de redémarrage aux 12h effectuée !");
-			}
-		);
-    }
+    var intervalAppRestart = setInterval(appRestart("auto"), 43200000); // Every 12h
     
     // Bot ready !
 	botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
@@ -145,6 +124,15 @@ bot.on('message', message => {
 				case 'oakping':
 					if (userRoles.find("name","@Admins")) {
 						botPostLog("Exécute "+botVersion+" !");
+					} else {
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+					}
+				break;	
+				
+				// Restart function
+				case 'oakrestart':
+					if (userRoles.find("name","@Admins")) {
+						appRestart("manual");
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -938,6 +926,34 @@ function getCoords(pathURL) {
 			reject(`Erreur reçue : ${e.message}`);
 		}).end();
 	})
+}
+
+// -------------------------------------------------
+// Restart Oak dyno !
+function appRestart(requested) {        
+    var token = process.env.HEROKU_API_KEY;
+	var appName = 'professeur-oak';
+	var dynoName = 'worker';
+	
+	var request = require('request');
+	
+	request.delete(
+		{
+			url: 'https://api.heroku.com/apps/' + appName + '/dynos/',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/vnd.heroku+json; version=3',
+				'Authorization': 'Bearer ' + token
+			}
+		},
+		function(error, response, body) {
+			if (requested === "auto") {
+				botPostLog("Commande de redémarrage aux 12h effectuée !");
+			} else if (requested === "manual") {
+				botPostLog("Commande de redémarrage manuel effectuée !");
+			}
+		}
+	);
 }
 
 // =================================================
