@@ -39,7 +39,7 @@ bot.on('ready', () => {
     }
 	
 	// 12h scheduled app restarting
-    var intervalAppRestart = setInterval(appRestart("auto"), 43200000); // Every 12h
+    var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
     
     // Bot ready !
 	botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
@@ -947,10 +947,10 @@ function appRestart(requested) {
 			}
 		},
 		function(error, response, body) {
-			if (requested === "auto") {
-				botPostLog("Commande de redémarrage aux 12h effectuée !");
-			} else if (requested === "manual") {
+			if (requested === "manual") {
 				botPostLog("Commande de redémarrage manuel effectuée !");
+			} else {
+				botPostLog("Commande de redémarrage aux 12h effectuée !");
 			}
 		}
 	);
