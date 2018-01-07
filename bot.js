@@ -774,7 +774,7 @@ bot.on('message', message => {
 							// Define the zone
 							var areasNumber = 0;
 							var areasName = "à Sherbrooke";
-							if (coords.search("\u") !== -1) {
+							if (coords.search('\u') !== -1) {
 								coords = coords.split('\u');
 								coords = coords[0];
 							}
