@@ -749,8 +749,39 @@ bot.on('message', message => {
 					}
 					// Get coords from URL then prepare and send message
 					var http = require('http');
-					var options = {method: 'HEAD', host: 'huntr.gg', path: pathURL};
+					var options = {method: 'GET', host: 'huntr.gg', path: pathURL};
 					var req = http.request(options, (res) => {
+						var { statusCode } = res;
+						var contentType = res.headers['content-type'];
+						
+						let error;
+						if (statusCode !== 200) {
+							error = new Error('Échec de la requête. ' +
+											`Code status : ${statusCode}`);
+						} /*else if (!/^application\/json/.test(contentType)) {
+							error = new Error('Type de contenu invalide : ' +
+											`Attendu application/json, reçu ${contentType}`);
+						}*/
+						if (error) {
+							console.error(error.message);
+							// consume response data to free up memory
+							res.resume();
+						}
+						
+						res.setEncoding('utf8');
+						let rawData = '';
+						res.on('data', (chunk) => { rawData += chunk; });
+						res.on('end', () => {
+							try {
+								console.log(rawData);				
+							} catch (e) {
+								console.log(e.message);
+							}
+						});
+					}).on('error', (e) => {
+						console.log(`Erreur reçue : ${e.message}`);
+					});
+					/*
 						if (res.statusCode === 302) {
 							var parsedHeaders = JSON.stringify(res.headers);
 							console.log(parsedHeaders);
@@ -835,6 +866,7 @@ bot.on('message', message => {
 							console.log("Wrong connection !");
 						}
 					});
+					*/
 					req.on('error', (e) => {
 						console.error(`Problem with request: ${e.message}`);
 					});
