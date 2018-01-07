@@ -748,39 +748,13 @@ bot.on('message', message => {
 						remainingTime = minutes+"m "+seconds+"s";
 					}
 					// Get coords from URL then prepare and send message
-					var http = require('http');
-					var options = {method: 'GET', host: 'huntr.gg', path: pathURL};
-					var req = http.request(options, (res) => {
-						var { statusCode } = res;
-						var contentType = res.headers['content-type'];
-						
-						let error;
-						if (statusCode !== 200) {
-							error = new Error('Échec de la requête. ' +
-											`Code status : ${statusCode}`);
-						} /*else if (!/^application\/json/.test(contentType)) {
-							error = new Error('Type de contenu invalide : ' +
-											`Attendu application/json, reçu ${contentType}`);
-						}*/
-						if (error) {
-							console.error(error.message);
-							// consume response data to free up memory
-							res.resume();
-						}
-						
-						res.setEncoding('utf8');
-						let rawData = '';
-						res.on('data', (chunk) => { rawData += chunk; });
-						res.on('end', () => {
-							try {
-								console.log(rawData);				
-							} catch (e) {
-								console.log(e.message);
-							}
+					getCoords(pathURL)
+						.then(response => {
+							console.log(response);
+						})
+						.catch(error => {
+							console.log(error);
 						});
-					}).on('error', (e) => {
-						console.log(`Erreur reçue : ${e.message}`);
-					});
 					/*
 						if (res.statusCode === 302) {
 							var parsedHeaders = JSON.stringify(res.headers);
@@ -956,8 +930,47 @@ function getContributorsFile() {
 				}
 			});
 		}).on('error', (e) => {
-		reject(`Erreur reçue : ${e.message}`);
-		});
+			reject(`Erreur reçue : ${e.message}`);
+		}).end();
+	})
+}
+
+// -------------------------------------------------
+// Get coords from huntr.gg redirect !
+function getCoords(pathURL) {
+	var http = require('http');
+	var options = {method: 'GET', host: 'huntr.gg', path: pathURL};
+	return new Promise((resolve,reject)=>{
+		http.get(options, (res) => {
+			var { statusCode } = res;
+			var contentType = res.headers['content-type'];
+			
+			let error;
+			if (statusCode !== 200) {
+				error = new Error('Échec de la requête. ' +
+								`Code status : ${statusCode}`);
+			}
+			if (error) {
+				console.error(error.message);
+				// consume response data to free up memory
+				res.resume();
+			}
+			
+			res.setEncoding('utf8');
+			let rawData = '';
+			res.on('data', (chunk) => { rawData += chunk; });
+			res.on('end', () => {
+				try {
+					const parsedData = JSON.parse(rawData);
+					console.log(parsedData);
+					resolve(parsedData);
+				} catch (e) {
+					reject(e.message);
+				}
+			});
+		}).on('error', (e) => {
+			reject(`Erreur reçue : ${e.message}`);
+		}).end();
 	})
 }
 
