@@ -786,10 +786,6 @@ bot.on('message', message => {
 						areasNumber = 6;
 						areasName = "à Fleurimont";
 					}
-					if (areasNumber === 0) {
-						console.log("Erreur de coordonnées :");
-						console.log(coords);
-					}
 					
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
@@ -808,7 +804,7 @@ bot.on('message', message => {
 							// Send a private message
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
-								memberToAlert.send({embed}).catch("Envoi non abouti : "+contributorID);
+								memberToAlert.send({embed}).catch(console.error);
 							} else {
 								botPostLog(contributorID+" est introuvable");
 							}
