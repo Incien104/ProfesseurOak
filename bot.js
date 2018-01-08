@@ -15,8 +15,11 @@ var scanFilter = require('./scanFilter.json');
 var pokedex_fr = require('./pokedex_fr.json');
 var pokedex_en = require('./pokedex_en.json');
 var mega_primal_xy = require('./mega_primal_xy.json');
+var weatherBoost = require('./weatherBoost.json');
 var contributors_backup = require('./contributors.json');
 var contributors;
+
+const botGuild = bot.guilds.find('name', chansLists.guildName);
 	
 var bot = new Discord.Client();
 
@@ -27,28 +30,14 @@ bot.login(process.env.BOT_TOKEN);
 bot.on('ready', () => {    
     // Bot ready !
 	botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
-	getContributorsFile()
-		.then(response => {
-			contributors = response;
-			botPostLog("Fichier JSON distant chargé.");
-		})
-		.catch(error => {
-			contributors = contributors_backup;
-			botPostLog("Erreur au chargement de fichier JSON distant ("+error+"). Backup sur Github chargé.");
-		});		
+	loadJSONFile("start");	
 	// 12h scheduled app restarting
     var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
     // 15min scheduled contributors JSON file loading
     var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min
 	// 1h scheduled weather forecast request + execution at launch
-    var intervalWeather = setInterval(weather, 3600000); // Every 1h
-	weather()
-		.then(response => {
-			//console.log(response);
-		})
-		.catch(error => {
-			console.log(error);
-		});
+    var intervalWeather = setInterval(weatherPost, 3600000); // Every 1h
+	weatherPost();
 });
 
 // =================================================
@@ -190,7 +179,6 @@ bot.on('message', message => {
 				case 'annonce':
 					if (userRoles.find("name","@Admins")) {
 						var announce = args[1];
-						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						
 						switch(announce) {
 							case 'noteam':
@@ -426,7 +414,6 @@ bot.on('message', message => {
 				// Commands to start Huntr Bot
 				case 'starthuntr':
 					if (userRoles.find("name","@Admins")) {
-						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanPokemon);
 						
 						channelHuntr.send("!setup 45.39652136952787,-71.88354492187501");
@@ -440,7 +427,6 @@ bot.on('message', message => {
 				// Commands to start GymHuntr Bot
 				case 'startgymhuntr':
 					if (userRoles.find("name","@Admins")) {
-						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanRaid);
 						
 						channelHuntr.send("!setup 45.39652136952787,-71.88354492187501");
@@ -728,6 +714,7 @@ bot.on('message', message => {
 					argsTitle = argsTitle[1].split(')');
 					var argsPokemonNumber = argsTitle[0];
 					var remainingTimeText = message.embeds[0].description.split(': ');
+					console.log(remainingTimeText);
 					var remainingTime = remainingTimeText[1].substring(0,remainingTimeText[1].length-5);
 					var mapURL = message.embeds[0].url;
 					var textURL = mapURL.split('#');
@@ -841,7 +828,6 @@ function botPostLog(messageToPost) {
 	var dateQuebec = new Date(d);
 	dateQuebec = dateQuebec.toString();
 	dateQuebec = dateQuebec.substring(0,dateQuebec.length-15);
-	const botGuild = bot.guilds.find('name', chansLists.guildName);
 	const logsChannel = botGuild.channels.find('name', chansLists.chanBotLog);
 	logsChannel.send('*['+dateQuebec+']* : **'+messageToPost+'**');
 	console.log(messageToPost);
@@ -861,10 +847,13 @@ String.prototype.capitalize = function() {
 
 // -------------------------------------------------
 // Load contributors JSON file !
-function loadJSONFile() {        
+function loadJSONFile(requested) {        
     getContributorsFile()
 		.then(response => {
 			contributors = response;
+			if (requested === "start") {
+				botPostLog("Fichier JSON distant chargé.");
+			}
 		})
 		.catch(error => {
 			contributors = contributors_backup;
@@ -980,7 +969,44 @@ function appRestart(requested) {
 }
 
 // -------------------------------------------------
-// Get 1h wheather forecast from accuwheather !
+// Post weather forecast in weather channel !
+function weatherPost() {        
+    weather()
+		.then(response => {
+			const channelWeather = botGuild.channels.find('name', chansLists.chanWeather);
+			var timeWeather = response[0].DateTime.split('T');
+			var timeWeatherStart = parseInt(timeWeather[1].substring(0,1));
+			if (timeWeatherStart === 23) {
+				var timeWeatherEnd = 0;
+			} else {
+				var timeWeatherEnd = timeWeatherStart+1;
+			}
+			var boostNumber = weatherBoost.weatherList.indexOf(response[0].IconPhrase);
+			if (boostNumber !== -1) {
+				var boost = weatherBoost.boostList[boostNumber];
+			} else {
+				var boost = "---";
+			}
+			// Create Rich Embed
+			var colorForEmbed = "#43B581";
+			var thumbnail = "https://pbs.twimg.com/profile_images/879422659620163584/wudfVGeL_400x400.jpg";
+			var embed = new Discord.RichEmbed()
+				.setTitle("Prévision météo de **"+timeWeatherStart+"h** à **"+timeWeatherEnd+"h**")
+				.setColor(colorForEmbed)
+				.setDescription("**"+response[0].IconPhrase+"** avec "++"°C\nBoost : "+boost)
+				.setURL(response[0].Link)
+				.setThumbnail(thumbnail)
+			
+			channelWeather.send({embed}).catch(console.error);
+			console.log("Weather posted !");
+		})
+		.catch(error => {
+			botPostLog("Erreur au chargement des prévisions météo ("+error+").");
+		});
+}
+
+// -------------------------------------------------
+// Get 1h weather forecast from accuwheather !
 function weather() {        
     var http = require('http');
 	return new Promise((resolve,reject)=>{

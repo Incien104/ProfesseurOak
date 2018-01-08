@@ -9,5 +9,6 @@
 	"chanScanRaid": "scan-raids",
 	"chanPokedex": "pokedex",
 	"chanNests": "nests",
-	"chanTuto": "tutoriel-et-assistance"
+	"chanTuto": "tutoriel-et-assistance",
+	"chanWeather": "meteo"
 }
