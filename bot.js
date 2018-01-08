@@ -1,10 +1,10 @@
 // ** Description **
-// ModeratorBot, v2.5.3, developed by Incien104
+// ModeratorBot, v2.6.0, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a worker dyno and node.js
 
 // Init
-const botVersion = "v2.5.3";
+const botVersion = "v2.6.0";
 const botVersionDate = "07/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
@@ -24,23 +24,7 @@ var bot = new Discord.Client();
 bot.login(process.env.BOT_TOKEN);
 
 // Bot start on Heroku server, including settings for scheduled announcements
-bot.on('ready', () => {
-    // 15min scheduled contributors JSON file loading
-    var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min	
-    function loadJSONFile() {        
-        getContributorsFile()
-			.then(response => {
-				contributors = response;
-			})
-			.catch(error => {
-				contributors = contributors_backup;
-				botPostLog("Erreur au chargement de fichier JSON distant ("+error+"). Backup sur Github chargé.");
-			});
-    }
-	
-	// 12h scheduled app restarting
-    var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
-    
+bot.on('ready', () => {    
     // Bot ready !
 	botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
 	getContributorsFile()
@@ -51,6 +35,19 @@ bot.on('ready', () => {
 		.catch(error => {
 			contributors = contributors_backup;
 			botPostLog("Erreur au chargement de fichier JSON distant ("+error+"). Backup sur Github chargé.");
+		});		
+	// 12h scheduled app restarting
+    var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
+    // 15min scheduled contributors JSON file loading
+    var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min
+	// 1h scheduled wheather forecast request + execution at launch
+    var intervalWheather = setInterval(wheather, 3600000); // Every 1h
+	wheather()
+		.then(response => {
+			console.log(response);
+		})
+		.catch(error => {
+			console.log(error);
 		});
 });
 
@@ -145,6 +142,7 @@ bot.on('message', message => {
 						- !oakhelp : revoie les fonctions disponibles (*admins seulement*)\n\
 						- !oakping : vérifie si le bot fonctionne et retourne le numéro de version (*admins seulement*)\n\
 						- !oaktest : permet de tester la dernière fonction en développement (actuellement **Clear**) (*admins seulement*)\n\
+						- !oakrestart : permet de redémarrer le robot (mais il doit encore fonctionner) (*admins seulement*)\n\
 						- !annonce : permet de lancer une annonce sur un chan (*admins seulement*). Liste des annonces :\n\
 						. . . . . . .  - !annonce noteam : envoie un message sur #general pour rappeler aux NoTeam de choisir une équipe\n\
 						. . . . . . .  - !annonce nests : envoie un message sur #nests lors d'une migration pour inviter les gens à remplir l'Atlas\n\
@@ -175,7 +173,13 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						
+						weather()
+							.then(response => {
+								console.log(response);
+							})
+							.catch(error => {
+								console.log(error);
+							});
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -780,7 +784,7 @@ bot.on('message', message => {
 						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
 						.setColor(colorForEmbed)
 						.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)")
-						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API)
+						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API_KEY)
 						.setThumbnail(thumbnail)
 						.setURL(mapURL);
 						
@@ -823,6 +827,11 @@ bot.on('message', message => {
 	}
 });
 
+
+// =================================================
+//                    FUNCTIONS
+// =================================================
+
 // -------------------------------------------------
 // Bot's logs in a log channel !
 function botPostLog(messageToPost) {
@@ -847,6 +856,19 @@ function isInt(value) {
 // Capitalize first letter !
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+// -------------------------------------------------
+// Load contributors JSON file !
+function loadJSONFile() {        
+    getContributorsFile()
+		.then(response => {
+			contributors = response;
+		})
+		.catch(error => {
+			contributors = contributors_backup;
+			botPostLog("Erreur au chargement de fichier JSON distant ("+error+"). Backup sur Github chargé.");
+		});
 }
 
 // -------------------------------------------------
@@ -954,6 +976,46 @@ function appRestart(requested) {
 			}
 		}
 	);
+}
+
+// -------------------------------------------------
+// Get 1h wheather forecast from accuwheather !
+function wheather() {        
+    var http = require('http');
+	return new Promise((resolve,reject)=>{
+		http.get("http://dataservice.accuweather.com/forecasts/v1/hourly/1hour/50017?apikey="+process.env.WHEATHER_API_KEY+"&language=fr-ca&metric=true", (res) => {
+			var { statusCode } = res;
+			var contentType = res.headers['content-type'];
+			
+			let error;
+			if (statusCode !== 200) {
+				error = new Error('Échec de la requête. ' +
+								`Code status : ${statusCode}`);
+			} /*else if (!/^application\/json/.test(contentType)) {
+				error = new Error('Type de contenu invalide : ' +
+								`Attendu application/json, reçu ${contentType}`);
+			}*/
+			if (error) {
+				console.error(error.message);
+				// consume response data to free up memory
+				res.resume();
+			}
+			
+			res.setEncoding('utf8');
+			let rawData = '';
+			res.on('data', (chunk) => { rawData += chunk; });
+			res.on('end', () => {
+				try {
+					const parsedData = JSON.parse(rawData);
+					resolve(parsedData);					
+				} catch (e) {
+					reject(e.message);
+				}
+			});
+		}).on('error', (e) => {
+			reject(`Erreur reçue : ${e.message}`);
+		}).end();
+	})
 }
 
 // =================================================
