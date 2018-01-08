@@ -856,8 +856,12 @@ function loadJSONFile(requested) {
 			}
 		})
 		.catch(error => {
-			contributors = contributors_backup;
-			botPostLog("Erreur au chargement de fichier JSON distant ("+error+"). Backup sur Github chargé.");
+			if (requested === "start") {
+				contributors = contributors_backup;
+				botPostLog("Erreur au chargement de fichier JSON distant ("+error+"). Backup sur Github chargé.");
+			} else {
+				botPostLog("Erreur au chargement de fichier JSON distant ("+error+"). Backup déjà en mémoire.");
+			}			
 		});
 }
 
