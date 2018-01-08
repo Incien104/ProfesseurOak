@@ -23,7 +23,6 @@ var bot = new Discord.Client();
 
 // Bot login
 bot.login(process.env.BOT_TOKEN);
-const botGuild = bot.guilds.find('name', chansLists.guildName);
 
 // Bot start on Heroku server, including settings for scheduled announcements
 bot.on('ready', () => {    
@@ -161,14 +160,7 @@ bot.on('message', message => {
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
-						weather()
-							.then(response => {
-								console.log(response[0].DateTime);
-								console.log(response[0].IconPhrase);
-							})
-							.catch(error => {
-								console.log(error);
-							});
+						
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
@@ -181,6 +173,7 @@ bot.on('message', message => {
 						
 						switch(announce) {
 							case 'noteam':
+								const botGuild = bot.guilds.find('name', chansLists.guildName);
 								var channelAnnouncements = botGuild.channels.find('name', chansLists.chanGeneral);
 	
 								if (!channelAnnouncements) return;
@@ -189,6 +182,7 @@ bot.on('message', message => {
 								botPostLog('Annonce aux NoTeam effectuée');
 							break;
 							case 'nests':
+								const botGuild = bot.guilds.find('name', chansLists.guildName);
 								var channelAnnouncements = botGuild.channels.find('name', chansLists.chanNests);
 	
 								if (!channelAnnouncements) return;
@@ -413,6 +407,7 @@ bot.on('message', message => {
 				// Commands to start Huntr Bot
 				case 'starthuntr':
 					if (userRoles.find("name","@Admins")) {
+						const botGuild = bot.guilds.find('name', chansLists.guildName);
 						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanPokemon);
 						
 						channelHuntr.send("!setup 45.39652136952787,-71.88354492187501");
@@ -426,6 +421,7 @@ bot.on('message', message => {
 				// Commands to start GymHuntr Bot
 				case 'startgymhuntr':
 					if (userRoles.find("name","@Admins")) {
+						const botGuild = bot.guilds.find('name', chansLists.guildName);
 						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanRaid);
 						
 						channelHuntr.send("!setup 45.39652136952787,-71.88354492187501");
@@ -827,6 +823,7 @@ function botPostLog(messageToPost) {
 	var dateQuebec = new Date(d);
 	dateQuebec = dateQuebec.toString();
 	dateQuebec = dateQuebec.substring(0,dateQuebec.length-15);
+	const botGuild = bot.guilds.find('name', chansLists.guildName);
 	const logsChannel = botGuild.channels.find('name', chansLists.chanBotLog);
 	logsChannel.send('*['+dateQuebec+']* : **'+messageToPost+'**');
 	console.log(messageToPost);
@@ -972,6 +969,7 @@ function appRestart(requested) {
 function weatherPost() {        
     weather()
 		.then(response => {
+			const botGuild = bot.guilds.find('name', chansLists.guildName);
 			const channelWeather = botGuild.channels.find('name', chansLists.chanWeather);
 			var timeWeather = response[0].DateTime.split('T');
 			var timeWeatherStart = parseInt(timeWeather[1].substring(0,1));
