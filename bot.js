@@ -993,7 +993,7 @@ function weatherPost() {
 			var embed = new Discord.RichEmbed()
 				.setTitle("Prévision météo de **"+timeWeatherStart+"h** à **"+timeWeatherEnd+"h**")
 				.setColor(colorForEmbed)
-				.setDescription("**"+response[0].IconPhrase+"** avec "++"°C\nBoost : "+boost)
+				.setDescription("**"+response[0].IconPhrase+"** avec "+response[0].Temperature.Value+"°C\n\n**Boost : "+boost+"**")
 				.setURL(response[0].Link)
 				.setThumbnail(thumbnail)
 			
