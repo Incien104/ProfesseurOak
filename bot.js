@@ -44,7 +44,7 @@ bot.on('ready', () => {
     var intervalWheather = setInterval(wheather, 3600000); // Every 1h
 	wheather()
 		.then(response => {
-			console.log(response);
+			//console.log(response);
 		})
 		.catch(error => {
 			console.log(error);
@@ -175,7 +175,8 @@ bot.on('message', message => {
 					if (userRoles.find("name","@Admins")) {
 						weather()
 							.then(response => {
-								console.log(response);
+								console.log(response[0].DateTime);
+								console.log(response[0].IconPhrase);
 							})
 							.catch(error => {
 								console.log(error);
