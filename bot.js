@@ -971,7 +971,7 @@ function weatherPost() {
 			const botGuild = bot.guilds.find('name', chansLists.guildName);
 			const channelWeather = botGuild.channels.find('name', chansLists.chanWeather);
 			var timeWeather = response[0].DateTime.split('T');
-			var timeWeatherStart = parseInt(timeWeather[1].substring(0,1));
+			var timeWeatherStart = parseInt(timeWeather[1].substring(0,2));
 			if (timeWeatherStart === 23) {
 				var timeWeatherEnd = 0;
 			} else {
