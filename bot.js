@@ -170,10 +170,10 @@ bot.on('message', message => {
 				case 'annonce':
 					if (userRoles.find("name","@Admins")) {
 						var announce = args[1];
+						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						
 						switch(announce) {
 							case 'noteam':
-								const botGuild = bot.guilds.find('name', chansLists.guildName);
 								var channelAnnouncements = botGuild.channels.find('name', chansLists.chanGeneral);
 	
 								if (!channelAnnouncements) return;
@@ -182,7 +182,6 @@ bot.on('message', message => {
 								botPostLog('Annonce aux NoTeam effectuée');
 							break;
 							case 'nests':
-								const botGuild = bot.guilds.find('name', chansLists.guildName);
 								var channelAnnouncements = botGuild.channels.find('name', chansLists.chanNests);
 	
 								if (!channelAnnouncements) return;
@@ -407,7 +406,7 @@ bot.on('message', message => {
 				// Commands to start Huntr Bot
 				case 'starthuntr':
 					if (userRoles.find("name","@Admins")) {
-						const botGuild = bot.guilds.find('name', chansLists.guildName);
+						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanPokemon);
 						
 						channelHuntr.send("!setup 45.39652136952787,-71.88354492187501");
@@ -421,7 +420,7 @@ bot.on('message', message => {
 				// Commands to start GymHuntr Bot
 				case 'startgymhuntr':
 					if (userRoles.find("name","@Admins")) {
-						const botGuild = bot.guilds.find('name', chansLists.guildName);
+						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanRaid);
 						
 						channelHuntr.send("!setup 45.39652136952787,-71.88354492187501");
