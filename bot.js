@@ -708,8 +708,7 @@ bot.on('message', message => {
 					argsTitle = argsTitle[1].split(')');
 					var argsPokemonNumber = argsTitle[0];
 					var remainingTimeText = message.embeds[0].description.split(': ');
-					console.log(remainingTimeText);
-					var remainingTime = remainingTimeText[1].substring(0,remainingTimeText[1].length-5);
+					var remainingTime = remainingTimeText[1];
 					var mapURL = message.embeds[0].url;
 					var textURL = mapURL.split('#');
 					var coords = textURL[1];
@@ -761,11 +760,17 @@ bot.on('message', message => {
 						areasName = "à Fleurimont";
 					}
 					
+					if (remainingTimeText[2] !== '*None*') {
+						var weatherBoosted = "\n**Boosté** (météo)";
+					} else {
+						var weatherBoosted = "";
+					}
+					
 					// Create Rich Embed									
 					var embed = new Discord.RichEmbed()
 						.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
 						.setColor(colorForEmbed)
-						.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)")
+						.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)"+weatherBoosted)
 						.setImage("https://maps.googleapis.com/maps/api/staticmap?center="+coords+"&zoom=13&markers="+coords+"&size=300x150&format=JPEG&key="+process.env.MAP_API_KEY)
 						.setThumbnail(thumbnail)
 						.setURL(mapURL);
