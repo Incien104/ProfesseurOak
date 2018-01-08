@@ -18,13 +18,12 @@ var mega_primal_xy = require('./mega_primal_xy.json');
 var weatherBoost = require('./weatherBoost.json');
 var contributors_backup = require('./contributors.json');
 var contributors;
-
-const botGuild = bot.guilds.find('name', chansLists.guildName);
 	
 var bot = new Discord.Client();
 
 // Bot login
 bot.login(process.env.BOT_TOKEN);
+const botGuild = bot.guilds.find('name', chansLists.guildName);
 
 // Bot start on Heroku server, including settings for scheduled announcements
 bot.on('ready', () => {    
