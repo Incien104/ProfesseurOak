@@ -989,7 +989,7 @@ function weatherPost() {
 			var boostNumber = weatherBoost.weatherList.indexOf(response[0].IconPhrase);
 			if (boostNumber !== -1) {
 				var boost = weatherBoost.boostList[boostNumber];
-				var thumbnailWeather = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/weather/"+weatherBoost.weatherIcon[boostNumber];
+				var thumbnailWeather = "https://pokemongo.gamepress.gg/sites/default/files/inline-images/"+weatherBoost.weatherIcon[boostNumber];
 			} else {
 				var boost = "---";
 				var thumbnailWeather = "https://pbs.twimg.com/profile_images/879422659620163584/wudfVGeL_400x400.jpg";
