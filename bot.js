@@ -40,9 +40,9 @@ bot.on('ready', () => {
     var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
     // 15min scheduled contributors JSON file loading
     var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min
-	// 1h scheduled wheather forecast request + execution at launch
-    var intervalWheather = setInterval(wheather, 3600000); // Every 1h
-	wheather()
+	// 1h scheduled weather forecast request + execution at launch
+    var intervalWeather = setInterval(weather, 3600000); // Every 1h
+	weather()
 		.then(response => {
 			//console.log(response);
 		})
@@ -981,10 +981,10 @@ function appRestart(requested) {
 
 // -------------------------------------------------
 // Get 1h wheather forecast from accuwheather !
-function wheather() {        
+function weather() {        
     var http = require('http');
 	return new Promise((resolve,reject)=>{
-		http.get("http://dataservice.accuweather.com/forecasts/v1/hourly/1hour/50017?apikey="+process.env.WHEATHER_API_KEY+"&language=fr-ca&metric=true", (res) => {
+		http.get("http://dataservice.accuweather.com/forecasts/v1/hourly/1hour/50017?apikey="+process.env.WEATHER_API_KEY+"&language=fr-ca&metric=true", (res) => {
 			var { statusCode } = res;
 			var contentType = res.headers['content-type'];
 			
