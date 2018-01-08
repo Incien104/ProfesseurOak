@@ -985,18 +985,19 @@ function weatherPost() {
 			var boostNumber = weatherBoost.weatherList.indexOf(response[0].IconPhrase);
 			if (boostNumber !== -1) {
 				var boost = weatherBoost.boostList[boostNumber];
+				var thumbnailWeather = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/weather/"+weatherBoost.weatherIcon[boostNumber];
 			} else {
 				var boost = "---";
+				var thumbnailWeather = "https://pbs.twimg.com/profile_images/879422659620163584/wudfVGeL_400x400.jpg";
 			}
-			// Create Rich Embed
+			// Create Rich Embed			
 			var colorForEmbed = "#43B581";
-			var thumbnail = "https://pbs.twimg.com/profile_images/879422659620163584/wudfVGeL_400x400.jpg";
 			var embed = new Discord.RichEmbed()
 				.setTitle("Prévision météo de **"+timeWeatherStart+"h** à **"+timeWeatherEnd+"h**")
 				.setColor(colorForEmbed)
 				.setDescription("**"+response[0].IconPhrase+"** avec "+response[0].Temperature.Value+"°C\n\n**Boost : "+boost+"**")
 				.setURL(response[0].Link)
-				.setThumbnail(thumbnail)
+				.setThumbnail(thumbnailWeather)
 			
 			channelWeather.send({embed}).catch(console.error);
 			console.log("Weather posted !");
