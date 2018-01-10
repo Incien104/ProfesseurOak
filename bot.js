@@ -42,8 +42,8 @@ bot.on('ready', () => {
     // 15min scheduled contributors JSON file loading
     var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min
 	// 1h scheduled weather forecast request + execution at launch
-    var intervalWeather = setInterval(weatherPost, 3600000); // Every 1h
-	weatherPost();
+    //var intervalWeather = setInterval(weatherPost, 3600000); // Every 1h
+	//weatherPost();
 });
 
 
