@@ -678,7 +678,7 @@ bot.on('message', message => {
 								d = d - timeUTCQuebec*60*60*1000;
 								var dateQuebec = new Date(d);
 								dateQuebec = dateQuebec.toString();
-								var timeWeather = dateQuebec.substring(18,20);
+								var timeWeather = dateQuebec.substring(16,17);
 								console.log(timeWeather);
 								var timeWeatherStart = parseInt(timeWeather);
 								if (timeWeatherStart === 23) {
@@ -1073,7 +1073,7 @@ function weatherPost() {
 			d = d - timeUTCQuebec*60*60*1000;
 			var dateQuebec = new Date(d);
 			dateQuebec = dateQuebec.toString();
-			var timeWeather = dateQuebec.substring(18,2);
+			var timeWeather = dateQuebec.substring(16,17);
 			var timeWeatherStart = parseInt(timeWeather);
 			if (timeWeatherStart === 23) {
 				var timeWeatherEnd = 0;
