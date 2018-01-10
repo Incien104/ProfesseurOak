@@ -672,11 +672,24 @@ bot.on('message', message => {
 					if (userRoles.find("name","@Admins")) {
 						getWeather()
 							.then(response => {
-								console.log(response);
+								const botGuild = bot.guilds.find('name', chansLists.guildName);
+								const channelWeather = botGuild.channels.find('name', chansLists.chanWeather);
+								var d = new Date();	
+								d = d - timeUTCQuebec*60*60*1000;
+								var dateQuebec = new Date(d);
+								dateQuebec = dateQuebec.toString();
+								var timeWeather = dateQuebec.substring(18,20);
+								console.log(timeWeather);
+								var timeWeatherStart = parseInt(timeWeather);
+								if (timeWeatherStart === 23) {
+									var timeWeatherEnd = 0;
+								} else {
+									var timeWeatherEnd = timeWeatherStart+1;
+								}
 							})
 							.catch(error => {
 								console.log(error);
-							});
+							})
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
