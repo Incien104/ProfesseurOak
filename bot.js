@@ -966,8 +966,8 @@ function getWeather() {
 			res.on('data', (chunk) => { rawData += chunk; });
 			res.on('end', () => {
 				try {
-					const parsedData = JSON.parse(rawData);
-					resolve(parsedData);
+					//const parsedData = JSON.parse(rawData);
+					resolve(rawData);
 				} catch (e) {
 					reject(e.message);
 				}
