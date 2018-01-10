@@ -128,7 +128,7 @@ bot.on('message', message => {
 						message.channel.send("Fonctions :\n\
 						- !oakhelp : revoie les fonctions disponibles (*admins seulement*)\n\
 						- !oakping : vérifie si le bot fonctionne et retourne le numéro de version (*admins seulement*)\n\
-						- !oaktest : permet de tester la dernière fonction en développement (actuellement **Clear**) (*admins seulement*)\n\
+						- !oaktest : permet de tester la dernière fonction en développement (actuellement **rien**) (*admins seulement*)\n\
 						- !oakrestart : permet de redémarrer le robot (mais il doit encore fonctionner) (*admins seulement*)\n\
 						- !annonce : permet de lancer une annonce sur un chan (*admins seulement*). Liste des annonces :\n\
 						. . . . . . .  - !annonce noteam : envoie un message sur #general pour rappeler aux NoTeam de choisir une équipe\n\
@@ -946,7 +946,8 @@ function getCoords(pathURL) {
 
 // -------------------------------------------------
 // Restart Oak dyno !
-function appRestart(requested) {        
+function appRestart(requested) {  
+	requested = requested || 0;      
     var token = process.env.HEROKU_API_KEY;
 	var appName = 'professeur-oak';
 	var dynoName = 'worker';
