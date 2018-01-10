@@ -966,8 +966,11 @@ function getWeather() {
 			res.on('data', (chunk) => { rawData += chunk; });
 			res.on('end', () => {
 				try {
-					//const parsedData = JSON.parse(rawData);
-					resolve(rawData);
+					//<img src="assets/img/weather/weatherIcon_small_Sunny.png"></img>
+					rawData = rawData.split("assets/img/weather/weatherIcon_small_");
+					rawData = rawData[1].split(".png");
+					weather = rawData[0];
+					resolve(weather);
 				} catch (e) {
 					reject(e.message);
 				}
@@ -1049,46 +1052,44 @@ function appRestart(requested) {
 // -------------------------------------------------
 // Post weather forecast in weather channel !
 function weatherPost() {        
-    weather()
+    getWeather()
 		.then(response => {
 			const botGuild = bot.guilds.find('name', chansLists.guildName);
 			const channelWeather = botGuild.channels.find('name', chansLists.chanWeather);
-			var timeWeather = response[0].DateTime.split('T');
-			var timeWeatherStart = parseInt(timeWeather[1].substring(0,2));
+			var d = new Date();	
+			d = d - timeUTCQuebec*60*60*1000;
+			var dateQuebec = new Date(d);
+			dateQuebec = dateQuebec.toString();
+			var timeWeather = dateQuebec.substring(18,2);
+			var timeWeatherStart = parseInt(timeWeather);
 			if (timeWeatherStart === 23) {
 				var timeWeatherEnd = 0;
 			} else {
 				var timeWeatherEnd = timeWeatherStart+1;
 			}
-			var boostNumber = weatherBoost.weatherList.indexOf(response[0].IconPhrase);
+			var boostNumber = weatherBoost.weatherList.indexOf(response);
 			if (boostNumber !== -1) {
 				var boost = weatherBoost.boostList[boostNumber];
+				var weatherText = weatherBoost.weatherListFR[boostNumber];
 				var thumbnailWeather = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/weather/"+weatherBoost.weatherIcon[boostNumber];
 			} else {
 				var boost = "---";
+				var weatherText = response;
 				var thumbnailWeather = "https://pbs.twimg.com/profile_images/879422659620163584/wudfVGeL_400x400.jpg";
-				for (i = 0; i < weatherBoost.weatherList.length; i++) {
-					if (weatherBoost.synonymes[i].indexOf(response[0].IconPhrase) !== -1) {
-						var boost = weatherBoost.boostList[i];
-				var thumbnailWeather = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/weather/"+weatherBoost.weatherIcon[i];
-					}
-				}
 			}
 			// Create Rich Embed			
 			var colorForEmbed = "#43B581";
 			var embed = new Discord.RichEmbed()
-				.setTitle("Prévision météo de **"+timeWeatherStart+"h** à **"+timeWeatherEnd+"h**")
+				.setTitle("Météo de **"+timeWeatherStart+"h** à **"+timeWeatherEnd+"h** dans le jeu :")
 				.setColor(colorForEmbed)
-				.setDescription("**"+response[0].IconPhrase+"** avec "+response[0].Temperature.Value+"°C\n\n**Boost : "+boost+"**")
-				.setURL(response[0].Link)
+				.setDescription("**"+weatherText+"**\n\n**Boost : "+boost+"**")
 				.setThumbnail(thumbnailWeather)
-				.setFooter("AccuWeather.com","https://pbs.twimg.com/profile_images/879422659620163584/wudfVGeL_400x400.jpg")
 			
 			channelWeather.send({embed}).catch(console.error);
 			console.log("Weather posted !");
 		})
 		.catch(error => {
-			botPostLog("Erreur au chargement des prévisions météo ("+error+").");
+			botPostLog("Erreur au chargement de la météo ("+error+").");
 		});
 }
 
