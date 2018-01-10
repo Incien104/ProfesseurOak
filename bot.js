@@ -1,5 +1,5 @@
 // ** Description **
-// ProfesseurOak, v2.7.0, developed by Incien104
+// ProfesseurOak, v2.7.1, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a node.js worker dyno
 // Require discord.js and request
@@ -11,8 +11,8 @@
 
 // -------------------------------------------------
 // Main variables
-const botVersion = "v2.7.0";
-const botVersionDate = "09/01/2018";
+const botVersion = "v2.7.1";
+const botVersionDate = "10/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -168,16 +168,6 @@ bot.on('message', message => {
 						- !oakmega #/nom pokémon : permet de voir la forme méga ou antique (*salon pokedex seulement*)\n\
 						- !oakunown ou !oakzarbi : affiche la liste des formes de Unown/Zarbi (*salon pokedex seulement*)\n\
 						");
-					}
-				break;
-				
-				// -------------
-				// Test function
-				case 'oaktest':
-					if (userRoles.find("name","@Admins")) {
-						
-					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
 				break;
 				
@@ -675,6 +665,22 @@ bot.on('message', message => {
 						}
 					}
 				break;
+				
+				// -------------
+				// Test function
+				case 'oaktest':
+					if (userRoles.find("name","@Admins")) {
+						getWeather()
+							.then(response => {
+								console.log(response);
+							})
+							.catch(error => {
+								console.log(error);
+							});
+					} else {
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+					}
+				break;
 			}
 		} else if (message.content.substring(0, 1) === '?' && message.guild.name === chansLists.guildName) {
 			var args = message.content.substring(1).split(' ');
@@ -936,7 +942,44 @@ function getContributorsFile() {
 }
 
 // -------------------------------------------------
-// Get coords from huntr.gg redirect !
+// Get weather from pokefetch !
+function getWeather() {
+	var https = require('https');
+	return new Promise((resolve,reject)=>{
+		https.get("https://pokefetch.com/#45.39712406621648,-71.89710617065431", (res) => {
+			var { statusCode } = res;
+			var contentType = res.headers['content-type'];
+			
+			let error;
+			if (statusCode !== 200) {
+				error = new Error('Échec de la requête. ' +
+								`Code status : ${statusCode}`);
+			}
+			if (error) {
+				console.error(error.message);
+				// consume response data to free up memory
+				res.resume();
+			}
+			
+			res.setEncoding('utf8');
+			let rawData = '';
+			res.on('data', (chunk) => { rawData += chunk; });
+			res.on('end', () => {
+				try {
+					const parsedData = JSON.parse(rawData);
+					resolve(parsedData);
+				} catch (e) {
+					reject(e.message);
+				}
+			});
+		}).on('error', (e) => {
+			reject(`Erreur reçue : ${e.message}`);
+		}).end();
+	})
+}
+
+// -------------------------------------------------
+// Get coords from huntr.gg redirect ! (UNUSED)
 function getCoords(pathURL) {
 	var http = require('http');
 	var options = {method: 'GET', host: 'huntr.gg', path: pathURL};
@@ -1024,6 +1067,12 @@ function weatherPost() {
 			} else {
 				var boost = "---";
 				var thumbnailWeather = "https://pbs.twimg.com/profile_images/879422659620163584/wudfVGeL_400x400.jpg";
+				for (i = 0; i < weatherBoost.weatherList.length; i++) {
+					if (weatherBoost.synonymes[i].indexOf(response[0].IconPhrase) !== -1) {
+						var boost = weatherBoost.boostList[i];
+				var thumbnailWeather = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/weather/"+weatherBoost.weatherIcon[i];
+					}
+				}
 			}
 			// Create Rich Embed			
 			var colorForEmbed = "#43B581";
@@ -1033,6 +1082,7 @@ function weatherPost() {
 				.setDescription("**"+response[0].IconPhrase+"** avec "+response[0].Temperature.Value+"°C\n\n**Boost : "+boost+"**")
 				.setURL(response[0].Link)
 				.setThumbnail(thumbnailWeather)
+				.setFooter("AccuWeather.com","https://pbs.twimg.com/profile_images/879422659620163584/wudfVGeL_400x400.jpg")
 			
 			channelWeather.send({embed}).catch(console.error);
 			console.log("Weather posted !");
@@ -1070,8 +1120,8 @@ function weather() {
 			res.on('data', (chunk) => { rawData += chunk; });
 			res.on('end', () => {
 				try {
-					const parsedData = JSON.parse(rawData);
-					resolve(parsedData);					
+					//const parsedData = JSON.parse(rawData);
+					resolve(rawData);					
 				} catch (e) {
 					reject(e.message);
 				}
