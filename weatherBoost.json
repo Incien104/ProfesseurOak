@@ -4,9 +4,9 @@
 	"weatherIcon": ["weather_sunny.png","weather_clear_0.png","weather_rain.png","weather_partlycloudy_day.png","weather_cloudy.png","weather_windy.png","weather_snow.png","weather_fog.png","Extreme_2.png"],
 	"synonymes": [
 		["Clair"],
-		["Clair"],
+		["Clair","Généralement dégagé"],
 		["Pluie légère"],
-		["Nuages intermittents"],
+		["Nuages intermittents","Partiellement nuageux"],
 		["Généralement nuageux"],
 		["Bourrasques"],
 		["Flocons"],

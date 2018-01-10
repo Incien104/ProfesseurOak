@@ -1,11 +1,18 @@
 // ** Description **
-// ModeratorBot, v2.6.0, developed by Incien104
+// ProfesseurOak, v2.7.0, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
-// Works on Heroku server using a worker dyno and node.js
+// Works on Heroku server using a node.js worker dyno
+// Require discord.js and request
 
-// Init
-const botVersion = "v2.6.0";
-const botVersionDate = "07/01/2018";
+
+// =================================================
+//                  INITIALIZATION
+// =================================================
+
+// -------------------------------------------------
+// Main variables
+const botVersion = "v2.7.0";
+const botVersionDate = "09/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -18,12 +25,13 @@ var mega_primal_xy = require('./mega_primal_xy.json');
 var weatherBoost = require('./weatherBoost.json');
 var contributors_backup = require('./contributors.json');
 var contributors;
-	
-var bot = new Discord.Client();
 
-// Bot login
+// -------------------------------------------------
+// Bot creation and login
+var bot = new Discord.Client();
 bot.login(process.env.BOT_TOKEN);
 
+// -------------------------------------------------
 // Bot start on Heroku server, including settings for scheduled announcements
 bot.on('ready', () => {    
     // Bot ready !
@@ -38,8 +46,10 @@ bot.on('ready', () => {
 	weatherPost();
 });
 
+
 // =================================================
-// Bot's features
+//                  BOT'S COMMANDS
+// =================================================
 
 // -------------------------------------------------
 // Create an event listener for new guild members
@@ -72,7 +82,7 @@ bot.on('guildMemberRemove', member => {
   if (!channel) return;
   // Send the message, mentioning the member
   if (member.guild.name === chansLists.guildName) {
-	channel.send(member.displayName+" *vient de partir. Bye bye...* :vulcan: ").catch(console.error);
+	channel.send("**"+member.displayName+"** *vient de partir. Bye bye...* :vulcan: ").catch(console.error);
 	botPostLog(member.displayName+" a quitté ou a été expulsé/banni !");
   }
 });
@@ -88,13 +98,14 @@ bot.on('guildMemberUpdate', (oldMember,newMember) => {
 });
 
 // -------------------------------------------------
-// Responding messages starting with !
+// Responding messages starting with "!"
 bot.on('message', message => {
 	var user = message.member; // user as a GuildMember
 	if (message.guild !== null && user !== null) {
 		var userRoles = user.roles; // roles as a Role Collection
 		
-		// Commands to the bot : starting with !
+		// -----------------------------------------------
+		// Commands to the bot in guild, starting with "!"
 		if (message.content.substring(0, 1) === '!' && message.guild.name === chansLists.guildName) {
 			var args = message.content.substring(1).split(' ');
 			var cmd = args[0];
@@ -103,7 +114,8 @@ bot.on('message', message => {
 				cmd = "equipe";
 			}
         
-			switch(cmd) {			
+			switch(cmd) {
+				// -------------		
 				// Ping function
 				case 'oakping':
 					if (userRoles.find("name","@Admins")) {
@@ -113,6 +125,7 @@ bot.on('message', message => {
 					}
 				break;	
 				
+				// ----------------
 				// Restart function
 				case 'oakrestart':
 					if (userRoles.find("name","@Admins")) {
@@ -122,6 +135,7 @@ bot.on('message', message => {
 					}
 				break;
 				
+				// -------------
 				// Help function
 				case 'oakhelp':
 					if (userRoles.find("name","@Admins") && message.channel.name === chansLists.chanBotConfig) {						
@@ -157,6 +171,7 @@ bot.on('message', message => {
 					}
 				break;
 				
+				// -------------
 				// Test function
 				case 'oaktest':
 					if (userRoles.find("name","@Admins")) {
@@ -166,6 +181,7 @@ bot.on('message', message => {
 					}
 				break;
 				
+				// --------------------
 				// Annoucement function
 				case 'annonce':
 					if (userRoles.find("name","@Admins")) {
@@ -196,7 +212,8 @@ bot.on('message', message => {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
 				break;
-			
+				
+				// ---------------
 				// Roling function
 				case 'equipe':
 					message.reply("commande désactivée !");
@@ -244,7 +261,8 @@ bot.on('message', message => {
 					}
 					*/
 				break;
-			
+				
+				// ------------------------------------------------------
 				// Mute function (mute a member in a single channel only)
 				case 'mute':
 					if (userRoles.find("name","@Admins") || userRoles.find("name","@Mods")) {					
@@ -274,7 +292,8 @@ bot.on('message', message => {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
 				break;
-			
+				
+				// ----------------------------------------------------------
 				// UnMute function (unmute a member in a single channel only)
 				case 'unmute':
 					if (userRoles.find("name","@Admins") || userRoles.find("name","@Mods")) {					
@@ -301,7 +320,8 @@ bot.on('message', message => {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
 				break;
-			
+				
+				// --------------------------------------------------
 				// SuperMute function (mute a member on all channels)
 				case 'supermute':
 					if (userRoles.find("name","@Admins")) {					
@@ -344,7 +364,8 @@ bot.on('message', message => {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
 					}
 				break;
-			
+				
+				// -------------------
 				// SperUnmute function
 				case 'superunmute':
 					if (userRoles.find("name","@Admins")) {					
@@ -369,7 +390,8 @@ bot.on('message', message => {
 					}
 				break;
 				
-				// Clear function
+				// -----------------------
+				// Clear messages function
 				case 'clear':
 					if (userRoles.find("name","@Admins")) {
 						var channelToClear = message.channel;
@@ -403,6 +425,7 @@ bot.on('message', message => {
 					}
 				break;
 				
+				// ---------------------------
 				// Commands to start Huntr Bot
 				case 'starthuntr':
 					if (userRoles.find("name","@Admins")) {
@@ -417,6 +440,7 @@ bot.on('message', message => {
 					}
 				break;
 				
+				// ------------------------------
 				// Commands to start GymHuntr Bot
 				case 'startgymhuntr':
 					if (userRoles.find("name","@Admins")) {
@@ -430,6 +454,7 @@ bot.on('message', message => {
 					}
 				break;
 				
+				// ----------------------------
 				// Pokedex translation function
 				case 'oaktrad':
 					if (message.channel.name === chansLists.chanPokedex) {
@@ -476,6 +501,7 @@ bot.on('message', message => {
 					}
 				break;
 				
+				// ----------------------
 				// Pokedex shiny function
 				case 'oakshiny':
 					if (message.channel.name === chansLists.chanPokedex) {
@@ -540,6 +566,7 @@ bot.on('message', message => {
 					}
 				break;
 				
+				// -------------------------------
 				// Pokedex Unown Alphabet function
 				case 'oakunown':
 					if (message.channel.name === chansLists.chanPokedex) {
@@ -564,6 +591,7 @@ bot.on('message', message => {
 					}
 				break;
 				
+				// ---------------------
 				// Pokedex mega function
 				case 'oakmega':
 					if (message.channel.name === chansLists.chanPokedex) {
@@ -662,6 +690,7 @@ bot.on('message', message => {
 				message.channel.send({embed}).catch(console.error);
 			}
 		} else {
+			// -----------------------------------
 			// Banned Words : check entire message
 			if (message.guild.name === chansLists.guildName && chansLists.chanFreeFromBannedWords.indexOf(message.channel.name) === -1 && !user.roles.find("name","@Bots")) {
 				var messageWords = message.content.split(' ');
@@ -692,9 +721,8 @@ bot.on('message', message => {
 						.catch(console.error);
 				}				
 			} else if (message.channel.name === chansLists.chanScanPokemon) {
-			// ------------------------------------------------------------------------------------------------
+			// ----------------------------------------------------------------------------------------------
 			// Scanned Pokemon Personal Alert : check HuntrBot messages to alert people with private messages
-			// ------------------------------------------------------------------------------------------------
 				var pokemonNumber = "";
 				var pokemonNameFr = "";
 				var pokemonNameEn = "";
@@ -779,7 +807,7 @@ bot.on('message', message => {
 					var contributorID = "";
 					for (k in contributors.list) {
 						contributorID = contributors.list[k].id;
-						if (contributors.list[k].activated === 1 && contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && (contributors.list[k].areas.indexOf(areasNumber) !== -1 || pokemonNumber === 201)) {
+						if (contributors.list[k].activated === 1 && contributors.list[k].notify === 1 && ((contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && contributors.list[k].areas.indexOf(areasNumber) !== -1) || pokemonNumber === 201)) {
 							// Send a private message
 							memberToAlert = message.guild.members.find('id', contributorID);
 							if (memberToAlert !== null) {									
@@ -794,17 +822,19 @@ bot.on('message', message => {
 			}
 		}
 	} else {
-		// Commands to the bot : starting with !
+		// -------------------------------------------------------------
+		// Commands to the bot using private messages, starting with "!"
 		if (message.content.substring(0, 1) === '!') {
 			var args = message.content.substring(1).split(' ');
 			var cmd = args[0];
         
-			switch(cmd) {				
+			switch(cmd) {
+				// ----------------------------------------
 				// Commands to see contributor informations
 				case 'infoscan':
 					for (k in contributors.list) {
 						if (contributors.list[k].id === message.author.id) {
-							message.channel.send("**Activé :** "+contributors.list[k].activated+"\n**Zones :** "+contributors.list[k].areas+"\n**Notifications personnalisées :** "+contributors.list[k].pokemons.sort(function(a, b){return a-b})+"\n\n**Scan global :** "+scanFilter.list.sort(function(a, b){return a-b})).catch(console.error);
+							message.channel.send("**Compte activé :** "+contributors.list[k].activated+"\n**Notifications activées :** "+contributors.list[k].notify+"\n**Zones :** "+contributors.list[k].areas+"\n**Notifications personnalisées :** "+contributors.list[k].pokemons.sort(function(a, b){return a-b})+"\n\n**Scan global :** "+scanFilter.list.sort(function(a, b){return a-b})).catch(console.error);
 							break;
 						}
 					}
