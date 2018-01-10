@@ -1,5 +1,5 @@
 {
-	"weatherList": ["Sunny","Clear","Rainy","Partly_Cloudy","Overcast","Windy","Snow","Fog","Extreme"],
+	"weatherList": ["Sunny","Clear","Rainy","Partly Cloudy","Overcast","Windy","Snow","Fog","Extreme"],
 	"weatherListFR": ["Ensoleillé","Dégagé","Pluie","Eclaircies","Nuageux","Vent","Neige","Brouillard","Extreme"],
 	"boostList": ["PLANTE, SOL, FEU","PLANTE, SOL, FEU","EAU, ÉLECTRIQUE, INSECTE","NORMAL, ROCHE","FÉE, COMBAT, POISON","DRAGON, VOL, PSY","GLACE, ACIER","TÉNÈBRE, SPECTRE","---"],
 	"weatherIcon": ["weather_sunny.png","weather_clear_0.png","weather_rain.png","weather_partlycloudy_day.png","weather_cloudy.png","weather_windy.png","weather_snow.png","weather_fog.png","Extreme_2.png"]
