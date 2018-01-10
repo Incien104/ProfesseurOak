@@ -961,8 +961,8 @@ function getWeather() {
 			res.on('end', () => {
 				try {
 					//<img src="assets/img/weather/weatherIcon_small_Sunny.png"></img>
-					rawData = rawData.split("assets/img/weather/weatherIcon_small_");
-					rawData = rawData[1].split(".png");
+					rawData = rawData.split("<img src=\"assets/img/weather/weatherIcon_small_");
+					rawData = rawData[1].split(".png\"></img>");
 					weather = rawData[0];
 					resolve(weather);
 				} catch (e) {
