@@ -676,10 +676,9 @@ bot.on('message', message => {
 							case '@RaidEX':
 								var targetRole = user.guild.roles.find("name",'@RaidEX');
 								var membersOfTheGuild = user.guild.members;
-								console.log(membersOfTheGuild);
 								var j = 0;
 								for (i in membersOfTheGuild) {
-									console.log(membersOfTheGuild[i]);
+										console.log(membersOfTheGuild[i]);
 									if (membersOfTheGuild[i].roles.find("name","@RaidEX")) {
 										membersOfTheGuild[i].removeRole(targetRole).catch(console.error);
 										j = j+1;
