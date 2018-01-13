@@ -675,17 +675,15 @@ bot.on('message', message => {
 						switch (role) {
 							case '@RaidEX':
 								var targetRole = user.guild.roles.find("name",'@RaidEX');
-								var affectedMembers = targetRole.members;
-								if (affectedMembers.length !== undefined) {
-									for (i in affectedMembers) {
-										memberToFlushRole = user.guild.members.find("id",affectedMembers[i].id);
-										console.log(memberToFlushRole);
-										memberToFlushRole.removeRole(targetRole).catch(console.error);
+								var membersOfTheGuild = user.guild.members;
+								var j = 0;
+								for (i in membersOfTheGuild) {
+									if (membersOfTheGuild[i].roles.find("name","@RaidEX")) {
+										membersOfTheGuild[i].removeRole(targetRole).catch(console.error);
+										j = j+1;
 									}
-									message.reply("rôle @RaidEX enlevé à "+affectedMembers.length+" membres !");
-								} else {
-									message.reply("aucun membre n'a ce rôle !");
 								}
+								message.reply("rôle @RaidEX enlevé à "+j+" membres !");
 							break;
 						}
 					} else {
