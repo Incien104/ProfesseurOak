@@ -675,10 +675,13 @@ bot.on('message', message => {
 						switch (role) {
 							case '@RaidEX':
 								var targetRole = user.guild.roles.find("name",'@RaidEX');
+								console.log(targetRole);
 								var affectedMembers = targetRole.members;
+								console.log(affectedMembers);
 								if (affectedMembers !== undefined) {
 									for (i in affectedMembers) {
 										memberToFlushRole = user.guild.members.find("id",affectedMembers[i].id);
+										console.log(memberToFlushRole);
 										memberToFlushRole.removeRole(targetRole).catch(console.error);
 									}
 									message.reply("Rôle @RaidEX enlevé à "+affectedMembers.length+" membres !");
