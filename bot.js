@@ -676,7 +676,7 @@ bot.on('message', message => {
 							case '@RaidEX':
 								var targetRole = user.guild.roles.find("name",'@RaidEX');
 								var affectedMembers = targetRole.members;
-								if (affectedMembers !== null) {
+								if (affectedMembers !== undefined) {
 									for (i in affectedMembers) {
 										memberToFlushRole = user.guild.members.find("id",affectedMembers[i].id);
 										memberToFlushRole.removeRole(targetRole).catch(console.error);
