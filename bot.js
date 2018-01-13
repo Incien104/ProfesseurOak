@@ -1,5 +1,5 @@
 // ** Description **
-// ProfesseurOak, v2.7.1, developed by Incien104
+// ProfesseurOak, v2.7.2, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a node.js worker dyno
 // Require discord.js and request
@@ -11,8 +11,8 @@
 
 // -------------------------------------------------
 // Main variables
-const botVersion = "v2.7.1";
-const botVersionDate = "10/01/2018";
+const botVersion = "v2.7.2";
+const botVersionDate = "13/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -674,11 +674,11 @@ bot.on('message', message => {
 						
 						switch (role) {
 							case '@RaidEX':
-								var targetRole = member.guild.roles.find(name,'@RaidEX');
+								var targetRole = user.guild.roles.find(name,'@RaidEX');
 								var affectedMembers = targetRole.members;
 								if (affectedMembers !== null) {
 									for (i in affectedMembers) {
-										memberToFlushRole = member.guild.members.find(id,affectedMembers[i].id);
+										memberToFlushRole = user.guild.members.find(id,affectedMembers[i].id);
 										memberToFlushRole.removeRole(targetRole).catch(console.error);
 									}
 									message.reply(affectedMembers.length+" membres dont le rôle @RaidEX a été enlevé !");
