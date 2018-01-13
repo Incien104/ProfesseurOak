@@ -664,6 +664,32 @@ bot.on('message', message => {
 							message.channel.send("Entrez le numéro du pokémon pour voir sa forme Méga/Antique...").catch(console.error);
 						}
 					}
+				break;	
+				
+				// ----------------
+				// Flush Role function
+				case 'flushrole':
+					if (userRoles.find("name","@Admins")) {
+						var role = args[1];
+						
+						switch (role) {
+							case '@RaidEX':
+								var targetRole = member.guild.roles.find(name,'@RaidEX');
+								var affectedMembers = targetRole.members;
+								if (affectedMembers !== null) {
+									for (i in affectedMembers) {
+										memberToFlushRole = member.guild.members.find(id,affectedMembers[i].id);
+										memberToFlushRole.removeRole(targetRole).catch(console.error);
+									}
+									message.reply(affectedMembers.length+" membres dont le rôle @RaidEX a été enlevé !");
+								} else {
+									message.reply("Aucun membre n'a ce rôle !");
+								}
+							break;
+						}
+					} else {
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+					}
 				break;
 				
 				// -------------
