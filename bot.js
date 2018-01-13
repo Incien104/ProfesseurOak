@@ -682,9 +682,9 @@ bot.on('message', message => {
 										console.log(memberToFlushRole);
 										memberToFlushRole.removeRole(targetRole).catch(console.error);
 									}
-									message.reply("Rôle @RaidEX enlevé à "+affectedMembers.length+" membres !");
+									message.reply("rôle @RaidEX enlevé à "+affectedMembers.length+" membres !");
 								} else {
-									message.reply("Aucun membre n'a ce rôle !");
+									message.reply("aucun membre n'a ce rôle !");
 								}
 							break;
 						}
