@@ -674,14 +674,14 @@ bot.on('message', message => {
 						
 						switch (role) {
 							case '@RaidEX':
-								var targetRole = user.guild.roles.find(name,'@RaidEX');
+								var targetRole = user.guild.roles.find("name",'@RaidEX');
 								var affectedMembers = targetRole.members;
 								if (affectedMembers !== null) {
 									for (i in affectedMembers) {
-										memberToFlushRole = user.guild.members.find(id,affectedMembers[i].id);
+										memberToFlushRole = user.guild.members.find("id",affectedMembers[i].id);
 										memberToFlushRole.removeRole(targetRole).catch(console.error);
 									}
-									message.reply(affectedMembers.length+" membres dont le rôle @RaidEX a été enlevé !");
+									message.reply("Rôle @RaidEX enlevé à "+affectedMembers.length+" membres !");
 								} else {
 									message.reply("Aucun membre n'a ce rôle !");
 								}
