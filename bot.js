@@ -12,7 +12,7 @@
 // -------------------------------------------------
 // Main variables
 const botVersion = "v3.0.0";
-const botVersionDate = "16/01/2018";
+const botVersionDate = "18/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -682,6 +682,8 @@ bot.on('message', message => {
 						} else if (args.length === 8) {
 							attack = args[5]+" "+args[6]+" "+args[7];
 						}
+						
+						message.channel.send(pokemon+" "+iv+" "+boss+" "+bossLvl+" "+attack).catch(console.error);
 						
 						var pokemonName = pokemon.capitalize();
 						var pokemonNumber = 0;
