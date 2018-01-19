@@ -37,7 +37,7 @@ bot.login(process.env.BOT_TOKEN);
 bot.on('ready', () => {    
     // Bot ready !
 	botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
-	bot.user.setActivity('PokémonGO');
+	bot.user.setGame('Pokémon GO');
 	loadJSONFile("start");	
 	// 12h scheduled app restarting
     var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
