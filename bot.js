@@ -707,12 +707,17 @@ bot.on('message', message => {
 							var movePower = movesTypesStats.movePower[numAttack];
 							var moveType = movesTypesStats.moveType[numAttack];
 							
+							message.channel.send("Move power = "+movePower).catch(console.error);
+							message.channel.send("Move type = "+moveType).catch(console.error);
+							
 							// Check if STAB
 							if (movesTypesStats.pokemonType[numPokemon].indexOf(moveType) !== -1) {
-								STAB = 1.2;
+								var STAB = 1.2;
 							} else {
-								STAB = 1;
+								var STAB = 1;
 							}
+							
+							message.channel.send("STAB = "+STAB).catch(console.error);
 							
 							// Compute effectiveness
 							var effectiveness = 1;
@@ -722,11 +727,17 @@ bot.on('message', message => {
 								effectiveness = effectiveness*moveTypeEffectiveness[movesTypesStats.typeNameEn.indexOf(typeBoss[i])];
 							}
 							
+							message.channel.send("Effectiveness = "+effectiveness).catch(console.error);
+							
 							var attackerBaseATK = movesTypesStats.pokemonStat[numPokemon][1];
 							var bossBaseDEF = movesTypesStats.pokemonStat[numBoss][2];
 							var bossCpM = movesTypesStats.bossCpM[bossLvl-1];
 							var lvlBreakpoint = new Array();
 							var lvlBreakpointWeather = new Array();
+							
+							message.channel.send("Attacker ATK = "+attackerBaseATK).catch(console.error);
+							message.channel.send("Boss DEF = "+bossBaseDEF).catch(console.error);
+							message.channel.send("bossCpM = "+bossCpM).catch(console.error);
 							
 							// Compute Breakpoints
 							for (j in movesTypesStats.attackerCpM) {
