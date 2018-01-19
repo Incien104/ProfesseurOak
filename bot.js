@@ -702,9 +702,7 @@ bot.on('message', message => {
 							numAttack = movesTypesStats.moveNameFr.indexOf(attackName);
 						}
 						
-						message.channel.send(numPokemon+" "+numBoss+" "+numAttack).catch(console.error);
-						
-						if (numPokemon === -1 && numBoss === -1 && numAttack === -1) {
+						if (numPokemon !== -1 && numBoss !== -1 && numAttack !== -1) {
 							var weatherBoost = 1.2;
 							var movePower = movesTypesStats.movePower[numAttack];
 							var moveType = movesTypesStats.moveType[numAttack];
