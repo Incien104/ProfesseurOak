@@ -1,0 +1,15 @@
+{
+	"guildName": "Pokémon GO Sherbrooke",
+	"chanBotLog": "bot-logs",
+	"chanBotConfig": "bot-config",
+	"chanAdmins": "admins",
+	"chanGeneral": "general",
+	"chanFreeFromBannedWords": ["bot-logs","bot-config","admins","breakfast_club","underground","scan-pokemons","scan-raids"],
+	"chanScanPokemon": "scan-pokemons",
+	"chanScanRaid": "scan-raids",
+	"chanPokedex": "pokedex",
+	"chanStat": "demande-a-oak",
+	"chanNests": "nests",
+	"chanTuto": "tutoriel-et-assistance",
+	"chanWeather": "meteo"
+}
