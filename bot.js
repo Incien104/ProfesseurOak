@@ -683,8 +683,6 @@ bot.on('message', message => {
 							attack = args[5]+" "+args[6]+" "+args[7];
 						}
 						
-						message.channel.send(pokemon+" "+iv+" "+boss+" "+bossLvl+" "+attack).catch(console.error);
-						
 						var pokemonName = pokemon.capitalize();
 						var pokemonNumber = 0;
 						var numPokemon = pokedex_en.list.indexOf(pokemonName);
@@ -703,6 +701,8 @@ bot.on('message', message => {
 						if (numAttack === -1) {
 							numAttack = movesTypesStats.moveNameFr.indexOf(attackName);
 						}
+						
+						message.channel.send(numPokemon+" "+numBoss+" "+numAttack).catch(console.error);
 						
 						if (numPokemon === -1 && numBoss === -1 && numAttack === -1) {
 							var weatherBoost = 1.2;
