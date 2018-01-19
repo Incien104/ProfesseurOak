@@ -736,6 +736,7 @@ bot.on('message', message => {
 							var lvl = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpoint)];
 							var lvlWeather = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpointWeather)];
 							
+							message.channel.send(lvlBreakpointWeather).catch(console.error);
 							message.channel.send("Sans boost météo : Niveau "+lvl+"\nAvec boost météo : Niveau "+lvlWeather).catch(console.error);
 						} else {
 							message.channel.send("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...").catch(console.error);
