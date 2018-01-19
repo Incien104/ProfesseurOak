@@ -1,5 +1,5 @@
 // ** Description **
-// ProfesseurOak, v2.7.2, developed by Incien104
+// ProfesseurOak, 3.0.0, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a node.js worker dyno
 // Require discord.js and request
@@ -11,19 +11,20 @@
 
 // -------------------------------------------------
 // Main variables
-const botVersion = "v2.7.2";
-const botVersionDate = "13/01/2018";
+const botVersion = "v3.0.0";
+const botVersionDate = "16/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
-var chansLists = require('./chansLists.json');
-var bannedWords = require('./bannedWords.json');
-var scanFilter = require('./scanFilter.json');
-var pokedex_fr = require('./pokedex_fr.json');
-var pokedex_en = require('./pokedex_en.json');
-var mega_primal_xy = require('./mega_primal_xy.json');
-var weatherBoost = require('./weatherBoost.json');
-var contributors_backup = require('./contributors.json');
+var chansLists = require('./parameters/chansLists.json');
+var bannedWords = require('./parameters/bannedWords.json');
+var scanFilter = require('./scanUtils/scanFilter.json');
+var pokedex_fr = require('./pokemonUtils/pokedex_fr.json');
+var pokedex_en = require('./pokemonUtils/pokedex_en.json');
+var movesTypesStats = require('./pokemonUtils/movesTypesStats.json');
+var mega_primal_xy = require('./pokemonUtils/mega_primal_xy.json');
+var weatherBoost = require('./pokemonUtils/weatherBoost.json');
+var contributors_backup = require('./scanUtils/contributors.json');
 var contributors;
 
 // -------------------------------------------------
@@ -36,6 +37,7 @@ bot.login(process.env.BOT_TOKEN);
 bot.on('ready', () => {    
     // Bot ready !
 	botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
+	bot.user.setActivity('PokémonGO');
 	loadJSONFile("start");	
 	// 12h scheduled app restarting
     var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
@@ -565,7 +567,7 @@ bot.on('message', message => {
 						var embed = new Discord.RichEmbed()
 							.setTitle("Formes de Unown/Zarbi (201) : ")
 							.setColor(colorForEmbed)
-							.setImage("https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/unown_alphabet.png")
+							.setImage("https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/unown_alphabet.png")
 						message.channel.send({embed}).catch(console.error);
 					}
 				break;
@@ -576,7 +578,7 @@ bot.on('message', message => {
 						var embed = new Discord.RichEmbed()
 							.setTitle("Formes de Unown/Zarbi (201) : ")
 							.setColor(colorForEmbed)
-							.setImage("https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/unown_alphabet.png")
+							.setImage("https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/unown_alphabet.png")
 						message.channel.send({embed}).catch(console.error);
 					}
 				break;
@@ -666,6 +668,81 @@ bot.on('message', message => {
 					}
 				break;	
 				
+				// ---------------------
+				// Breakpoints function
+				case 'breakpoint':
+					if (message.channel.name === chansLists.chanStat) {
+						var pokemon = args[1];
+						var iv = args[2];
+						var boss = args[3];
+						var bossLvl = args[4];
+						var attack = args[5];
+						if (args.length === 7) {
+							attack = args[5]+" "+args[6];
+						} else if (args.length === 8) {
+							attack = args[5]+" "+args[6]+" "+args[7];
+						}
+						
+						var pokemonName = pokemon.capitalize();
+						var pokemonNumber = 0;
+						var numPokemon = pokedex_en.list.indexOf(pokemonName);
+						if (numPokemon === -1) {
+							numPokemon = pokedex_fr.list.indexOf(pokemonName);
+						}
+						var bossName = boss.capitalize();
+						var bossNumber = 0;
+						var numBoss = pokedex_en.list.indexOf(bossName);
+						if (numBoss === -1) {
+							numBoss = pokedex_fr.list.indexOf(bossName);
+						}
+						var attackName = attack.capitalize();
+						var attackNumber = 0;
+						var numAttack = movesTypesStats.moveNameEn.indexOf(attackName);
+						if (numAttack === -1) {
+							numAttack = movesTypesStats.moveNameFr.indexOf(attackName);
+						}
+						
+						if (numPokemon === -1 && numBoss === -1 && numAttack === -1) {
+							var weatherBoost = 1.2;
+							var movePower = movesTypesStats.movePower[numAttack];
+							var moveType = movesTypesStats.moveType[numAttack];
+							
+							// Check if STAB
+							if (movesTypesStats.pokemonType[numPokemon].indexOf(moveType) !== -1) {
+								STAB = 1.2;
+							} else {
+								STAB = 1;
+							}
+							
+							// Compute effectiveness
+							var effectiveness = 1;
+							var moveTypeEffectiveness = movesTypesStats.typeEffectiveness[movesTypesStats.typeNameEn.indexOf(moveType)];
+							var typeBoss = movesTypesStats.pokemonType[numBoss];
+							for (i in typeBoss) {
+								effectiveness = effectiveness*moveTypeEffectiveness[movesTypesStats.typeNameEn.indexOf(typeBoss[i])];
+							}
+							
+							var attackerBaseATK = movesTypesStats.pokemonStat[numPokemon][1];
+							var bossBaseDEF = movesTypesStats.pokemonStat[numBoss][2];
+							var bossCpM = movesTypesStats.bossCpM[bossLvl-1];
+							var lvlBreakpoint = new Array();
+							var lvlBreakpointWeather = new Array();
+							
+							// Compute Breakpoints
+							for (j in movesTypesStats.attackerCpM) {
+								lvlBreakpoint.push(Math.floor(1+0.5*movePower*STAB*effectiveness*(attackerBaseATK+iv)/(bossBaseDEF+15)*movesTypesStats.attackerCpM[j]/bossCpM));
+								lvlBreakpointWeather.push(Math.floor(1+0.5*movePower*weatherBoost*STAB*effectiveness*(attackerBaseATK+iv)/(bossBaseDEF+15)*movesTypesStats.attackerCpM[j]/bossCpM));
+							}
+							var lvl = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpoint)];
+							var lvlWeather = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpointWeather)];
+							
+							message.channel.send("Sans boost météo : Niveau "+lvl+"\nAvec boost météo : Niveau "+lvlWeather).catch(console.error);
+						} else {
+							message.channel.send("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...").catch(console.error);
+						}
+					}
+				break;	
+				
 				// ----------------
 				// Flush Role function
 				case 'flushrole':
@@ -678,7 +755,6 @@ bot.on('message', message => {
 								var membersOfTheGuild = user.guild.members;
 								var j = 0;
 								for (i in membersOfTheGuild) {
-										console.log(membersOfTheGuild[i]);
 									if (membersOfTheGuild[i].roles.find("name","@RaidEX")) {
 										membersOfTheGuild[i].removeRole(targetRole).catch(console.error);
 										j = j+1;
@@ -785,7 +861,7 @@ bot.on('message', message => {
 					pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
 					pokemonNameEn = pokedex_en.list[pokemonNumber-1];
 					var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
-					// var thumbnail = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/pokemon_thumbnails/"+pokemonNumber+".png";
+					// var thumbnail = "https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/pokemonThumbnails/"+pokemonNumber+".png";
 					// var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
 					
 					// Define the zone
@@ -899,6 +975,26 @@ function isInt(value) {
 // Capitalize first letter !
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+// -------------------------------------------------
+// Find index of max value of an array !
+function indexOfMax(arr) {
+    if (arr.length === 0) {
+        return -1;
+    }
+
+    var max = arr[0];
+    var maxIndex = 0;
+
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            maxIndex = i;
+            max = arr[i];
+        }
+    }
+
+    return maxIndex;
 }
 
 // -------------------------------------------------
