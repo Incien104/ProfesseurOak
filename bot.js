@@ -740,12 +740,14 @@ bot.on('message', message => {
 							
 							// Compute Breakpoints
 							for (j in movesTypesStats.attackerCpM) {
-								lvlBreakpoint.push(Math.floor(1+0.5*movePower*STAB*effectiveness*(attackerBaseATK+iv)/(bossBaseDEF+15)*movesTypesStats.attackerCpM[j]/bossCpM));
-								lvlBreakpointWeather.push(Math.floor(1+0.5*movePower*weatherBoost*STAB*effectiveness*(attackerBaseATK+iv)/(bossBaseDEF+15)*movesTypesStats.attackerCpM[j]/bossCpM));
+								lvlBreakpoint.push(Math.floor(1 + 0.5 * (movePower * STAB * effectiveness) * ((attackerBaseATK + iv) / (bossBaseDEF + 15)) * (movesTypesStats.attackerCpM[j] / bossCpM)));
+								lvlBreakpointWeather.push(Math.floor(1 + 0.5 * (movePower * weatherBoost * STAB * effectiveness) * ((attackerBaseATK + iv) / (bossBaseDEF + 15)) * (movesTypesStats.attackerCpM[j] / bossCpM)));
 							}
 							var lvl = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpoint)];
 							var lvlWeather = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpointWeather)];
 							
+							message.channel.send("attackerCpM = "+movesTypesStats.attackerCpM[j]+"\nBreakpoints : "+lvlBreakpointWeather).catch(console.error);
+							message.channel.send("attackerCpM = "+movesTypesStats.attackerCpM[j]+"\nBreakpoints : "+lvlBreakpointWeather).catch(console.error);
 							message.channel.send("attackerCpM = "+movesTypesStats.attackerCpM[j]+"\nBreakpoints : "+lvlBreakpointWeather).catch(console.error);
 							message.channel.send("Sans boost météo : Niveau "+lvl+"\nAvec boost météo : Niveau "+lvlWeather).catch(console.error);
 						} else {
