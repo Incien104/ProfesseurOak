@@ -673,7 +673,7 @@ bot.on('message', message => {
 				case 'breakpoint':
 					if (message.channel.name === chansLists.chanStat) {
 						var pokemon = args[1];
-						var iv = args[2];
+						var iv = parseInt(args[2]);
 						var boss = args[3];
 						var bossLvl = args[4];
 						var attack = args[5];
@@ -731,23 +731,17 @@ bot.on('message', message => {
 							var movePowerCalc = 0.5 * (movePower * STAB * effectiveness);
 							var movePowerCalcWeather = 0.5 * (movePower * weatherBoost * STAB * effectiveness);
 							var pokeRatio = ((attackerBaseATK + iv) / (bossBaseDEF + 15));
-							message.channel.send("MovePowerCalcWeather = "+movePowerCalc+"\npokeRatio = "+pokeRatio).catch(console.error);
-							var damageText = "";
+							
 							// Compute Breakpoints
 							for (j in movesTypesStats.attackerCpM) {
 								var cpMRatio = (movesTypesStats.attackerCpM[j] / bossCpM);
-								var damage = 1 + movePowerCalc * pokeRatio * cpMRatio;
-								var damageWeather = 1 + movePowerCalcWeather * pokeRatio * cpMRatio;
-								damageText = damageText+" "+damageWeather;
 								
-								lvlBreakpoint.push(Math.floor(damage));
-								lvlBreakpointWeather.push(Math.floor(damageWeather));
+								lvlBreakpoint.push(Math.floor(1 + movePowerCalc * pokeRatio * cpMRatio));
+								lvlBreakpointWeather.push(Math.floor(1 + movePowerCalcWeather * pokeRatio * cpMRatio));
 							}
 							var lvl = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpoint)];
 							var lvlWeather = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpointWeather)];
 							
-							message.channel.send("cpMRatio : "+(movesTypesStats.attackerCpM[9] / bossCpM)).catch(console.error);
-							message.channel.send("Damage : "+damageText).catch(console.error);
 							message.channel.send("Sans boost météo : Niveau "+lvl+"\nAvec boost météo : Niveau "+lvlWeather).catch(console.error);
 						} else {
 							message.channel.send("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...\nCommande de la forme !breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque Pokémon Attaquant]").catch(console.error);
