@@ -675,12 +675,11 @@ bot.on('message', message => {
 						var pokemon = args[1];
 						var iv = parseInt(args[2]);
 						var boss = args[3];
-						var bossLvl = args[4];
-						var attack = args[5];
-						if (args.length === 7) {
-							attack = args[5].capitalize()+" "+args[6].capitalize();
-						} else if (args.length === 8) {
-							attack = args[5].capitalize()+" "+args[6].capitalize()+" "+args[7].capitalize();
+						var attack = args[4];
+						if (args.length === 6) {
+							attack = args[4].capitalize()+" "+args[5].capitalize();
+						} else if (args.length === 7) {
+							attack = args[4].capitalize()+" "+args[5].capitalize()+" "+args[6].capitalize();
 						}
 						
 						var pokemonName = pokemon.capitalize();
@@ -706,6 +705,8 @@ bot.on('message', message => {
 							var weatherBoost = 1.2;
 							var movePower = movesTypesStats.movePower[numAttack];
 							var moveType = movesTypesStats.moveType[numAttack];
+							var numBossLvl = movesTypesStats.raidBossName.indexOf(pokedex_en.list[numBoss]);
+							var bossLvl = movesTypesStats.raidBossLvl[numBossLvl];
 							
 							// Check if STAB
 							if (movesTypesStats.pokemonType[numPokemon].indexOf(moveType) !== -1) {
@@ -739,10 +740,13 @@ bot.on('message', message => {
 								lvlBreakpoint.push(Math.floor(1 + movePowerCalc * pokeRatio * cpMRatio));
 								lvlBreakpointWeather.push(Math.floor(1 + movePowerCalcWeather * pokeRatio * cpMRatio));
 							}
-							var lvl = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpoint)];
-							var lvlWeather = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpointWeather)];
 							
-							message.channel.send("Sans boost météo : Niveau "+lvl+"\nAvec boost météo : Niveau "+lvlWeather).catch(console.error);
+							var maxIndexBreakpoint = indexOfMax(lvlBreakpoint);
+							var maxIndexBreakpointWeather = indexOfMax(lvlBreakpointWeather);
+							var lvl = movesTypesStats.levelAttacker[maxIndexBreakpoint];
+							var lvlWeather = movesTypesStats.levelAttacker[maxIndexBreakpointWeather];
+							
+							message.channel.send("Sans boost météo : Dégâts = "+lvlBreakpoint[maxIndexBreakpoint]+" au Niveau "+lvl+"\nAvec boost météo : Dégâts = "+lvlBreakpointWeather[maxIndexBreakpointWeather]+" au Niveau "+lvlWeather).catch(console.error);
 						} else {
 							message.channel.send("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...\nCommande de la forme !breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque Pokémon Attaquant]").catch(console.error);
 						}
