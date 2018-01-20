@@ -731,12 +731,14 @@ bot.on('message', message => {
 							var movePowerCalc = 0.5 * (movePower * STAB * effectiveness);
 							var movePowerCalcWeather = 0.5 * (movePower * weatherBoost * STAB * effectiveness);
 							var pokeRatio = ((attackerBaseATK + iv) / (bossBaseDEF + 15));
-							
+							message.channel.send("MovePowerCalcWeather = "+movePowerCalc+"\npokeRatio = "+pokeRatio).catch(console.error);
+							var damageText = "";
 							// Compute Breakpoints
 							for (j in movesTypesStats.attackerCpM) {
 								var cpMRatio = (movesTypesStats.attackerCpM[j] / bossCpM);
 								var damage = 1 + movePowerCalc * pokeRatio * cpMRatio;
 								var damageWeather = 1 + movePowerCalcWeather * pokeRatio * cpMRatio;
+								damageText = damageText+" "+damageWeather;
 								
 								lvlBreakpoint.push(Math.floor(damage));
 								lvlBreakpointWeather.push(Math.floor(damageWeather));
@@ -744,7 +746,8 @@ bot.on('message', message => {
 							var lvl = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpoint)];
 							var lvlWeather = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpointWeather)];
 							
-							message.channel.send("Breakpoints : "+lvlBreakpointWeather).catch(console.error);
+							message.channel.send("cpMRatio : "+(movesTypesStats.attackerCpM[9] / bossCpM)).catch(console.error);
+							message.channel.send("Damage : "+damageText).catch(console.error);
 							message.channel.send("Sans boost météo : Niveau "+lvl+"\nAvec boost météo : Niveau "+lvlWeather).catch(console.error);
 						} else {
 							message.channel.send("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...\nCommande de la forme !breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque Pokémon Attaquant]").catch(console.error);
