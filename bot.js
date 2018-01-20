@@ -1,5 +1,5 @@
 // ** Description **
-// ProfesseurOak, 3.0.0, developed by Incien104
+// ProfesseurOak, 3.0.1, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works on Heroku server using a node.js worker dyno
 // Require discord.js and request
@@ -11,8 +11,8 @@
 
 // -------------------------------------------------
 // Main variables
-const botVersion = "v3.0.0";
-const botVersionDate = "18/01/2018";
+const botVersion = "v3.0.1";
+const botVersionDate = "20/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
@@ -746,7 +746,7 @@ bot.on('message', message => {
 							var lvl = movesTypesStats.levelAttacker[maxIndexBreakpoint];
 							var lvlWeather = movesTypesStats.levelAttacker[maxIndexBreakpointWeather];
 							
-							message.channel.send("Sans boost météo : Dégâts = "+lvlBreakpoint[maxIndexBreakpoint]+" au Niveau "+lvl+"\nAvec boost météo : Dégâts = "+lvlBreakpointWeather[maxIndexBreakpointWeather]+" au Niveau "+lvlWeather).catch(console.error);
+							message.channel.send("Dégâts max = "+lvlBreakpoint[maxIndexBreakpoint]+" au niveau **"+lvl+"** (**sans** boost météo)\nDégâts max = "+lvlBreakpointWeather[maxIndexBreakpointWeather]+" au niveau **"+lvlWeather+"** (**avec** boost météo)").catch(console.error);
 						} else {
 							message.channel.send("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...\nCommande de la forme !breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque Pokémon Attaquant]").catch(console.error);
 						}
