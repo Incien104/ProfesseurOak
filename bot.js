@@ -678,9 +678,9 @@ bot.on('message', message => {
 						var bossLvl = args[4];
 						var attack = args[5];
 						if (args.length === 7) {
-							attack = args[5]+" "+args[6];
+							attack = args[5].capitalize()+" "+args[6].capitalize();
 						} else if (args.length === 8) {
-							attack = args[5]+" "+args[6]+" "+args[7];
+							attack = args[5].capitalize()+" "+args[6].capitalize()+" "+args[7].capitalize();
 						}
 						
 						var pokemonName = pokemon.capitalize();
@@ -728,8 +728,8 @@ bot.on('message', message => {
 							
 							message.channel.send("Effectiveness = "+effectiveness).catch(console.error);
 							
-							var attackerBaseATK = movesTypesStats.pokemonStat[numPokemon][1];
-							var bossBaseDEF = movesTypesStats.pokemonStat[numBoss][2];
+							var attackerBaseATK = movesTypesStats.pokemonStat[numPokemon][0];
+							var bossBaseDEF = movesTypesStats.pokemonStat[numBoss][1];
 							var bossCpM = movesTypesStats.bossCpM[bossLvl-1];
 							var lvlBreakpoint = new Array();
 							var lvlBreakpointWeather = new Array();
@@ -746,12 +746,10 @@ bot.on('message', message => {
 							var lvl = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpoint)];
 							var lvlWeather = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpointWeather)];
 							
-							message.channel.send("attackerCpM = "+movesTypesStats.attackerCpM[j]+"\nBreakpoints : "+lvlBreakpointWeather).catch(console.error);
-							message.channel.send("attackerCpM = "+movesTypesStats.attackerCpM[j]+"\nBreakpoints : "+lvlBreakpointWeather).catch(console.error);
-							message.channel.send("attackerCpM = "+movesTypesStats.attackerCpM[j]+"\nBreakpoints : "+lvlBreakpointWeather).catch(console.error);
+							message.channel.send("Breakpoints : "+lvlBreakpointWeather).catch(console.error);
 							message.channel.send("Sans boost météo : Niveau "+lvl+"\nAvec boost météo : Niveau "+lvlWeather).catch(console.error);
 						} else {
-							message.channel.send("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...").catch(console.error);
+							message.channel.send("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...\nCommande de la forme !breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque Pokémon Attaquant]").catch(console.error);
 						}
 					}
 				break;	
