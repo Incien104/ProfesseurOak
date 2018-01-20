@@ -707,16 +707,12 @@ bot.on('message', message => {
 							var movePower = movesTypesStats.movePower[numAttack];
 							var moveType = movesTypesStats.moveType[numAttack];
 							
-							message.channel.send("Move power = "+movePower+"\nMove type = "+moveType).catch(console.error);
-							
 							// Check if STAB
 							if (movesTypesStats.pokemonType[numPokemon].indexOf(moveType) !== -1) {
 								var STAB = 1.2;
 							} else {
 								var STAB = 1;
 							}
-							
-							message.channel.send("STAB = "+STAB).catch(console.error);
 							
 							// Compute effectiveness
 							var effectiveness = 1;
@@ -726,22 +722,24 @@ bot.on('message', message => {
 								effectiveness = effectiveness*moveTypeEffectiveness[movesTypesStats.typeNameEn.indexOf(typeBoss[i])];
 							}
 							
-							message.channel.send("Effectiveness = "+effectiveness).catch(console.error);
-							
 							var attackerBaseATK = movesTypesStats.pokemonStat[numPokemon][0];
 							var bossBaseDEF = movesTypesStats.pokemonStat[numBoss][1];
 							var bossCpM = movesTypesStats.bossCpM[bossLvl-1];
 							var lvlBreakpoint = new Array();
 							var lvlBreakpointWeather = new Array();
 							
-							message.channel.send("Attacker ATK = "+attackerBaseATK).catch(console.error);
-							message.channel.send("Boss DEF = "+bossBaseDEF).catch(console.error);
-							message.channel.send("bossCpM = "+bossCpM).catch(console.error);
+							var movePowerCalc = 0.5 * (movePower * STAB * effectiveness);
+							var movePowerCalcWeather = 0.5 * (movePower * weatherBoost * STAB * effectiveness);
+							var pokeRatio = ((attackerBaseATK + iv) / (bossBaseDEF + 15));
 							
 							// Compute Breakpoints
 							for (j in movesTypesStats.attackerCpM) {
-								lvlBreakpoint.push(Math.floor(1 + 0.5 * (movePower * STAB * effectiveness) * ((attackerBaseATK + iv) / (bossBaseDEF + 15)) * (movesTypesStats.attackerCpM[j] / bossCpM)));
-								lvlBreakpointWeather.push(Math.floor(1 + 0.5 * (movePower * weatherBoost * STAB * effectiveness) * ((attackerBaseATK + iv) / (bossBaseDEF + 15)) * (movesTypesStats.attackerCpM[j] / bossCpM)));
+								var cpMRatio = (movesTypesStats.attackerCpM[j] / bossCpM);
+								var damage = 1 + movePowerCalc * pokeRatio * cpMRatio;
+								var damageWeather = 1 + movePowerCalcWeather * pokeRatio * cpMRatio;
+								
+								lvlBreakpoint.push(Math.floor(damage));
+								lvlBreakpointWeather.push(Math.floor(damageWeather));
 							}
 							var lvl = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpoint)];
 							var lvlWeather = movesTypesStats.levelAttacker[indexOfMax(lvlBreakpointWeather)];
