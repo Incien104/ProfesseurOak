@@ -740,6 +740,8 @@ bot.on('message', message => {
 								lvlBreakpoint.push(Math.floor(1 + movePowerCalc * pokeRatio * cpMRatio));
 								lvlBreakpointWeather.push(Math.floor(1 + movePowerCalcWeather * pokeRatio * cpMRatio));
 							}
+							// Verbose to find errors
+							message.channel.send("movePowerCalcWeather = "+movePowerCalcWeather+" / pokeRatio = "+pokeRatio+" / cpMRatio = "+cpMRatio+"\n"+lvlBreakpointWeather);
 							
 							var maxIndexBreakpoint = indexOfMax(lvlBreakpoint);
 							var maxIndexBreakpointWeather = indexOfMax(lvlBreakpointWeather);
