@@ -736,13 +736,13 @@ bot.on('message', message => {
 							// Compute Breakpoints
 							for (j in movesTypesStats.attackerCpM) {
 								var cpMRatio = (movesTypesStats.attackerCpM[j] / bossCpM);
-								
+								message.channel.send("attackerCpM = "+movesTypesStats.attackerCpM[j]);
 								lvlBreakpoint.push(Math.floor(1 + movePowerCalc * pokeRatio * cpMRatio));
 								lvlBreakpointWeather.push(Math.floor(1 + movePowerCalcWeather * pokeRatio * cpMRatio));
 							}
 							// Verbose to find errors
 							message.channel.send("movePowerCalcWeather = "+movePowerCalcWeather+" / pokeRatio = "+pokeRatio+" / cpMRatio = "+cpMRatio+"\n"+lvlBreakpointWeather);
-							
+							message.channel.send("bossCpM = "+bossCpM);
 							var maxIndexBreakpoint = indexOfMax(lvlBreakpoint);
 							var maxIndexBreakpointWeather = indexOfMax(lvlBreakpointWeather);
 							var lvl = movesTypesStats.levelAttacker[maxIndexBreakpoint];
