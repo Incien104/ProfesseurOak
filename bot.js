@@ -106,7 +106,7 @@ bot.on('message', message => {
 	var user = message.member; // user as a GuildMember
 	if (message.guild !== null && user !== null) {
 		var userRoles = user.roles; // roles as a Role Collection
-		var args = message.content.substring(1).split(' ');
+		var args = message.content.split(' ');
 		
 		// FUNCTIONS WITH COMMAND IN GUILD
 		// -----------------------------------------------
