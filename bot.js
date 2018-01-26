@@ -822,7 +822,7 @@ bot.on('message', message => {
 				// ---------------------
 				// Breakpoints Calc function
 				case 'breakpoint':
-					if (message.channel.name === chansLists.chanOak) {
+					if (message.channel.name === chansLists.chanOak && args.length >= 6) {
 						var pokemon = args[2];
 						var iv = parseInt(args[3]);
 						var boss = args[4];
