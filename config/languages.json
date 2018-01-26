@@ -1,0 +1,21 @@
+{
+	"fr": {
+		"announcements": {
+			"noteam": {
+				"textMessage": "@@NoTeam Pour ceux qui ne sont pas encore intégrés à leur équipe, veuillez envoyer par message privé un screenshot de votre écran de joueur (où l'on voit pseudo, niveau et équipe) à un administrateur, pour qu'il puisse vous donner les accès au salon privilégié de votre couleur ! :wink:",
+				"log": "Annonce aux NoTeam effectuée"
+			},
+			"nests": {
+				"textMessage": "@everyone Dresseurs, les nids de pokémon viennent de changer. Aidez-nous à les découvrir et à les répertorier sur https://thesilphroad.com/atlas#12.12/45.4027/-71.8959 ! :smiley:",
+				"log": "Annonce de changement des nids effectuée"
+			},
+			"scans": {
+				"textMessage": "@@Contributeur-trice De nouveaux pokémons sont apparus et on été ajoutés aux notifications ! RDV sur http://professeur-oak-sherbrooke.online pour les ajouter à vos notifications ! :smiley:",
+				"log": "Annonce d'ajout de pokémons aux scanners effectuée"
+			}
+		}
+	},
+	"en": {
+	
+	}
+}
