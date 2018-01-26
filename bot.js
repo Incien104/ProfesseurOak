@@ -917,7 +917,7 @@ bot.on('message', message => {
 								.catch(console.error);
 						} else {
 							message.reply("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...\nCommande de la forme !oak breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque Pokémon Attaquant]")
-								.then(msg => 
+								.then(msg => {
 									message.delete(1000);
 									msg.delete(5000);
 								})
