@@ -1,5 +1,5 @@
 // ** Description **
-// ProfesseurOak, 3.2.0, developed by Incien104
+// ProfesseurOak, 3.2.1, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works with Node.js
 // Require discord.js and request
@@ -11,7 +11,7 @@
 
 // -------------------------------------------------
 // Main variables
-const botVersion = "v3.2.0";
+const botVersion = "v3.2.1";
 const botVersionDate = "25/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
@@ -125,7 +125,12 @@ bot.on('message', message => {
 					if (userRoles.find("name","@Admins")) {
 						botPostLog("Exécute "+botVersion+" !");
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;	
 				
@@ -135,7 +140,12 @@ bot.on('message', message => {
 					if (userRoles.find("name","@Admins")) {
 						appRestart("manual");
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -143,34 +153,46 @@ bot.on('message', message => {
 				// Help function
 				case 'help':
 					if (userRoles.find("name","@Admins") && message.channel.name === chansLists.chanBotConfig) {						
-						message.channel.send("Fonctions :\n\
-						- !oakhelp : revoie les fonctions disponibles (*admins seulement*)\n\
-						- !oakping : vérifie si le bot fonctionne et retourne le numéro de version (*admins seulement*)\n\
-						- !oaktest : permet de tester la dernière fonction en développement (actuellement **rien**) (*admins seulement*)\n\
-						- !oakrestart : permet de redémarrer le robot (mais il doit encore fonctionner) (*admins seulement*)\n\
-						- !annonce : permet de lancer une annonce sur un chan (*admins seulement*). Liste des annonces :\n\
-						. . . . . . .  - !annonce noteam : envoie un message sur #general pour rappeler aux NoTeam de choisir une équipe\n\
-						. . . . . . .  - !annonce nests : envoie un message sur #nests lors d'une migration pour inviter les gens à remplir l'Atlas\n\
-						- !equipe : permet de choisir une équipe (*tout le monde*)\n\
-						- !mute @utilisateur : permet de mute un utilisateur sur un chan en particulier (*admins et mods*)\n\
-						- !unmute @utilisateur : permet de unmute un utilisateur sur un chan en particulier (*admins et mods*)\n\
-						- !supermute @utilisateur : permet de mute un utilisateur sur tout le serveur (*admins seulement*)\n\
-						- !superunmute @utilisateur : permet de unmute un utilisateur sur tout le serveur (*admins seulement*)\n\
-						- !starthuntr : redémarre et configure le bot PokeHuntr dans le chan #scan-pokemons (*admins seulement*)\n\
-						- !startgymhunter : redémarre et configure le bot GymHuntr dans le chan #scan-raids (*admins seulement*)\n\
-						- !oaktrad #/nom pokémon : permet d'avoir le nom en français et en anglais (*salon pokedex seulement*)\n\
-						- !oakshiny #/nom pokémon : permet de voir la forme shiny (*salon pokedex seulement*)\n\
-						- !oakmega : donne la liste des méga-évolutions et primo-résurgeances (*salon pokedex seulement*)\n\
-						- !oakmega #/nom pokémon : permet de voir la forme méga ou antique (*salon pokedex seulement*)\n\
-						- !oakunown ou !oakzarbi : affiche la liste des formes de Unown/Zarbi (*salon pokedex seulement*)\n\
+						message.channel.send("Commandes de Oak (commencer par !oak) :\n\
+							Annonces :\n\
+							....- annonce nom_de_lannonce\n\
+							........- nests (annonce de la migration)\n\
+							........- noteam (rappel d'envoi du screenshot pour assignation d'équipe)\n\
+							........- scans (prévient les Contributeurs-trices de l'ajout de nouveaux pokémons aux notifications)\n\
+							Modération :\n\
+							....- help (affiche l'aide de Oak : liste des commandes)\n\
+							....- mute @la_personne\n\
+							....- unmute @la_personne\n\
+							....- supermute @la_personne\n\
+							....- superunmute @la_personne\n\
+							....- clear [nombre_de_messages]\n\
+							Pokémons :\n\
+							....- infoscan (dans la conversation privée avec Oak)\n\
+							....- pokedex (pas encore développé)\n\
+							....- trad [Nom ou # Pokémon]\n\
+							....- shiny [Nom ou # Pokémon]\n\
+							....- mega [Rien ou Nom ou # Pokémon]\n\
+							....- unown\n\
+							....- zarbi\n\
+							....- breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque pokémon attaquant]\n\
+							....- iv [Pokémon] [CP] [HP] [Stardust/Poussière étoile]\n\
+							....- confighuntr\n\
+							....- confighymhuntr\n\
+							....- incien (easter egg ^^)\n\
+							Technique :\n\
+							....- ping (teste la réponse de Oak)\n\
+							....- restart (redémarre Oak si problème - plutôt utiliser le bouton sur Oak Web)\n\
 						");
-					} else if (message.channel.name === chansLists.chanPokedex) {						
-						message.channel.send("Fonctions :\n\
-						- !oaktrad #/nom pokémon : permet d'avoir le nom en français et en anglais (*salon pokedex seulement*)\n\
-						- !oakshiny #/nom pokémon : permet de voir la forme shiny (*salon pokedex seulement*)\n\
-						- !oakmega : donne la liste des méga-évolutions et primo-résurgeances (*salon pokedex seulement*)\n\
-						- !oakmega #/nom pokémon : permet de voir la forme méga ou antique (*salon pokedex seulement*)\n\
-						- !oakunown ou !oakzarbi : affiche la liste des formes de Unown/Zarbi (*salon pokedex seulement*)\n\
+					} else if (message.channel.name === chansLists.chanOak) {						
+						message.channel.send("Commandes de Oak (commencer par !oak) :\n\
+							....- trad [Nom ou # Pokémon]\n\
+							....- shiny [Nom ou # Pokémon]\n\
+							....- mega [Rien ou Nom ou # Pokémon]\n\
+							....- unown\n\
+							....- zarbi\n\
+							....- breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque pokémon attaquant]\n\
+							....- iv [Pokémon] [CP] [HP] [Stardust/Poussière étoile]\n\
+							....- incien\n\
 						");
 					}
 				break;
@@ -211,7 +233,12 @@ bot.on('message', message => {
 								message.reply("annonce inexistante ! ");
 						}
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -291,7 +318,12 @@ bot.on('message', message => {
 							message.reply("mention invalide, membre non trouvé :warning: ");
 						}
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -319,7 +351,12 @@ bot.on('message', message => {
 							message.reply("mention invalide, membre non trouvé :warning: ");
 						}
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -363,7 +400,12 @@ bot.on('message', message => {
 							message.reply("mention invalide, membre non trouvé :warning: ");
 						}
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -388,7 +430,12 @@ bot.on('message', message => {
 							message.reply("mention invalide, membre non trouvé :warning: ");
 						}
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -423,7 +470,12 @@ bot.on('message', message => {
 							}
 						}
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -438,7 +490,12 @@ bot.on('message', message => {
 						channelHuntr.send("!radius 10");
 						channelHuntr.send("!filter "+scanFilter.list);
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -452,7 +509,12 @@ bot.on('message', message => {
 						channelHuntr.send("!setup 45.39652136952787,-71.88354492187501");
 						channelHuntr.send("!radius 10");
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -473,9 +535,19 @@ bot.on('message', message => {
 								.setColor(colorForEmbed)
 								.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
 								.setThumbnail(thumbnail)
-							message.channel.send({embed}).catch(console.error);
+							message.
+								.then(msg => {
+									message.delete(1000);
+									msg.delete(60000);
+								})
+								.catch(console.error);
 						} else if (isInt(parameter) && (parameter < 1 || parameter > 806)) {
-							message.channel.send("Ne correspond pas au numéro d'un pokémon !").catch(console.error);
+							message.channel.send("Ne correspond pas au numéro d'un pokémon !")
+								.then(msg => {
+									message.delete(5000);
+									msg.delete(5000);
+								})
+								.catch(console.error);
 						} else {
 							var pokemonName = parameter.capitalize();
 							var pokemonNumber = 0;
@@ -495,9 +567,19 @@ bot.on('message', message => {
 									.setColor(colorForEmbed)
 									.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
 									.setThumbnail(thumbnail)
-								message.channel.send({embed}).catch(console.error);								
+								message.
+									.then(msg => {
+										message.delete(1000);
+										msg.delete(60000);
+									})
+									.catch(console.error);								
 							} else {
-								message.channel.send("Pokémon introuvable ! Vérifiez l'orthographe...").catch(console.error);
+								message.channel.send("Pokémon introuvable ! Vérifiez l'orthographe...")
+								.then(msg => {
+									message.delete(5000);
+									msg.delete(5000);
+								})
+								.catch(console.error);
 							}
 						}
 					}
@@ -529,9 +611,19 @@ bot.on('message', message => {
 								.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
 								.setImage("http://www.psypokes.com/dex/shiny/"+pokemonNumberZeros+".png")
 								.setThumbnail(thumbnail)
-							message.channel.send({embed}).catch(console.error);
+							message.
+								.then(msg => {
+									message.delete(1000);
+									msg.delete(60000);
+								})
+								.catch(console.error);
 						} else if (isInt(parameter) && (parameter < 1 || parameter > 806)) {
-							message.channel.send("Ne correspond pas au numéro d'un pokémon !").catch(console.error);
+							message.channel.send("Ne correspond pas au numéro d'un pokémon !")
+								.then(msg => {
+									message.delete(5000);
+									msg.delete(5000);
+								})
+								.catch(console.error);
 						} else {
 							var pokemonName = parameter.capitalize();
 							var pokemonNumber = 0;
@@ -560,9 +652,19 @@ bot.on('message', message => {
 									.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
 									.setImage("http://www.psypokes.com/dex/shiny/"+pokemonNumberZeros+".png")
 									.setThumbnail(thumbnail)
-								message.channel.send({embed}).catch(console.error);								
+								message.reply({embed})
+									.then(msg => {
+										message.delete(1000);
+										msg.delete(60000);
+									})
+									.catch(console.error);								
 							} else {
-								message.channel.send("Pokémon introuvable ! Vérifiez l'orthographe...").catch(console.error);
+								message.channel.send("Pokémon introuvable ! Vérifiez l'orthographe...")
+								.then(msg => {
+									message.delete(5000);
+									msg.delete(5000);
+								})
+								.catch(console.error);
 							}
 						}
 					}
@@ -578,7 +680,12 @@ bot.on('message', message => {
 							.setTitle("Formes de Unown/Zarbi (201) : ")
 							.setColor(colorForEmbed)
 							.setImage("https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/unown_alphabet.png")
-						message.channel.send({embed}).catch(console.error);
+						message.reply({embed})
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(60000);
+							})
+							.catch(console.error);
 					}
 				break;
 				case 'zarbi':
@@ -589,7 +696,12 @@ bot.on('message', message => {
 							.setTitle("Formes de Unown/Zarbi (201) : ")
 							.setColor(colorForEmbed)
 							.setImage("https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/unown_alphabet.png")
-						message.channel.send({embed}).catch(console.error);
+						message.reply({embed})
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(60000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -613,7 +725,12 @@ bot.on('message', message => {
 								listMega = listMega+"#"+mega_primal_xy.primal[i]+" Primo-"+pokedex_en.list[mega_primal_xy.primal[i]-1];
 								listMega = listMega+", ";
 							}
-							message.channel.send(listMega).catch(console.error);
+							message.reply(listMega)
+								.then(msg => {
+									message.delete(1000);
+									msg.delete(60000);
+								})
+								.catch(console.error);
 						} else if (isInt(parameter) && (mega_primal_xy.mega.indexOf(parameter) !== -1 || mega_primal_xy.primal.indexOf(parameter) !== -1)) {
 							var pokemonNumber = parameter;
 							var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
@@ -645,7 +762,12 @@ bot.on('message', message => {
 									.setDescription(forme+pokemonNameFr+" (fr) - "+forme+pokemonNameEn+" (en)\nForme Méga/Antique : ")
 									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe+".png")
 									.setThumbnail(thumbnail)
-								message.channel.send({embed}).catch(console.error);
+								message.reply({embed})
+									.then(msg => {
+										message.delete(1000);
+										msg.delete(60000);
+									})
+									.catch(console.error);
 							} else {
 								var forme = "Méga-";
 								var suffixe = "_xmega";
@@ -658,7 +780,12 @@ bot.on('message', message => {
 									.setDescription(forme+pokemonNameFr+" X (fr) - "+forme+pokemonNameEn+" X (en)\nForme Méga/Antique : ")
 									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe+".png")
 									.setThumbnail(thumbnail)
-								message.channel.send({embed}).catch(console.error);
+								message.reply({embed})
+									.then(msg => {
+										message.delete(1000);
+										msg.delete(60000);
+									})
+									.catch(console.error);
 								forme = "Méga-";
 								suffixe = "_ymega";
 								// Create Rich Embed
@@ -668,18 +795,32 @@ bot.on('message', message => {
 									.setDescription(forme+pokemonNameFr+" Y (fr) - "+forme+pokemonNameEn+" Y (en)\nForme Méga/Antique : ")
 									.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe+".png")
 									.setThumbnail(thumbnail)
-								message.channel.send({embed}).catch(console.error);
+								message.reply({embed})
+									.then(msg => {
+										msg.delete(60000);
+									})
+									.catch(console.error);
 							}
 						} else if (isInt(parameter) && (mega_primal_xy.mega.indexOf(mega_primal_xy.mega[i]) === -1 && mega_primal_xy.primal.indexOf(mega_primal_xy.primal[i]) === -1)) {
-							message.channel.send("Ne correspond pas au numéro d'un pokémon ou n'a pas de forme Méga!").catch(console.error);
+							message.channel.send("Ne correspond pas au numéro d'un pokémon ou n'a pas de forme Méga!")
+							.then(msg => {
+								message.delete(5000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 						} else {
-							message.channel.send("Entrez le numéro du pokémon pour voir sa forme Méga/Antique...").catch(console.error);
+							message.channel.send("Entrez le numéro du pokémon pour voir sa forme Méga/Antique...")
+							.then(msg => {
+								message.delete(5000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 						}
 					}
 				break;	
 				
 				// ---------------------
-				// Breakpoints function
+				// Breakpoints Calc function
 				case 'breakpoint':
 					if (message.channel.name === chansLists.chanOak) {
 						var pokemon = args[2];
@@ -776,7 +917,8 @@ bot.on('message', message => {
 								.catch(console.error);
 						} else {
 							message.reply("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...\nCommande de la forme !oak breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque Pokémon Attaquant]")
-								.then(msg => {
+								.then(msg => 
+									message.delete(1000);
 									msg.delete(5000);
 								})
 								.catch(console.error);
@@ -872,6 +1014,7 @@ bot.on('message', message => {
 							} else {
 								message.reply("informations manquantes, ou nom de pokémon introuvable, je ne peux pas calculer les IV de ton pokémon !\nCommande de la forme !oak iv [Pokémon] [CP] [HP] [Stardust]")
 								.then(msg => {
+									message.delete(1000);
 									msg.delete(5000);
 								})
 								.catch(console.error);
@@ -879,6 +1022,7 @@ bot.on('message', message => {
 						} else {
 							message.reply("informations manquantes, je ne peux pas calculer les IV de ton pokémon !\nCommande de la forme !oak iv [Pokémon] [CP] [HP] [Stardust]")
 								.then(msg => {
+									message.delete(1000);
 									msg.delete(5000);
 								})
 								.catch(console.error);
@@ -907,7 +1051,12 @@ bot.on('message', message => {
 							break;
 						}
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -920,9 +1069,19 @@ bot.on('message', message => {
 							.setTitle("Un Incien sauvage apparaît !!!")
 							.setColor("#43B581")
 							.setImage('https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/incien.gif')
-						message.channel.send({embed}).catch(console.error);
+						message.reply({embed})
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(60000);
+							})
+							.catch(console.error);
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ici ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 				
@@ -932,7 +1091,12 @@ bot.on('message', message => {
 					if (userRoles.find("name","@Admins")) {
 						
 					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
+							.then(msg => {
+								message.delete(1000);
+								msg.delete(5000);
+							})
+							.catch(console.error);
 					}
 				break;
 			}
