@@ -112,7 +112,7 @@ bot.on('message', message => {
 		// -----------------------------------------------
 		// Commands to the bot in guild
 		if (args[0] === config.command && message.guild.name === chansLists.guildName) {
-			var cmd = args[1];
+			var cmd = args[1].toLowerCase();
 	
 			if (cmd === "équipe") {
 				cmd = "equipe";
@@ -429,7 +429,7 @@ bot.on('message', message => {
 				
 				// ---------------------------
 				// Commands to start Huntr Bot
-				case 'configHuntr':
+				case 'confighuntr':
 					if (userRoles.find("name","@Admins")) {
 						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanPokemon);
@@ -444,7 +444,7 @@ bot.on('message', message => {
 				
 				// ------------------------------
 				// Commands to start GymHuntr Bot
-				case 'configGymhuntr':
+				case 'configgymhuntr':
 					if (userRoles.find("name","@Admins")) {
 						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanRaid);
@@ -771,7 +771,7 @@ bot.on('message', message => {
 							message.reply({embed})
 								.then(msg => {
 									message.delete(1000);
-									msg.delete(30000);
+									msg.delete(60000);
 								})
 								.catch(console.error);
 						} else {
@@ -859,14 +859,14 @@ bot.on('message', message => {
 								var colorForEmbed = "#43B581";
 								var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
 								embed = new Discord.RichEmbed()
-									.setTitle("IV de "+pokemonName)
+									.setTitle("IV de "+pokemonName+" (CP "+cp+" / HP "+hp+")")
 									.setColor(colorForEmbed)
 									.setDescription(ivResults)
 									.setThumbnail(thumbnail)
 								message.reply({embed})
 									.then(msg => {
 										message.delete(1000);
-										msg.delete(30000);
+										msg.delete(60000);
 									})
 									.catch(console.error);								
 							} else {
@@ -914,21 +914,6 @@ bot.on('message', message => {
 				// -------------
 				// Incien function
 				case 'incien':
-					if (message.channel.name === chansLists.chanPokedex || message.channel.name === chansLists.chanOak) {
-						// Create Rich Embed									
-						var embed = new Discord.RichEmbed()
-							.setTitle("Un Incien sauvage apparaît !!!")
-							.setColor("#43B581")
-							.setImage('https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/incien.gif')
-						message.channel.send({embed}).catch(console.error);
-					} else {
-						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
-					}
-				break;
-				
-				// -------------
-				// Incien function
-				case 'Incien':
 					if (message.channel.name === chansLists.chanPokedex || message.channel.name === chansLists.chanOak) {
 						// Create Rich Embed									
 						var embed = new Discord.RichEmbed()
