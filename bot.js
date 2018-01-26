@@ -1,7 +1,7 @@
 // ** Description **
-// ProfesseurOak, 3.0.1, developed by Incien104
+// ProfesseurOak, 3.2.0, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
-// Works on Heroku server using a node.js worker dyno
+// Works with Node.js
 // Require discord.js and request
 
 
@@ -11,19 +11,20 @@
 
 // -------------------------------------------------
 // Main variables
-const botVersion = "v3.0.1";
-const botVersionDate = "20/01/2018";
+const botVersion = "v3.2.0";
+const botVersionDate = "25/01/2018";
 const timeUTCQuebec = 5; // Hours from UTC to have the right time
 
 var Discord = require('discord.js');
-var chansLists = require('./parameters/chansLists.json');
-var bannedWords = require('./parameters/bannedWords.json');
-var scanFilter = require('./scanUtils/scanFilter.json');
+var config = require('./config/config.json');
+var chansLists = require('./config/chansLists.json');
+var bannedWords = require('./config/bannedWords.json');
 var pokedex_fr = require('./pokemonUtils/pokedex_fr.json');
 var pokedex_en = require('./pokemonUtils/pokedex_en.json');
 var movesTypesStats = require('./pokemonUtils/movesTypesStats.json');
 var mega_primal_xy = require('./pokemonUtils/mega_primal_xy.json');
 var weatherBoost = require('./pokemonUtils/weatherBoost.json');
+var scanFilter = require('./scanUtils/scanFilter.json');
 var contributors_backup = require('./scanUtils/contributors.json');
 var contributors;
 
@@ -37,7 +38,7 @@ bot.login(process.env.BOT_TOKEN);
 bot.on('ready', () => {    
     // Bot ready !
 	botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
-	bot.user.setGame('Pokémon GO ('+botVersion+')');
+	bot.user.setGame('!oak ('+botVersion+')');
 	loadJSONFile("start");	
 	// 12h scheduled app restarting
     var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
@@ -105,12 +106,13 @@ bot.on('message', message => {
 	var user = message.member; // user as a GuildMember
 	if (message.guild !== null && user !== null) {
 		var userRoles = user.roles; // roles as a Role Collection
+		var args = message.content.substring(1).split(' ');
 		
+		// FUNCTIONS WITH COMMAND IN GUILD
 		// -----------------------------------------------
-		// Commands to the bot in guild, starting with "!"
-		if (message.content.substring(0, 1) === '!' && message.guild.name === chansLists.guildName) {
-			var args = message.content.substring(1).split(' ');
-			var cmd = args[0];
+		// Commands to the bot in guild
+		if (args[0] === config.command && message.guild.name === chansLists.guildName) {
+			var cmd = args[1];
 	
 			if (cmd === "équipe") {
 				cmd = "equipe";
@@ -119,7 +121,7 @@ bot.on('message', message => {
 			switch(cmd) {
 				// -------------		
 				// Ping function
-				case 'oakping':
+				case 'ping':
 					if (userRoles.find("name","@Admins")) {
 						botPostLog("Exécute "+botVersion+" !");
 					} else {
@@ -129,7 +131,7 @@ bot.on('message', message => {
 				
 				// ----------------
 				// Restart function
-				case 'oakrestart':
+				case 'restart':
 					if (userRoles.find("name","@Admins")) {
 						appRestart("manual");
 					} else {
@@ -139,7 +141,7 @@ bot.on('message', message => {
 				
 				// -------------
 				// Help function
-				case 'oakhelp':
+				case 'help':
 					if (userRoles.find("name","@Admins") && message.channel.name === chansLists.chanBotConfig) {						
 						message.channel.send("Fonctions :\n\
 						- !oakhelp : revoie les fonctions disponibles (*admins seulement*)\n\
@@ -186,7 +188,7 @@ bot.on('message', message => {
 	
 								if (!channelAnnouncements) return;
 								// Send the message, mentioning the members
-								channelAnnouncements.send(`<@&371096330614996993> Pour ceux qui ne sont pas encore intégrés à leur équipe, veuillez envoyer par message privé un screenshot de votre écran de joueur (où l'on voit pseudo, niveau et équipe) à un administrateur, pour qu'il puisse vous donner les accès au salon privilégié de votre couleur ! :wink:`).catch(console.error);
+								channelAnnouncements.send(`@@NoTeam Pour ceux qui ne sont pas encore intégrés à leur équipe, veuillez envoyer par message privé un screenshot de votre écran de joueur (où l'on voit pseudo, niveau et équipe) à un administrateur, pour qu'il puisse vous donner les accès au salon privilégié de votre couleur ! :wink:`).catch(console.error);
 								botPostLog('Annonce aux NoTeam effectuée');
 							break;
 							case 'nests':
@@ -196,6 +198,14 @@ bot.on('message', message => {
 								// Send the message, mentioning the members
 								channelAnnouncements.send(`@everyone Dresseurs, les nids de pokémon viennent de changer. Aidez-nous à les découvrir et à les répertorier sur https://thesilphroad.com/atlas#12.12/45.4027/-71.8959 ! :smiley:`).catch(console.error);
 								botPostLog('Annonce de changement des nids effectuée');
+							break;
+							case 'scans':
+								var channelAnnouncements = botGuild.channels.find('name', chansLists.chanContributors);
+	
+								if (!channelAnnouncements) return;
+								// Send the message, mentioning the members
+								channelAnnouncements.send(`@@Contributeur-trice De nouveaux pokémons sont apparus et on été ajoutés aux notifications ! RDV sur http://professeur-oak-sherbrooke.online pour les ajouter à vos notifications ! :smiley:`).catch(console.error);
+								botPostLog('Annonce d\'ajout de pokémons aux scanners effectuée');
 							break;	
 							default:
 								message.reply("annonce inexistante ! ");
@@ -387,7 +397,7 @@ bot.on('message', message => {
 				case 'clear':
 					if (userRoles.find("name","@Admins")) {
 						var channelToClear = message.channel;
-						var nbMessagesToClear = args[1];
+						var nbMessagesToClear = args[2];
 						if (nbMessagesToClear >= 1 && nbMessagesToClear <= 30) {
 							var fetchedMessages = channelToClear.fetchMessages({limit: nbMessagesToClear})					
 								.then(messages => {
@@ -419,7 +429,7 @@ bot.on('message', message => {
 				
 				// ---------------------------
 				// Commands to start Huntr Bot
-				case 'starthuntr':
+				case 'configHuntr':
 					if (userRoles.find("name","@Admins")) {
 						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanPokemon);
@@ -434,7 +444,7 @@ bot.on('message', message => {
 				
 				// ------------------------------
 				// Commands to start GymHuntr Bot
-				case 'startgymhuntr':
+				case 'configGymhuntr':
 					if (userRoles.find("name","@Admins")) {
 						var botGuild = bot.guilds.find('name', chansLists.guildName);
 						var channelHuntr = botGuild.channels.find('name', chansLists.chanScanRaid);
@@ -448,9 +458,9 @@ bot.on('message', message => {
 				
 				// ----------------------------
 				// Pokedex translation function
-				case 'oaktrad':
-					if (message.channel.name === chansLists.chanPokedex) {
-						var parameter = args[1];
+				case 'trad':
+					if (message.channel.name === chansLists.chanPokedex || message.channel.name === chansLists.chanOak) {
+						var parameter = args[2];
 						if (isInt(parameter) && parameter >= 1 && parameter <= 806) {
 							var pokemonNumber = parameter;
 							var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
@@ -495,9 +505,9 @@ bot.on('message', message => {
 				
 				// ----------------------
 				// Pokedex shiny function
-				case 'oakshiny':
-					if (message.channel.name === chansLists.chanPokedex) {
-						var parameter = args[1];
+				case 'shiny':
+					if (message.channel.name === chansLists.chanPokedex || message.channel.name === chansLists.chanOak) {
+						var parameter = args[2];
 						if (isInt(parameter) && parameter >= 1 && parameter <= 806) {
 							var pokemonNumber = parameter;
 							var pokemonNameFr = pokedex_fr.list[pokemonNumber-1];
@@ -560,8 +570,8 @@ bot.on('message', message => {
 				
 				// -------------------------------
 				// Pokedex Unown Alphabet function
-				case 'oakunown':
-					if (message.channel.name === chansLists.chanPokedex) {
+				case 'unown':
+					if (message.channel.name === chansLists.chanPokedex || message.channel.name === chansLists.chanOak) {
 						// Create Rich Embed
 						var colorForEmbed = "#43B581";
 						var embed = new Discord.RichEmbed()
@@ -571,8 +581,8 @@ bot.on('message', message => {
 						message.channel.send({embed}).catch(console.error);
 					}
 				break;
-				case 'oakzarbi':
-					if (message.channel.name === chansLists.chanPokedex) {
+				case 'zarbi':
+					if (message.channel.name === chansLists.chanPokedex || message.channel.name === chansLists.chanOak) {
 						// Create Rich Embed
 						var colorForEmbed = "#43B581";
 						var embed = new Discord.RichEmbed()
@@ -585,9 +595,9 @@ bot.on('message', message => {
 				
 				// ---------------------
 				// Pokedex mega function
-				case 'oakmega':
-					if (message.channel.name === chansLists.chanPokedex) {
-						var parameter = args[1];
+				case 'mega':
+					if (message.channel.name === chansLists.chanPokedex || message.channel.name === chansLists.chanOak) {
+						var parameter = args[2];
 						var listMega = null;
 						if (parameter === null || parameter === undefined) {
 							listMega = "Méga-Évolution :\n";
@@ -671,31 +681,29 @@ bot.on('message', message => {
 				// ---------------------
 				// Breakpoints function
 				case 'breakpoint':
-					if (message.channel.name === chansLists.chanStat) {
-						var pokemon = args[1];
-						var iv = parseInt(args[2]);
-						var boss = args[3];
-						var attack = args[4];
-						if (args.length === 6) {
-							attack = args[4].capitalize()+" "+args[5].capitalize();
-						} else if (args.length === 7) {
-							attack = args[4].capitalize()+" "+args[5].capitalize()+" "+args[6].capitalize();
+					if (message.channel.name === chansLists.chanOak) {
+						var pokemon = args[2];
+						var iv = parseInt(args[3]);
+						var boss = args[4];
+						var attack = args[5];
+						if (args.length === 7) {
+							attack = args[5].capitalize()+" "+args[6].capitalize();
+						} else if (args.length === 8) {
+							attack = args[5].capitalize()+" "+args[6].capitalize()+" "+args[7].capitalize();
 						}
 						
 						var pokemonName = pokemon.capitalize();
-						var pokemonNumber = 0;
 						var numPokemon = pokedex_en.list.indexOf(pokemonName);
 						if (numPokemon === -1) {
 							numPokemon = pokedex_fr.list.indexOf(pokemonName);
 						}
+						var pokemonNumber = numPokemon+1;
 						var bossName = boss.capitalize();
-						var bossNumber = 0;
 						var numBoss = pokedex_en.list.indexOf(bossName);
 						if (numBoss === -1) {
 							numBoss = pokedex_fr.list.indexOf(bossName);
 						}
 						var attackName = attack.capitalize();
-						var attackNumber = 0;
 						var numAttack = movesTypesStats.moveNameEn.indexOf(attackName);
 						if (numAttack === -1) {
 							numAttack = movesTypesStats.moveNameFr.indexOf(attackName);
@@ -706,7 +714,14 @@ bot.on('message', message => {
 							var movePower = movesTypesStats.movePower[numAttack];
 							var moveType = movesTypesStats.moveType[numAttack];
 							var numBossLvl = movesTypesStats.raidBossName.indexOf(pokedex_en.list[numBoss]);
-							var bossLvl = movesTypesStats.raidBossLvl[numBossLvl];
+							if (numBossLvl === -1) {
+								var bossCpM = movesTypesStats.attackerCpM[movesTypesStats.attackerCpM.length-9];
+								var defenderText = " (lvl 36)";
+							} else {
+								var bossLvl = movesTypesStats.raidBossLvl[numBossLvl];
+								var bossCpM = movesTypesStats.bossCpM[bossLvl-1];
+								var defenderText = "";
+							}
 							
 							// Check if STAB
 							if (movesTypesStats.pokemonType[numPokemon].indexOf(moveType) !== -1) {
@@ -725,7 +740,6 @@ bot.on('message', message => {
 							
 							var attackerBaseATK = movesTypesStats.pokemonStat[numPokemon][0];
 							var bossBaseDEF = movesTypesStats.pokemonStat[numBoss][1];
-							var bossCpM = movesTypesStats.bossCpM[bossLvl-1];
 							var lvlBreakpoint = new Array();
 							var lvlBreakpointWeather = new Array();
 							
@@ -746,9 +760,128 @@ bot.on('message', message => {
 							var lvl = movesTypesStats.levelAttacker[maxIndexBreakpoint];
 							var lvlWeather = movesTypesStats.levelAttacker[maxIndexBreakpointWeather];
 							
-							message.channel.send("Dégâts max = "+lvlBreakpoint[maxIndexBreakpoint]+" au niveau **"+lvl+"** (**sans** boost météo)\nDégâts max = "+lvlBreakpointWeather[maxIndexBreakpointWeather]+" au niveau **"+lvlWeather+"** (**avec** boost météo)").catch(console.error);
+							// Create Rich Embed
+							var colorForEmbed = "#43B581";
+							var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
+							embed = new Discord.RichEmbed()
+								.setTitle(pokemonName+" (ATK "+iv+" - "+attackName+")"+" vs "+bossName+defenderText)
+								.setColor(colorForEmbed)
+								.setDescription("Dégâts (DPS) max = "+lvlBreakpoint[maxIndexBreakpoint]+" au niveau **"+lvl+"** (**sans** boost météo)\nDégâts (DPS) max = "+lvlBreakpointWeather[maxIndexBreakpointWeather]+" au niveau **"+lvlWeather+"** (**avec** boost météo)")
+								.setThumbnail(thumbnail)
+							message.reply({embed})
+								.then(msg => {
+									message.delete(1000);
+									msg.delete(10000);
+								})
+								.catch(console.error);
 						} else {
-							message.channel.send("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...\nCommande de la forme !breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque Pokémon Attaquant]").catch(console.error);
+							message.reply("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...\nCommande de la forme !oak breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque Pokémon Attaquant]")
+								.then(msg => {
+									msg.delete(5000);
+								})
+								.catch(console.error);
+						}
+					}
+				break;		
+				
+				// ---------------------
+				// IV Calc function
+				case 'iv':
+					if (message.channel.name === chansLists.chanOak) {
+						// !oak iv [Pokemon] [CP] [HP] [Stardust]
+						if (args.length === 6) {
+							var pokemon = args[2];
+							var cp = parseInt(args[3]);
+							var hp = parseInt(args[4]);
+							var stardust = parseInt(args[5]);
+						
+							var pokemonName = pokemon.capitalize();
+							var numPokemon = pokedex_en.list.indexOf(pokemonName);
+							if (numPokemon === -1) {
+								numPokemon = pokedex_fr.list.indexOf(pokemonName);
+							}
+							
+							if (numPokemon !== -1) {
+								var pokemonNumber = numPokemon+1;
+								
+								// Base values
+								var baseATK = movesTypesStats.pokemonStat[numPokemon][0];
+								var baseDEF = movesTypesStats.pokemonStat[numPokemon][1];
+								var baseSTA = movesTypesStats.pokemonStat[numPokemon][2];
+								
+								// Use stardust to find lvl range
+								var numFirstLvl = movesTypesStats.levelStardust.indexOf(stardust);
+								
+								// Use lvl range to find lvls and STA IV
+								var numLvls = new Array();
+								var ivHP = new Array();
+								var calcHP = 0;
+								for (i = 0; i < 4; i++) {
+									for (j = 0; j < 16; j++) {
+										calcHP = Math.floor((baseSTA+j)*movesTypesStats.cpMultiplier[numFirstLvl+i]);
+										if (calcHP === hp) {
+											numLvls.push(numFirstLvl+i);
+											ivHP.push(j);
+										}
+									}
+								}
+								
+								// Use results to find possible legal ATK and DEF values
+								var calcCP = 0;
+								var lvl = new Array();
+								var percentage = new Array();
+								var ivATK = new Array();
+								var ivDEF = new Array();
+								var ivSTA = new Array();
+								for (k = 0; k < ivHP.length; k++) {
+									for (i = 0; i < 16; i++) {
+										for (j = 0; j < 16; j++) {
+											calcCP = Math.floor(((baseATK+i)*Math.sqrt(baseDEF+j)*Math.sqrt(baseSTA+ivHP[k])*Math.pow(movesTypesStats.cpMultiplier[numLvls[k]],2))/10);
+											if (calcCP === cp) {
+												lvl.push(movesTypesStats.levelCpMultiplier[numLvls[k]]);
+												cpMin = Math.floor(((baseATK)*Math.sqrt(baseDEF)*Math.sqrt(baseSTA)*Math.pow(movesTypesStats.cpMultiplier[numLvls[k]],2))/10);
+												cpMax = Math.floor(((baseATK+15)*Math.sqrt(baseDEF+15)*Math.sqrt(baseSTA+15)*Math.pow(movesTypesStats.cpMultiplier[numLvls[k]],2))/10);
+												percentage.push((cp-cpMin)/(cpMax-cpMin));
+												ivATK.push(i);
+												ivDEF.push(j);
+												ivSTA.push(ivHP[k]);
+											}
+										}
+									}
+								}
+								
+								var ivResults = "";
+								for (k = 0; k < lvl.length; k++) {
+									ivResults = ivResults+"Niveau **"+lvl[k]+"**, **"+percentage[k]+"%**, ATK **"+ivATK[k]+"** / DEF **"+ivDEF[k]+"** / STA **"+ivSTA[k]+"**\n";
+								}
+						
+								// Create Rich Embed
+								var colorForEmbed = "#43B581";
+								var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
+								embed = new Discord.RichEmbed()
+									.setTitle("IV de "+pokemonName)
+									.setColor(colorForEmbed)
+									.setDescription(ivResults)
+									.setThumbnail(thumbnail)
+								message.reply({embed})
+									.then(msg => {
+										message.delete(1000);
+										msg.delete(10000);
+									})
+									.catch(console.error);								
+							} else {
+								message.reply("informations manquantes, ou nom de pokémon introuvable, je ne peux pas calculer les IV de ton pokémon !\nCommande de la forme !oak iv [Pokémon] [CP] [HP] [Stardust]")
+								.then(msg => {
+									msg.delete(5000);
+								})
+								.catch(console.error);
+							}
+						} else {
+							message.reply("informations manquantes, je ne peux pas calculer les IV de ton pokémon !\nCommande de la forme !oak iv [Pokémon] [CP] [HP] [Stardust]")
+								.then(msg => {
+									msg.delete(5000);
+								})
+								.catch(console.error);
 						}
 					}
 				break;	
@@ -757,7 +890,7 @@ bot.on('message', message => {
 				// Flush Role function
 				case 'flushrole':
 					if (userRoles.find("name","@Admins")) {
-						var role = args[1];
+						var role = args[2];
 						
 						switch (role) {
 							case '@RaidEX':
@@ -779,8 +912,38 @@ bot.on('message', message => {
 				break;
 				
 				// -------------
+				// Incien function
+				case 'incien':
+					if (message.channel.name === chansLists.chanPokedex || message.channel.name === chansLists.chanOak) {
+						// Create Rich Embed									
+						var embed = new Discord.RichEmbed()
+							.setTitle("Un Incien sauvage apparaît !!!")
+							.setColor("#43B581")
+							.setImage('https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/incien.gif')
+						message.channel.send({embed}).catch(console.error);
+					} else {
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+					}
+				break;
+				
+				// -------------
+				// Incien function
+				case 'Incien':
+					if (message.channel.name === chansLists.chanPokedex || message.channel.name === chansLists.chanOak) {
+						// Create Rich Embed									
+						var embed = new Discord.RichEmbed()
+							.setTitle("Un Incien sauvage apparaît !!!")
+							.setColor("#43B581")
+							.setImage('https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/incien.gif')
+						message.channel.send({embed}).catch(console.error);
+					} else {
+						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ");
+					}
+				break;
+				
+				// -------------
 				// Test function
-				case 'oaktest':
+				case 'test':
 					if (userRoles.find("name","@Admins")) {
 						
 					} else {
@@ -802,6 +965,7 @@ bot.on('message', message => {
 				message.channel.send({embed}).catch(console.error);
 			}
 		} else {
+			// FUNCTIONS WITH NO COMMAND NEEDED
 			// -----------------------------------
 			// Banned Words : check entire message
 			if (message.guild.name === chansLists.guildName && chansLists.chanFreeFromBannedWords.indexOf(message.channel.name) === -1 && !user.roles.find("name","@Bots")) {
@@ -832,7 +996,7 @@ bot.on('message', message => {
 						})
 						.catch(console.error);
 				}				
-			} else if (message.channel.name === chansLists.chanScanPokemon) {
+			} else if (message.guild.name === chansLists.guildName && message.channel.name === chansLists.chanScanPokemon) {
 			// ----------------------------------------------------------------------------------------------
 			// Scanned Pokemon Personal Alert : check HuntrBot messages to alert people with private messages
 				var pokemonNumber = "";
@@ -934,11 +1098,12 @@ bot.on('message', message => {
 			}
 		}
 	} else {
+		// FUNCTIONS WITH COMMAND IN PRIVATE MESSAGES
 		// -------------------------------------------------------------
-		// Commands to the bot using private messages, starting with "!"
-		if (message.content.substring(0, 1) === '!') {
-			var args = message.content.substring(1).split(' ');
-			var cmd = args[0];
+		// Commands to the bot using private messages
+		var args = message.content.substring(1).split(' ');
+		if (args[0] === config.command) {
+			var cmd = args[1];
         
 			switch(cmd) {
 				// ----------------------------------------
