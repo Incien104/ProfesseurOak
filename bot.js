@@ -771,7 +771,7 @@ bot.on('message', message => {
 							message.reply({embed})
 								.then(msg => {
 									message.delete(1000);
-									msg.delete(10000);
+									msg.delete(30000);
 								})
 								.catch(console.error);
 						} else {
@@ -852,7 +852,7 @@ bot.on('message', message => {
 								
 								var ivResults = "";
 								for (k = 0; k < lvl.length; k++) {
-									ivResults = ivResults+"Niveau **"+lvl[k]+"**, **"+percentage[k]+"%**, ATK **"+ivATK[k]+"** / DEF **"+ivDEF[k]+"** / STA **"+ivSTA[k]+"**\n";
+									ivResults = ivResults+"Niveau **"+lvl[k]+"**, **"+Math.round(percentage[k]*1000)/10+"%**, ATK **"+ivATK[k]+"** / DEF **"+ivDEF[k]+"** / STA **"+ivSTA[k]+"**\n";
 								}
 						
 								// Create Rich Embed
@@ -866,7 +866,7 @@ bot.on('message', message => {
 								message.reply({embed})
 									.then(msg => {
 										message.delete(1000);
-										msg.delete(10000);
+										msg.delete(30000);
 									})
 									.catch(console.error);								
 							} else {
