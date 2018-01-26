@@ -1,0 +1,34 @@
+{
+	"command": "!oak",
+	"language": "fr",
+	"bilingual-en": true,
+	"timeFromUTC": 5,
+	"moderatingFunctions" : {
+		"ping": "ping",
+		"restart": "restart",
+		"help": "help",
+		"team": "equipe",
+		"annoucement": "annonce",
+		"chanMute": "mute",
+		"chanUnmute": "unmute",
+		"globalMute": "supermute",
+		"globalUnmute": "superunmute",
+		"clear": "clear",
+		"roleRemoveMembers": "flushrole",
+		"test": "test"
+	},
+	"pokemonFunctions" : {
+		"privateNotifInfo": "infoscan",
+		"pokedex": "pokedex",
+		"translation": "trad",
+		"shiny": "shiny",
+		"mega": "mega",
+		"privateNotifInfo": "infoscan",
+		"unown": "unown",
+		"breakpoints": "breakpoint",
+		"iv": "iv",
+		"scanHuntrConfig": "configHuntr",
+		"scanGymhuntrConfig": "configGymhuntr",
+		"easterEgg": "incien"
+	}
+}

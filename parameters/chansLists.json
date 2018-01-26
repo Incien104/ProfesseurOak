@@ -5,10 +5,11 @@
 	"chanAdmins": "admins",
 	"chanGeneral": "general",
 	"chanFreeFromBannedWords": ["bot-logs","bot-config","admins","breakfast_club","underground","scan-pokemons","scan-raids"],
+	"chanContributors": "espace-contributeurs",
 	"chanScanPokemon": "scan-pokemons",
 	"chanScanRaid": "scan-raids",
 	"chanPokedex": "pokedex",
-	"chanStat": "professeur-oak",
+	"chanOak": "professeur-oak",
 	"chanNests": "nests",
 	"chanTuto": "tutoriel-et-assistance",
 	"chanWeather": "meteo"
