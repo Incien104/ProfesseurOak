@@ -535,7 +535,7 @@ bot.on('message', message => {
 								.setColor(colorForEmbed)
 								.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
 								.setThumbnail(thumbnail)
-							message.
+							message.reply({embed})
 								.then(msg => {
 									message.delete(1000);
 									msg.delete(60000);
@@ -567,7 +567,7 @@ bot.on('message', message => {
 									.setColor(colorForEmbed)
 									.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
 									.setThumbnail(thumbnail)
-								message.
+								message.reply({embed})
 									.then(msg => {
 										message.delete(1000);
 										msg.delete(60000);
@@ -611,7 +611,7 @@ bot.on('message', message => {
 								.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
 								.setImage("http://www.psypokes.com/dex/shiny/"+pokemonNumberZeros+".png")
 								.setThumbnail(thumbnail)
-							message.
+							message.reply({embed})
 								.then(msg => {
 									message.delete(1000);
 									msg.delete(60000);
