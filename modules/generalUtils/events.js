@@ -8,8 +8,8 @@
 
 const discord = require('discord.js');
 
-const rolesList = require('./config/rolesList.json');
-const chansLists = require('./config/chansLists.json');
+const rolesList = require('../config/rolesList.json');
+const chansLists = require('../config/chansLists.json');
 
 exports.arrivingMember = (member) => {
 	// Send the message to a designated channel on a server:
