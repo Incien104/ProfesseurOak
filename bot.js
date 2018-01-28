@@ -4,7 +4,7 @@
 // Works with Node.js
 // Require discord.js and request
 
-// MAIN BOT FILE
+// BOT CORE
 
 // =================================================
 //                  INITIALIZATION
@@ -67,19 +67,19 @@ bot.on('ready', () => {
 // -------------------------------------------------
 // Create an event listener for new guild members
 bot.on('guildMemberAdd', member => {
-	botPostLog(events.arrivingMember(member));
+	botPostLog({events.arrivingMember(member),member.guild.channels.find("name",chansLists.chanBotLog)});
 });
 
 // -------------------------------------------------
 // Create an event listener for leaving/kicked out guild members
 bot.on('guildMemberRemove', member => {
-	botPostLog(events.leavingMember(member));
+	botPostLog({events.leavingMember(member),member.guild.channels.find("name",chansLists.chanBotLog)});
 });
 
 // -------------------------------------------------
 // Create an event listener for when a guild members nickname is updated
 bot.on('guildMemberUpdate', (oldMember,newMember) => {
-	botPostLog(events.updatedMember(oldMember,newMember));
+	botPostLog({events.updatedMember(oldMember,newMember),newMember.guild.channels.find("name",chansLists.chanBotLog)});
 });
 
 
@@ -1261,14 +1261,18 @@ bot.on('message', message => {
 
 // -------------------------------------------------
 // Bot's logs in a log channel !
-function botPostLog(messageToPost) {
+function botPostLog({messageToPost,logsChannel}) {
+	var botGuild = bot.guilds.find("name",chansLists.guildName);
+	logsChannel = logsChannel || 0;
+	if (logsChannel === 0) {
+		logsChannel = botGuild.channels.find("name",chansLists.chanBotLog);
+		console.log("fail");
+	}
 	var d = new Date();	
 	d = d - config.timeFromUTC*60*60*1000;
 	var dateQuebec = new Date(d);
 	dateQuebec = dateQuebec.toString();
 	dateQuebec = dateQuebec.substring(0,dateQuebec.length-15);
-	const botGuild = bot.guilds.find('name', chansLists.guildName);
-	const logsChannel = botGuild.channels.find('name', chansLists.chanBotLog);
 	logsChannel.send('*['+dateQuebec+']* : **'+messageToPost+'**');
 	console.log(messageToPost);
 }
