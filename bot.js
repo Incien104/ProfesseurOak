@@ -67,19 +67,19 @@ bot.on('ready', () => {
 // -------------------------------------------------
 // Create an event listener for new guild members
 bot.on('guildMemberAdd', member => {
-	botPostLog({events.arrivingMember(member),member.guild.channels.find("name",chansLists.chanBotLog)});
+	botPostLog(events.arrivingMember(member),member.guild.channels.find("name",chansLists.chanBotLog));
 });
 
 // -------------------------------------------------
 // Create an event listener for leaving/kicked out guild members
 bot.on('guildMemberRemove', member => {
-	botPostLog({events.leavingMember(member),member.guild.channels.find("name",chansLists.chanBotLog)});
+	botPostLog(events.leavingMember(member),member.guild.channels.find("name",chansLists.chanBotLog));
 });
 
 // -------------------------------------------------
 // Create an event listener for when a guild members nickname is updated
 bot.on('guildMemberUpdate', (oldMember,newMember) => {
-	botPostLog({events.updatedMember(oldMember,newMember),newMember.guild.channels.find("name",chansLists.chanBotLog)});
+	botPostLog(events.updatedMember(oldMember,newMember),newMember.guild.channels.find("name",chansLists.chanBotLog));
 });
 
 
@@ -1261,7 +1261,7 @@ bot.on('message', message => {
 
 // -------------------------------------------------
 // Bot's logs in a log channel !
-function botPostLog({messageToPost,logsChannel}) {
+function botPostLog(messageToPost,logsChannel) {
 	var botGuild = bot.guilds.find("name",chansLists.guildName);
 	logsChannel = logsChannel || 0;
 	if (logsChannel === 0) {
