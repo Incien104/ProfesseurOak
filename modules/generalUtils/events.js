@@ -1,15 +1,11 @@
-// ** Description **
-// ProfesseurOak, v3.2.1, developed by Incien104
-// GPL 3.0, Oct. 2017 - Jan. 2018
-// Works with Node.js
-// Require discord.js and request
+// ProfesseurOak
 
-// EVENTS HANDLING FILE
+// EVENTS HANDLING MODULE
 
-const discord = require('discord.js');
+const Discord = require('discord.js');
 
-const rolesList = require('../config/rolesList.json');
-const chansLists = require('../config/chansLists.json');
+const rolesList = require('../../config/rolesList.json');
+const chansLists = require('../../config/chansLists.json');
 
 exports.arrivingMember = (member) => {
 	// Send the message to a designated channel on a server:
@@ -43,12 +39,12 @@ exports.leavingMember = (member) => {
 
 exports.updatedMember = (oldMember,newMember) => {
 	// Send the message, mentioning the member
-	var previousNickname = oldMember.nickname;
-	if (previousNickname !== null && oldMember.nickname !== newMember.nickname) {
+	var previousNickname = oldMember.displayName;
+	if (previousNickname !== null && oldMember.displayName !== newMember.displayName) {
 		let returnedLog = '__'+previousNickname+`__ a changé son pseudo pour ${newMember} !`;
 		return returnedLog;
 	} else {
-		let returnedLog = `${newMember} a été mis à jour sans changer de pseudo !`;
+		let returnedLog = `Le membre ${newMember} a été mis à jour !`;
 		return returnedLog;
 	}
 }

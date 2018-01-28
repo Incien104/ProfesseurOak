@@ -1,6 +1,7 @@
 {
 	"admin": "@Admins",
 	"mods": "@Mods",
+	"muted": "@Muted",
 	"noTeam": "@NoTeam",
 	"instinct": "@Instinct",
 	"valor": "@Valor",

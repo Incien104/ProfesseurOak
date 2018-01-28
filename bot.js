@@ -4,7 +4,7 @@
 // Works with Node.js
 // Require discord.js and request
 
-// MAIN BOT FILE
+// BOT CORE
 
 // =================================================
 //                  INITIALIZATION
@@ -13,7 +13,7 @@
 // -------------------------------------------------
 // Main variables
 const botVersion = "v3.3.0";
-const botVersionDate = "27/01/2018";
+const botVersionDate = "28/01/2018";
 
 // Required modules, files and variables
 var Discord = require('discord.js');
@@ -27,14 +27,15 @@ const pokedex_fr = require('./modules/pokemonUtils/pokedex_fr.json');
 const pokedex_en = require('./modules/pokemonUtils/pokedex_en.json');
 const movesTypesStats = require('./modules/pokemonUtils/movesTypesStats.json');
 const mega_primal_xy = require('./modules/pokemonUtils/mega_primal_xy.json');
-const weatherBoost = require('./modules/pokemonUtils/weatherBoost.json');
+//const weatherBoost = require('./modules/pokemonUtils/weatherBoost.json');
 
 const scanFilter = require('./modules/scanUtils/scanFilter.json');
 const contributors_backup = require('./modules/scanUtils/contributors.json');
 var contributors;
 
 const events = require('./modules/generalUtils/events.js');
-
+const jsonQuery = require('./modules/generalUtils/jsonQuery.js');
+const command = require('./modules/generalUtils/commandHandler.js');
 
 // -------------------------------------------------
 // Bot creation and login
@@ -55,8 +56,8 @@ bot.on('ready', () => {
 		// 15min scheduled contributors JSON file loading
 		var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min
 		// 1h scheduled weather forecast request + execution at launch
-			//var intervalWeather = setInterval(weatherPost, 3600000); // Every 1h
-			//weatherPost();
+		//var intervalWeather = setInterval(weatherPost, 3600000); // Every 1h
+		//weatherPost();
 });
 
 
@@ -67,19 +68,19 @@ bot.on('ready', () => {
 // -------------------------------------------------
 // Create an event listener for new guild members
 bot.on('guildMemberAdd', member => {
-	botPostLog(events.arrivingMember(member));
+	botPostLog(events.arrivingMember(member),member.guild.channels.find("name",chansLists.chanBotLog));
 });
 
 // -------------------------------------------------
 // Create an event listener for leaving/kicked out guild members
 bot.on('guildMemberRemove', member => {
-	botPostLog(events.leavingMember(member));
+	botPostLog(events.leavingMember(member),member.guild.channels.find("name",chansLists.chanBotLog));
 });
 
 // -------------------------------------------------
 // Create an event listener for when a guild members nickname is updated
 bot.on('guildMemberUpdate', (oldMember,newMember) => {
-	botPostLog(events.updatedMember(oldMember,newMember));
+	botPostLog(events.updatedMember(oldMember,newMember),newMember.guild.channels.find("name",chansLists.chanBotLog));
 });
 
 
@@ -120,7 +121,7 @@ bot.on('message', message => {
 				// ----------------
 				// Restart function
 				case 'restart':
-					if (userRoles.find("name","@Admins")) {
+					if (userRoles.find("name","@Admins") && user.guild.name === chansLists.guildName) {
 						appRestart("manual");
 					} else {
 						message.reply("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ")
@@ -1261,16 +1262,21 @@ bot.on('message', message => {
 
 // -------------------------------------------------
 // Bot's logs in a log channel !
-function botPostLog(messageToPost) {
-	var d = new Date();	
-	d = d - config.timeFromUTC*60*60*1000;
-	var dateQuebec = new Date(d);
-	dateQuebec = dateQuebec.toString();
-	dateQuebec = dateQuebec.substring(0,dateQuebec.length-15);
-	const botGuild = bot.guilds.find('name', chansLists.guildName);
-	const logsChannel = botGuild.channels.find('name', chansLists.chanBotLog);
-	logsChannel.send('*['+dateQuebec+']* : **'+messageToPost+'**');
-	console.log(messageToPost);
+function botPostLog(messageToPost,logsChannel) {
+	logsChannel = logsChannel || 0;
+	if (messageToPost !== 0) {
+		if (logsChannel === 0) {
+			var botGuild = bot.guilds.find("name",chansLists.guildName);
+			logsChannel = botGuild.channels.find("name",chansLists.chanBotLog);
+		}
+		var d = new Date();	
+		d = d - config.timeFromUTC*60*60*1000;
+		var dateQuebec = new Date(d);
+		dateQuebec = dateQuebec.toString();
+		dateQuebec = dateQuebec.substring(0,dateQuebec.length-15);
+		logsChannel.send('*['+dateQuebec+']* : **'+messageToPost+'**');
+		console.log(messageToPost);
+	}
 }
 
 // -------------------------------------------------
@@ -1385,7 +1391,7 @@ function appRestart(requested) {
 			}
 		},
 		function(error, response, body) {
-			if (requested === "manual") {
+			if (requested === "manuel") {
 				botPostLog("Commande de redémarrage manuel effectuée !");
 			} else {
 				botPostLog("Commande de redémarrage aux 12h effectuée !");
