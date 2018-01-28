@@ -48,7 +48,7 @@ exports.updatedMember = (oldMember,newMember) => {
 		let returnedLog = '__'+previousNickname+`__ a changé son pseudo pour ${newMember} !`;
 		return returnedLog;
 	} else {
-		let returnedLog = '${newMember} a été mis à jour sans changer de pseudo !`;
+		let returnedLog = `${newMember} a été mis à jour sans changer de pseudo !`;
 		return returnedLog;
 	}
 }
