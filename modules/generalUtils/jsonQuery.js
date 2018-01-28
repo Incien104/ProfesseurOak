@@ -4,7 +4,7 @@
 
 // -------------------------------------------------
 // Load contributors JSON file !
-exports.get(url) {
+exports.get = (url) => {
 	url = url || 0;
 	if (url !== 0) {
 		getJSONFile(url)
