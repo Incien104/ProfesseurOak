@@ -1,9 +1,10 @@
 // ** Description **
-// ProfesseurOak, 3.2.1, developed by Incien104
+// ProfesseurOak, v3.3.0, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works with Node.js
 // Require discord.js and request
 
+// MAIN BOT FILE
 
 // =================================================
 //                  INITIALIZATION
@@ -11,22 +12,29 @@
 
 // -------------------------------------------------
 // Main variables
-const botVersion = "v3.2.1";
-const botVersionDate = "25/01/2018";
-const timeUTCQuebec = 5; // Hours from UTC to have the right time
+const botVersion = "v3.3.0";
+const botVersionDate = "27/01/2018";
 
+// Required modules, files and variables
 var Discord = require('discord.js');
-var config = require('./config/config.json');
-var chansLists = require('./config/chansLists.json');
-var bannedWords = require('./config/bannedWords.json');
-var pokedex_fr = require('./pokemonUtils/pokedex_fr.json');
-var pokedex_en = require('./pokemonUtils/pokedex_en.json');
-var movesTypesStats = require('./pokemonUtils/movesTypesStats.json');
-var mega_primal_xy = require('./pokemonUtils/mega_primal_xy.json');
-var weatherBoost = require('./pokemonUtils/weatherBoost.json');
-var scanFilter = require('./scanUtils/scanFilter.json');
-var contributors_backup = require('./scanUtils/contributors.json');
+const config = require('./config/config.json');
+const languages = require('./config/languages.json');
+
+const rolesList = require('./config/rolesList.json');
+const chansLists = require('./config/chansLists.json');
+
+const pokedex_fr = require('./modules/pokemonUtils/pokedex_fr.json');
+const pokedex_en = require('./modules/pokemonUtils/pokedex_en.json');
+const movesTypesStats = require('./modules/pokemonUtils/movesTypesStats.json');
+const mega_primal_xy = require('./modules/pokemonUtils/mega_primal_xy.json');
+const weatherBoost = require('./modules/pokemonUtils/weatherBoost.json');
+
+const scanFilter = require('./modules/scanUtils/scanFilter.json');
+const contributors_backup = require('./modules/scanUtils/contributors.json');
 var contributors;
+
+const events = require('./modules/generalUtils/events.js');
+
 
 // -------------------------------------------------
 // Bot creation and login
@@ -37,16 +45,41 @@ bot.login(process.env.BOT_TOKEN);
 // Bot start on Heroku server, including settings for scheduled announcements
 bot.on('ready', () => {    
     // Bot ready !
-	botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
-	bot.user.setGame('!oak ('+botVersion+')');
-	loadJSONFile("start");	
-	// 12h scheduled app restarting
-    var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
-    // 15min scheduled contributors JSON file loading
-    var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min
-	// 1h scheduled weather forecast request + execution at launch
-    //var intervalWeather = setInterval(weatherPost, 3600000); // Every 1h
-	//weatherPost();
+		botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
+		bot.user.setGame('!oak ('+botVersion+')');
+		loadJSONFile("start");
+	
+	// Scheduled events
+		// 12h scheduled app restarting
+		var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
+		// 15min scheduled contributors JSON file loading
+		var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min
+		// 1h scheduled weather forecast request + execution at launch
+			//var intervalWeather = setInterval(weatherPost, 3600000); // Every 1h
+			//weatherPost();
+});
+
+
+// =================================================
+//                  BOT'S EVENTS
+// =================================================
+
+// -------------------------------------------------
+// Create an event listener for new guild members
+bot.on('guildMemberAdd', member => {
+	botPostLog(events.arrivingMember(member));
+});
+
+// -------------------------------------------------
+// Create an event listener for leaving/kicked out guild members
+bot.on('guildMemberRemove', member => {
+	botPostLog(events.leavingMember(member));
+});
+
+// -------------------------------------------------
+// Create an event listener for when a guild members nickname is updated
+bot.on('guildMemberUpdate', (oldMember,newMember) => {
+	botPostLog(events.updatedMember(oldMember,newMember));
 });
 
 
@@ -55,68 +88,18 @@ bot.on('ready', () => {
 // =================================================
 
 // -------------------------------------------------
-// Create an event listener for new guild members
-bot.on('guildMemberAdd', member => {
-  // Send the message to a designated channel on a server:
-  const channel = member.guild.channels.find('name', chansLists.chanGeneral);
-  const channelAdmins = member.guild.channels.find('name', chansLists.chanAdmins);
-  const server = member.guild.name;
-  const serverCount = member.guild.memberCount;
-  // Do nothing if the channel wasn't found on this server
-  if (!channel) return;
-  // Send the message, mentioning the member
-  if (member.guild.name === chansLists.guildName) {
-	channel.send(`${member} est arrivé ! Bienvenue au **${serverCount}ème** dresseur à nous rejoindre ! :tada:`).catch(console.error);
-	member.send(`-----------------------------------------------------\n**Bienvenue ${member} sur la plateforme ${server} !!!** Je suis le Professeur Oak !\nTu es le **${serverCount}ème** dresseur à nous rejoindre.\n\nPour pouvoir écrire des messages, pense bien à valider l'adresse mail de ton compte Discord !\nPrend le temps de consulter les règles du chat ainsi que le fonctionnement de Discord dans les salons adéquats !\n__Les administrateurs vont te contacter par message privé afin de te donner les accès au chat de ton équipe.__\n\n**N'oublis pas qu'ici le respect entre joueurs est primordial** :wink: \n\nExplore les différents channels, il y a tout pour les dresseurs de Sherbrooke !\nSi tu as des questions ou des soucis, contacte un des __administrateurs__ (leur pseudo est de couleur mauve) ou un des __modérateurs__ (pseudo de couleur verte claire).\n\nHave Fun !\n-----------------------------------------------------`).catch(console.error);
-	// Giving default role
-	let roleDef = member.guild.roles.find("name", "@NoTeam");
-	member.addRole(roleDef).catch(console.error);
-	channelAdmins.send(`<@&370319180534382603> Nouveau membre : ${member} !`);
-	botPostLog(`Nouveau membre : ${member} !`);
-  }
-});
-
-// -------------------------------------------------
-// Create an event listener for leaving/kicked out guild members
-bot.on('guildMemberRemove', member => {
-  // Send the message to a designated channel on a server:
-  const channel = member.guild.channels.find('name', chansLists.chanGeneral);
-  // Do nothing if the channel wasn't found on this server
-  if (!channel) return;
-  // Send the message, mentioning the member
-  if (member.guild.name === chansLists.guildName) {
-	channel.send("**"+member.displayName+"** *vient de partir. Bye bye...* :vulcan: ").catch(console.error);
-	botPostLog(member.displayName+" a quitté ou a été expulsé/banni !");
-  }
-});
-
-// -------------------------------------------------
-// Create an event listener for when a guild members nickname is updated
-bot.on('guildMemberUpdate', (oldMember,newMember) => {
-  // Send the message, mentioning the member
-  var previousNickname = oldMember.nickname;
-  if (newMember.guild.name === chansLists.guildName && previousNickname !== null && oldMember.nickname !== newMember.nickname) {
-	botPostLog('__'+previousNickname+`__ a changé son pseudo pour ${newMember} !`);
-  }
-});
-
-// -------------------------------------------------
-// Responding messages starting with "!"
+// Responding messages starting with the command word
 bot.on('message', message => {
 	var user = message.member; // user as a GuildMember
 	if (message.guild !== null && user !== null) {
 		var userRoles = user.roles; // roles as a Role Collection
 		var args = message.content.split(' ');
 		
-		// FUNCTIONS WITH COMMAND IN GUILD
+		// FUNCTIONS WITH COMMAND IN A GUILD CHANNEL
 		// -----------------------------------------------
 		// Commands to the bot in guild
 		if (args[0] === config.command && message.guild.name === chansLists.guildName) {
 			var cmd = args[1].toLowerCase();
-	
-			if (cmd === "équipe") {
-				cmd = "equipe";
-			}
         
 			switch(cmd) {
 				// -------------		
@@ -155,12 +138,13 @@ bot.on('message', message => {
 					if (userRoles.find("name","@Admins") && message.channel.name === chansLists.chanBotConfig) {						
 						message.channel.send("Commandes de Oak (commencer par !oak) :\n\
 							Annonces :\n\
-							....- annonce nom_de_lannonce\n\
+							....- announcement nom_de_lannonce\n\
 							........- nests (annonce de la migration)\n\
 							........- noteam (rappel d'envoi du screenshot pour assignation d'équipe)\n\
 							........- scans (prévient les Contributeurs-trices de l'ajout de nouveaux pokémons aux notifications)\n\
 							Modération :\n\
 							....- help (affiche l'aide de Oak : liste des commandes)\n\
+							....- team [Team Name]\n\
 							....- mute @la_personne\n\
 							....- unmute @la_personne\n\
 							....- supermute @la_personne\n\
@@ -199,7 +183,7 @@ bot.on('message', message => {
 				
 				// --------------------
 				// Annoucement function
-				case 'annonce':
+				case 'announcement':
 					if (userRoles.find("name","@Admins")) {
 						var announce = args[1];
 						var botGuild = bot.guilds.find('name', chansLists.guildName);
@@ -244,7 +228,7 @@ bot.on('message', message => {
 				
 				// ---------------
 				// Roling function
-				case 'equipe':
+				case 'team':
 					message.reply("commande désactivée !");
 					/*
 					var askedRole = args[1];
@@ -1126,7 +1110,7 @@ bot.on('message', message => {
 			
 				for (i in messageWords) {
 					wordToTest = messageWords[i].toLowerCase();
-					if (bannedWords.list.indexOf(wordToTest) !== -1) {
+					if (config.bannedWords.indexOf(wordToTest) !== -1) {
 						incorrectLanguage = true;
 					}
 				}
@@ -1176,7 +1160,7 @@ bot.on('message', message => {
 					// Find the pokemon of the alert
 					pokemonNumber = parseInt(argsPokemonNumber);
 					var t = new Date();	
-					t = t - timeUTCQuebec*60*60*1000 + minutes*60*1000 + seconds*1000;
+					t = t - config.timeFromUTC*60*60*1000 + minutes*60*1000 + seconds*1000;
 					var disappearingTime = new Date(t);
 					disappearingTime = disappearingTime.toString();
 					disappearingTime = disappearingTime.substring(16,disappearingTime.length-18);
@@ -1279,7 +1263,7 @@ bot.on('message', message => {
 // Bot's logs in a log channel !
 function botPostLog(messageToPost) {
 	var d = new Date();	
-	d = d - timeUTCQuebec*60*60*1000;
+	d = d - config.timeFromUTC*60*60*1000;
 	var dateQuebec = new Date(d);
 	dateQuebec = dateQuebec.toString();
 	dateQuebec = dateQuebec.substring(0,dateQuebec.length-15);
@@ -1382,47 +1366,42 @@ function getContributorsFile() {
 }
 
 // -------------------------------------------------
-// Get weather from pokefetch !
-function getWeather() {
-	var https = require('https');
-	return new Promise((resolve,reject)=>{
-		https.get("https://pokefetch.com/#45.39712406621648,-71.89710617065431", (res) => {
-			var { statusCode } = res;
-			var contentType = res.headers['content-type'];
-			
-			let error;
-			if (statusCode !== 200) {
-				error = new Error('Échec de la requête. ' +
-								`Code status : ${statusCode}`);
+// Restart Oak dyno !
+function appRestart(requested) {  
+	requested = requested || 0;      
+    var token = process.env.HEROKU_API_KEY;
+	var appName = 'professeur-oak';
+	var dynoName = 'worker';
+	
+	var request = require('request');
+	
+	request.delete(
+		{
+			url: 'https://api.heroku.com/apps/' + appName + '/dynos/',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/vnd.heroku+json; version=3',
+				'Authorization': 'Bearer ' + token
 			}
-			if (error) {
-				console.error(error.message);
-				// consume response data to free up memory
-				res.resume();
+		},
+		function(error, response, body) {
+			if (requested === "manual") {
+				botPostLog("Commande de redémarrage manuel effectuée !");
+			} else {
+				botPostLog("Commande de redémarrage aux 12h effectuée !");
 			}
-			
-			res.setEncoding('utf8');
-			let rawData = '';
-			res.on('data', (chunk) => { rawData += chunk; });
-			res.on('end', () => {
-				try {
-					//<img src="assets/img/weather/weatherIcon_small_Sunny.png"></img>
-					rawData = rawData.split("<img src=\"assets/img/weather/weatherIcon_small_");
-					rawData = rawData[1].split(".png\"></img>");
-					weather = rawData[0];
-					resolve(weather);
-				} catch (e) {
-					reject(e.message);
-				}
-			});
-		}).on('error', (e) => {
-			reject(`Erreur reçue : ${e.message}`);
-		}).end();
-	})
+		}
+	);
 }
 
+
+// =================================================
+//             OLD OR UNUSED FUNCTIONS
+// =================================================
+
+
 // -------------------------------------------------
-// Get coords from huntr.gg redirect ! (UNUSED)
+// Get coords from huntr.gg redirect !
 function getCoords(pathURL) {
 	var http = require('http');
 	var options = {method: 'GET', host: 'huntr.gg', path: pathURL};
@@ -1461,32 +1440,43 @@ function getCoords(pathURL) {
 }
 
 // -------------------------------------------------
-// Restart Oak dyno !
-function appRestart(requested) {  
-	requested = requested || 0;      
-    var token = process.env.HEROKU_API_KEY;
-	var appName = 'professeur-oak';
-	var dynoName = 'worker';
-	
-	var request = require('request');
-	
-	request.delete(
-		{
-			url: 'https://api.heroku.com/apps/' + appName + '/dynos/',
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/vnd.heroku+json; version=3',
-				'Authorization': 'Bearer ' + token
+// Get weather from pokefetch !
+function getWeather() {
+	var https = require('https');
+	return new Promise((resolve,reject)=>{
+		https.get("https://pokefetch.com/#45.39712406621648,-71.89710617065431", (res) => {
+			var { statusCode } = res;
+			var contentType = res.headers['content-type'];
+			
+			let error;
+			if (statusCode !== 200) {
+				error = new Error('Échec de la requête. ' +
+								`Code status : ${statusCode}`);
 			}
-		},
-		function(error, response, body) {
-			if (requested === "manual") {
-				botPostLog("Commande de redémarrage manuel effectuée !");
-			} else {
-				botPostLog("Commande de redémarrage aux 12h effectuée !");
+			if (error) {
+				console.error(error.message);
+				// consume response data to free up memory
+				res.resume();
 			}
-		}
-	);
+			
+			res.setEncoding('utf8');
+			let rawData = '';
+			res.on('data', (chunk) => { rawData += chunk; });
+			res.on('end', () => {
+				try {
+					//<img src="assets/img/weather/weatherIcon_small_Sunny.png"></img>
+					rawData = rawData.split("<img src=\"assets/img/weather/weatherIcon_small_");
+					rawData = rawData[1].split(".png\"></img>");
+					weather = rawData[0];
+					resolve(weather);
+				} catch (e) {
+					reject(e.message);
+				}
+			});
+		}).on('error', (e) => {
+			reject(`Erreur reçue : ${e.message}`);
+		}).end();
+	})
 }
 
 // -------------------------------------------------

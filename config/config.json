@@ -3,12 +3,12 @@
 	"language": "fr",
 	"bilingual-en": true,
 	"timeFromUTC": 5,
-	"moderatingFunctions" : {
+	"moderatingFunctionCommand" : {
 		"ping": "ping",
 		"restart": "restart",
 		"help": "help",
-		"team": "equipe",
-		"annoucement": "annonce",
+		"team": "team",
+		"annoucement": "announcement",
 		"chanMute": "mute",
 		"chanUnmute": "unmute",
 		"globalMute": "supermute",
@@ -17,7 +17,7 @@
 		"roleRemoveMembers": "flushrole",
 		"test": "test"
 	},
-	"pokemonFunctions" : {
+	"pokemonFunctionCommand" : {
 		"privateNotifInfo": "infoscan",
 		"pokedex": "pokedex",
 		"translation": "trad",
@@ -27,8 +27,9 @@
 		"unown": "unown",
 		"breakpoints": "breakpoint",
 		"iv": "iv",
-		"scanHuntrConfig": "configHuntr",
-		"scanGymhuntrConfig": "configGymhuntr",
+		"scanHuntrConfig": "confighuntr",
+		"scanGymhuntrConfig": "configgymhuntr",
 		"easterEgg": "incien"
-	}
+	},
+	"bannedWords": ["fuck","tapette","fif","vachier","conne","pute","salaud","salope","bitch","fucker","motherfucker","sucker","emmerder","emmerde","connard"]
 }
