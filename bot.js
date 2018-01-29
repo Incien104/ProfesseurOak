@@ -1315,20 +1315,21 @@ function indexOfMax(arr) {
 // -------------------------------------------------
 // Load contributors JSON file !
 function getContributorsJSON(requested) {
-	contributorsJSONLoad = jsonQuery.get(process.env.REMOTE_JSON);
-	if (contributorsJSONLoad[0]) {
-		contributors = contributorsJSONLoad[1];
-		if (requested === "start") {
-			botPostLog("Fichier JSON distant chargé.");
-		}
-	} else {
-		if (requested === "start") {
-			contributors = contributors_backup;
-			botPostLog("Erreur au chargement de fichier JSON distant ("+contributorsJSONLoad[1]+"). Backup sur Github chargé.");
-		} else {
-			botPostLog("Erreur au chargement de fichier JSON distant ("+contributorsJSONLoad[1]+"). Backup déjà en mémoire.");
-		}
-	}
+	contributorsJSONLoad = jsonQuery.get(process.env.REMOTE_JSON)
+		.then(res => {
+			contributors = contributorsJSONLoad[1];
+			if (requested === "start") {
+				botPostLog("Fichier JSON distant chargé.");
+			}
+		})
+		.catch(err => {
+			if (requested === "start") {
+				contributors = contributors_backup;
+				botPostLog("Erreur au chargement de fichier JSON distant ("+contributorsJSONLoad[1]+"). Backup sur Github chargé.");
+			} else {
+				botPostLog("Erreur au chargement de fichier JSON distant ("+contributorsJSONLoad[1]+"). Backup déjà en mémoire.");
+			}
+		});
 }
 
 // -------------------------------------------------
