@@ -6,17 +6,24 @@
 // Load contributors JSON file !
 exports.get = (url) => {
 	url = url || 0;
+	let result = new Array();
 	if (url !== 0) {
 		getJSONFile(url)
 			.then(response => {
-				return response;
+				result[0] = true;
+				result[1] = response;
+				return result;
 			})
 			.catch(error => {
-				return "No JSON Data !";		
+				result[0] = false;
+				result[1] = error;
+				return result;
 			});
 	}
 	else {
-		return "No URL provided !"
+		result[0] = false;
+		result[1] = "No URL provided !";
+		return result;
 	}
 }
 
@@ -31,7 +38,7 @@ function getJSONFile(url) {
 			
 			let error;
 			if (statusCode !== 200) {
-				error = new Error('Échec de la requête. ' +
+				error = new Error('Request failure. ' +
 								`Status code : ${statusCode}`);
 			} else if (!/^application\/json/.test(contentType)) {
 				error = new Error('Content type invalid : ' +

@@ -1,10 +1,11 @@
 // ** Description **
-// ProfesseurOak, v3.3.0, developed by Incien104
+// ProfesseurOak, v3.3.1, developed by Incien104
 // GPL 3.0, Oct. 2017 - Jan. 2018
 // Works with Node.js
 // Require discord.js and request
 
 // BOT CORE
+
 
 // =================================================
 //                  INITIALIZATION
@@ -12,7 +13,7 @@
 
 // -------------------------------------------------
 // Main variables
-const botVersion = "v3.3.0";
+const botVersion = "v3.3.1";
 const botVersionDate = "28/01/2018";
 
 // Required modules, files and variables
@@ -48,13 +49,13 @@ bot.on('ready', () => {
     // Bot ready !
 		botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
 		bot.user.setGame('!oak ('+botVersion+')');
-		loadJSONFile("start");
+		getContributorsJSON("start");
 	
 	// Scheduled events
 		// 12h scheduled app restarting
 		var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
 		// 15min scheduled contributors JSON file loading
-		var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min
+		var intervalLoadJSON = setInterval(getContributorsJSON, 900000); // Every 15min
 		// 1h scheduled weather forecast request + execution at launch
 		//var intervalWeather = setInterval(weatherPost, 3600000); // Every 1h
 		//weatherPost();
@@ -1309,6 +1310,25 @@ function indexOfMax(arr) {
     }
 
     return maxIndex;
+}
+
+// -------------------------------------------------
+// Load contributors JSON file !
+function getContributorsJSON(requested) {
+	contributorsJSONLoad = jsonQuery.get(process.env.REMOTE_JSON);
+	if (contributorsJSONLoad[0]) {
+		contributors = contributorsJSONLoad[1];
+		if (requested === "start") {
+			botPostLog("Fichier JSON distant chargé.");
+		}
+	} else {
+		if (requested === "start") {
+			contributors = contributors_backup;
+			botPostLog("Erreur au chargement de fichier JSON distant ("+contributorsJSONLoad[1]+"). Backup sur Github chargé.");
+		} else {
+			botPostLog("Erreur au chargement de fichier JSON distant ("+contributorsJSONLoad[1]+"). Backup déjà en mémoire.");
+		}
+	}
 }
 
 // -------------------------------------------------
