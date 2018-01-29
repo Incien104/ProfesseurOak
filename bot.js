@@ -49,7 +49,7 @@ bot.on('ready', () => {
     // Bot ready !
 		botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
 		bot.user.setGame('!oak ('+botVersion+')');
-		loadJSONFile("start");
+		getContributorsJSON("start");
 	
 	// Scheduled events
 		// 12h scheduled app restarting

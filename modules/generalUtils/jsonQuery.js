@@ -8,21 +8,22 @@ exports.get = (url) => {
 	url = url || 0;
 	let result = new Array();
 	if (url !== 0) {
-		getJSONFile(url)
-			.then(response => {
-				result[0] = true;
-				result[1] = response;
-				return result;
-			})
-			.catch(error => {
-				result[0] = false;
-				result[1] = error;
-				return result;
-			});
-	}
-	else {
-		result[0] = false;
-		result[1] = "No URL provided !";
+		return new Promise((resolve,reject)=>{
+			getJSONFile(url)
+				.then(response => {
+					result.push(true);
+					result.push(response);
+					resolve(result);
+				})
+				.catch(error => {
+					result.push(false);
+					result.push(error);
+					reject(result);
+				});
+		}
+	} else {
+		result.push(false);
+		result.push("No URL provided !");
 		return result;
 	}
 }
