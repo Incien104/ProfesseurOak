@@ -20,7 +20,7 @@ exports.get = (url) => {
 					result.push(error);
 					reject(result);
 				});
-		}
+		})
 	} else {
 		result.push(false);
 		result.push("No URL provided !");
