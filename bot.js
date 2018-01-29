@@ -55,7 +55,7 @@ bot.on('ready', () => {
 		// 12h scheduled app restarting
 		var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
 		// 15min scheduled contributors JSON file loading
-		var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min
+		var intervalLoadJSON = setInterval(getContributorsJSON, 900000); // Every 15min
 		// 1h scheduled weather forecast request + execution at launch
 		//var intervalWeather = setInterval(weatherPost, 3600000); // Every 1h
 		//weatherPost();
@@ -1315,9 +1315,9 @@ function indexOfMax(arr) {
 // -------------------------------------------------
 // Load contributors JSON file !
 function getContributorsJSON(requested) {
-	contributorsJSONLoad = jsonQuery.get(process.env.REMOTE_JSON)
+	jsonQuery.get(process.env.REMOTE_JSON)
 		.then(res => {
-			contributors = contributorsJSONLoad[1];
+			contributors = res[1];
 			if (requested === "start") {
 				botPostLog("Fichier JSON distant chargé.");
 			}
@@ -1325,9 +1325,9 @@ function getContributorsJSON(requested) {
 		.catch(err => {
 			if (requested === "start") {
 				contributors = contributors_backup;
-				botPostLog("Erreur au chargement de fichier JSON distant ("+contributorsJSONLoad[1]+"). Backup sur Github chargé.");
+				botPostLog("Erreur au chargement de fichier JSON distant ("+err[1]+"). Backup sur Github chargé.");
 			} else {
-				botPostLog("Erreur au chargement de fichier JSON distant ("+contributorsJSONLoad[1]+"). Backup déjà en mémoire.");
+				botPostLog("Erreur au chargement de fichier JSON distant ("+err[1]+"). Backup déjà en mémoire.");
 			}
 		});
 }
