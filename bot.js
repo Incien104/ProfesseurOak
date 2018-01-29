@@ -49,13 +49,13 @@ bot.on('ready', () => {
     // Bot ready !
 		botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate);
 		bot.user.setGame('!oak ('+botVersion+')');
-		getContributorsJSON("start");
+		loadJSONFile("start");
 	
 	// Scheduled events
 		// 12h scheduled app restarting
 		var intervalAppRestart = setInterval(appRestart, 43200000); // Every 12h
 		// 15min scheduled contributors JSON file loading
-		var intervalLoadJSON = setInterval(getContributorsJSON, 900000); // Every 15min
+		var intervalLoadJSON = setInterval(loadJSONFile, 900000); // Every 15min
 		// 1h scheduled weather forecast request + execution at launch
 		//var intervalWeather = setInterval(weatherPost, 3600000); // Every 1h
 		//weatherPost();
