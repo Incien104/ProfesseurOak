@@ -1025,7 +1025,7 @@ bot.on('message', message => {
 						switch (role) {
 							case '@RaidEX':
 								var targetRole = user.guild.roles.find("name",'@RaidEX');
-								var membersOfTheGuild = user.guild.members;
+								var membersOfTheGuild = Array.from(user.guild.members.values());
 								var j = 0;
 								for (i in membersOfTheGuild) {
 									if (membersOfTheGuild[i].roles.find("name","@RaidEX")) {
