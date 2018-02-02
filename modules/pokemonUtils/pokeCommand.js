@@ -462,6 +462,8 @@ exports.counters = (message) => {
 				})
 				.catch(err => {
 					generalFunc.replyDelete("Erreur lors de l'accès aux données. Réessayez !",message,5000,5000);
+					console.log("pokemon number = "+pokemonNumber+"\nurl = "+"https://db.pokemongohub.net/pokemon/"+pokemonNumber+"/counters");
+					console.log(err);
 				});
 		}
 	}
