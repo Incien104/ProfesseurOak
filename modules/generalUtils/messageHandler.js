@@ -23,10 +23,12 @@ exports.handle = (message,contributors = 0) => {
 		if (args[0] === config.command) { // FUNCTIONS CALLED BY COMMANDS
 			command.handle(message,contributors);
 		} else { // FUNCTIONS USING NO COMMAND
-			if (message.guild.name === chansLists.guildName && message.channel.name === chansLists.chanScanPokemon) {
-				scanNotif.process(message,contributors);
-			} else if (chansLists.chanFreeFromBannedWords.indexOf(message.channel.name) === -1 && !message.member.user.bot) {
-				checkBannedWords.process(message);
+			if (message.guild !== null) {
+				if (message.guild.name === chansLists.guildName && message.channel.name === chansLists.chanScanPokemon) {
+					scanNotif.process(message,contributors);
+				} else if (chansLists.chanFreeFromBannedWords.indexOf(message.channel.name) === -1 && !message.member.user.bot) {
+					checkBannedWords.process(message);
+				}
 			}
 		}
 	}

@@ -27,6 +27,7 @@ const chansLists = require('./config/chansLists.json');
 
 const contributors_backup = require('./modules/scanUtils/contributors.json');
 var contributors;
+var devBotLogChannel;
 
 const events = require('./modules/generalUtils/events.js');
 const jsonQuery = require('./modules/generalUtils/jsonQuery.js');
@@ -42,7 +43,7 @@ bot.login(process.env.BOT_TOKEN);
 // Bot start on Heroku server, including settings for scheduled announcements
 bot.on('ready', () => {    
     // Bot ready !		
-		const devBotLogChannel = bot.guilds.find("name",chansLists.guildName).channels.find("name",chansLists.chanBotLog);
+		devBotLogChannel = bot.guilds.find("name",chansLists.guildName).channels.find("name",chansLists.chanBotLog);
 		
 		generalFunc.botPostLog('Démarré  !    Oak prêt  !    Exécutant '+botVersion+' - '+botVersionDate,devBotLogChannel);
 		bot.user.setGame('!oak ('+botVersion+')');
