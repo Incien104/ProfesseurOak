@@ -444,7 +444,7 @@ exports.counters = (message) => {
 			}
 		}
 		if (pokeOk === true && pokemonNumber !== 0) {
-			jsonQuery.get("http://db.pokemongohub.net/pokemon/"+pokemonNumber+"/counters")
+			jsonQuery.get("https://db.pokemongohub.net/pokemon/"+pokemonNumber+"/counters")
 				.then(res => {
 					let counters = "Meilleurs opposants :\n";
 					for (i=0;i<res.counters.length;i++) {
