@@ -30,7 +30,7 @@ exports.restart = (message) => {
 exports.scanHuntrConfig = (message) => {
 	if (message.member.roles.find("name",rolesList.admin)) {
 		let channelHuntr = message.guild.channels.find('name', chansLists.chanScanPokemon);
-		if !channelHuntr return;
+		if (!channelHuntr) {return};
 		channelHuntr.send("!setup 45.39652136952787,-71.88354492187501\n!radius 10\n!filter "+scanFilter.list);
 	} else {
 		generalFunc.replyDelete("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ",message);
@@ -41,7 +41,7 @@ exports.scanHuntrConfig = (message) => {
 exports.scanGymhuntrConfig = (message) => {
 	if (message.member.roles.find("name",rolesList.admin)) {
 		let channelHuntr = message.guild.channels.find('name', chansLists.chanScanPokemon);	
-		if !channelHuntr return;	
+		if (!channelHuntr) {return};	
 		channelHuntr.send("!setup 45.39652136952787,-71.88354492187501\n!radius 10");
 	} else {
 		generalFunc.replyDelete("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ",message);
