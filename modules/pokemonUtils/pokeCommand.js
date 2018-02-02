@@ -424,7 +424,7 @@ exports.counters = (message) => {
 		let pokemonNumber = 0;
 		let pokeOk = false;
 		if (generalFunc.isInt(parameter) && parameter >= 1 && parameter <= 386) {
-			pokemonNumber = parameter;
+			pokemonNumber = parseInt(parameter);
 			let pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
 			pokeOk = true;
 		} else if (generalFunc.isInt(parameter) && (parameter < 1 || parameter > 386)) {
@@ -443,8 +443,8 @@ exports.counters = (message) => {
 				generalFunc.replyDelete("Pokémon introuvable ! Vérifiez l'orthographe...",message,5000,5000);
 			}
 		}
-		if (pokeOk === true) {
-			jsonQuery.get("https://db.pokemongohub.net/pokemon/"+pokemonNumber+"/counters")
+		if (pokeOk === true && pokemonNumber !== 0) {
+			jsonQuery.get("http://db.pokemongohub.net/pokemon/"+pokemonNumber+"/counters")
 				.then(res => {
 					let counters = "Meilleurs opposants :\n";
 					for (i=0;i<res.counters.length;i++) {
