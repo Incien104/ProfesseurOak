@@ -13,6 +13,8 @@ const chansLists = require('../../config/chansLists.json');
 const jsonQuery = require('../generalUtils/jsonQuery.js');
 const generalFunc = require('../generalUtils/generalFunc.js');
 
+const scanFilter = require('../scanUtils/scanFilter.json');
+
 const pokedex = require('./pokedex.json');
 const movesTypesStats = require('./movesTypesStats.json');
 const mega_primal_xy = require('./mega_primal_xy.json');
