@@ -294,15 +294,15 @@ exports.clearMessages = (message) => {
 		if (nbMessagesToClear >= 1 && nbMessagesToClear <= 30) {
 			let fetchedMessages = channelToClear.fetchMessages({limit: nbMessagesToClear})					
 				.then(messages => {
-					generalFunc.replyDelete("*"+messages.size+" messages supprimés ! :wastebasket:*",message);
-					messages.deleteAll().catch(console.error);
+					message.reply("*"+messages.size+" messages supprimés ! :wastebasket:*");
+					messages.deleteAll();
 				})
 				.catch(console.error);
 		} else if (nbMessagesToClear > 30) {
 			let fetchedMessages = channelToClear.fetchMessages({limit: 30})					
 				.then(messages => {
-					generalFunc.replyDelete("*"+messages.size+" messages supprimés ! :wastebasket:*",message);
-					messages.deleteAll().catch(console.error);
+					message.reply("*"+messages.size+" messages supprimés ! :wastebasket:*");
+					messages.deleteAll();
 				})
 				.catch(console.error);
 		}
