@@ -10,7 +10,7 @@ const languages = require('../../config/languages.json');
 const rolesList = require('../../config/rolesList.json');
 const chansLists = require('../../config/chansLists.json');
 
-const pokedex = require('./pokedex.json');
+const pokedex = require('../pokemonUtils/pokedex.json');
 
 const scanFilter = require('./scanFilter.json');
 const contributors_backup = require('./contributors.json');
