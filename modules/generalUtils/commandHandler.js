@@ -21,7 +21,7 @@ exports.handle = (message,contributors = 0) => {
 	var cmd = args[1].toLowerCase();
 	
 	if (message.guild !== null) { // FUNCTIONS IN A GUILD'S CHANNELS
-		if (guild.name === chansLists.guildName) {
+		if (message.guild.name === chansLists.guildName) {
 			switch(cmd) {
 				// -------------
 				// DEV FUNCTIONS
