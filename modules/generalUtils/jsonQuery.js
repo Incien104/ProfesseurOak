@@ -46,10 +46,10 @@ function getJSONFile(url) {
 			if (statusCode !== 200) {
 				error = new Error('Request failure. ' +
 								`Status code : ${statusCode}`);
-			} else if (!/^application\/json/.test(contentType)) {
+			}/* else if (!/^application\/json/.test(contentType)) {
 				error = new Error('Content type invalid : ' +
 								`Expected application/json, received ${contentType}`);
-			}
+			}*/
 			if (error) {
 				console.error(error.message);
 				// consume response data to free up memory
@@ -86,10 +86,10 @@ function getJSONFileHTTPS(url) {
 			if (statusCode !== 200) {
 				error = new Error('Request failure. ' +
 								`Status code : ${statusCode}`);
-			} else if (!/^application\/json/.test(contentType)) {
+			}/* else if (!/^application\/json/.test(contentType)) {
 				error = new Error('Content type invalid : ' +
 								`Expected application/json, received ${contentType}`);
-			}
+			}*/
 			if (error) {
 				console.error(error.message);
 				// consume response data to free up memory
