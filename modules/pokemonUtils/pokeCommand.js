@@ -423,6 +423,7 @@ exports.counters = (message) => {
 		let parameter = args[2];
 		let pokemonNumber = 0;
 		let pokemonNameEn = "";
+		let pokemonName = "";
 		let pokeOk = false;
 		if (generalFunc.isInt(parameter) && parameter >= 1 && parameter <= 386) {
 			pokemonNumber = parseInt(parameter);
@@ -431,7 +432,7 @@ exports.counters = (message) => {
 		} else if (generalFunc.isInt(parameter) && (parameter < 1 || parameter > 386)) {
 			generalFunc.replyDelete("Données non disponibles pour ce # de Pokémon !",message,5000,5000);
 		} else {
-			let pokemonName = parameter.capitalize();
+			pokemonName = parameter.capitalize();
 			let numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
 			if (numPokemon === -1) {
 				numPokemon = pokedex.pokemonName[1].indexOf(pokemonName);
