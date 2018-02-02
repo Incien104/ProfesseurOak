@@ -45,11 +45,6 @@ exports.handle = (message,contributors = 0) => {
 			case config.devCommand.scanGymhuntrConfig:
 				devCommand.scanGymhuntrConfig(message);
 			break;
-			
-			// INVALID COMMAND
-			// Default : Not a command
-			default:
-				generalFunc.replyDelete("Commande invalide !",message);
 
 			// --------------------------------
 			// MODERATING AND GENERAL FUNCTIONS
