@@ -1,9 +1,12 @@
 {
 	"admin": "@Admins",
-	"mods": "@Mods",
+	"mod": "@Mods",
+	"bot": "@Bots",
 	"muted": "@Muted",
 	"noTeam": "@NoTeam",
 	"instinct": "@Instinct",
 	"valor": "@Valor",
-	"mystic": "@Mystic"
+	"mystic": "@Mystic",
+	"multi": "@Multi",
+	"contributor": "@Contributeur-trice"
 }

@@ -3,33 +3,38 @@
 	"language": "fr",
 	"bilingual-en": true,
 	"timeFromUTC": 5,
-	"moderatingFunctionCommand" : {
-		"ping": "ping",
+	"devCommand" : {
+		"scanHuntrConfig": "confighuntr",
+		"scanGymhuntrConfig": "configgymhuntr",
 		"restart": "restart",
+		"test": "test"
+	},
+	"modCommand" : {
+		"ping": "ping",		
 		"help": "help",
 		"team": "team",
 		"annoucement": "announcement",
 		"chanMute": "mute",
 		"chanUnmute": "unmute",
-		"globalMute": "supermute",
-		"globalUnmute": "superunmute",
-		"clear": "clear",
-		"roleRemoveMembers": "flushrole",
-		"test": "test"
+		"globalMute": "globalmute",
+		"globalUnmute": "globalunmute",
+		"clearMessages": "clear",
+		"roleRemoveMembers": "flushrole"
 	},
-	"pokemonFunctionCommand" : {
+	"pokeCommand" : {
 		"privateNotifInfo": "infoscan",
 		"pokedex": "pokedex",
 		"translation": "trad",
 		"shiny": "shiny",
 		"mega": "mega",
-		"privateNotifInfo": "infoscan",
 		"unown": "unown",
+		"zarbi": "zarbi",
 		"breakpoints": "breakpoint",
 		"iv": "iv",
-		"scanHuntrConfig": "confighuntr",
-		"scanGymhuntrConfig": "configgymhuntr",
+		"counters": "counters",
+		"effect": "effect",
 		"easterEgg": "incien"
 	},
+	"announce": ["nests","noteam","scan"],
 	"bannedWords": ["fuck","tapette","fif","vachier","conne","pute","salaud","salope","bitch","fucker","motherfucker","sucker","emmerder","emmerde","connard"]
 }
