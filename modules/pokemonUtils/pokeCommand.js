@@ -506,12 +506,12 @@ exports.effect = (message) => {
 						defSuperStrong = defSuperStrong+movesTypesStats.typeName[1][i]+",";
 					}
 				}
-				attStrong = attStrong.substring(0,attStrong.length-2);
-				attWeak = attWeak.substring(0,attWeak.length-2);
-				attSuperWeak = attSuperWeak.substring(0,attSuperWeak.length-2);
-				defSuperStrong = defSuperStrong.substring(0,defSuperStrong.length-2);
-				defStrong = defStrong.substring(0,defStrong.length-2);
-				defWeak = defWeak.substring(0,defWeak.length-2);
+				attStrong = attStrong.substring(0,attStrong.length-1);
+				attWeak = attWeak.substring(0,attWeak.length-1);
+				attSuperWeak = attSuperWeak.substring(0,attSuperWeak.length-1);
+				defSuperStrong = defSuperStrong.substring(0,defSuperStrong.length-1);
+				defStrong = defStrong.substring(0,defStrong.length-1);
+				defWeak = defWeak.substring(0,defWeak.length-1);
 				
 				attEffect = "Très efficace contre : "+attStrong+"\nPeu efficace contre : "+attWeak+"\nTrès peu efficace contre : "+attSuperWeak;
 				defEffect = "Très résistant contre : "+defSuperStrong+"\nRésistant contre : "+defStrong+"\nFaible contre : "+defWeak;
@@ -561,10 +561,10 @@ exports.effect = (message) => {
 							defSuperWeak = defSuperWeak+movesTypesStats.typeName[1][i]+",";
 						}
 					}
-					defSuperStrong = defSuperStrong.substring(0,defSuperStrong.length-2);
-					defStrong = defStrong.substring(0,defStrong.length-2);
-					defWeak = defWeak.substring(0,defWeak.length-2);
-					defSuperWeak = defSuperWeak.substring(0,defSuperWeak.length-2);
+					defSuperStrong = defSuperStrong.substring(0,defSuperStrong.length-1);
+					defStrong = defStrong.substring(0,defStrong.length-1);
+					defWeak = defWeak.substring(0,defWeak.length-1);
+					defSuperWeak = defSuperWeak.substring(0,defSuperWeak.length-1);
 					
 					defEffect = "Très résistant contre : "+defSuperStrong+"\nRésistant contre : "+defStrong+"\nFaible contre : "+defWeak+"\nTrès faible contre : "+defSuperWeak;
 					
