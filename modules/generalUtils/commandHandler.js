@@ -183,5 +183,6 @@ exports.handle = (message,contributors = 0) => {
 			// Default : Not a command
 			default:
 				generalFunc.replyDelete("Commande invalide !",message);
+		}
 	}
 }
