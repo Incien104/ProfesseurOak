@@ -11,7 +11,7 @@ const rolesList = require('../../config/rolesList.json');
 const chansLists = require('../../config/chansLists.json');
 
 const jsonQuery = require('../generalUtils/jsonQuery.js');
-const generalFunc = require('./generalFunc.js');
+const generalFunc = require('../generalUtils/generalFunc.js');
 
 const pokedex = require('./pokedex.json');
 const movesTypesStats = require('./movesTypesStats.json');
