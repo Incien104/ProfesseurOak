@@ -236,11 +236,11 @@ exports.breakpoint = (message) => {
 		let pokemon = args[2];
 		let iv = parseInt(args[3]);
 		let boss = args[4];
-		let attack = args[5].toLowerCase.capitalize();
+		let attack = args[5].capitalize();
 		if (args.length === 7) {
-			attack = args[5].toLowerCase.capitalize()+" "+args[6].toLowerCase.capitalize();
+			attack = args[5].capitalize()+" "+args[6].capitalize();
 		} else if (args.length === 8) {
-			attack = args[5].toLowerCase.capitalize()+" "+args[6].toLowerCase.capitalize()+" "+args[7].toLowerCase.capitalize();
+			attack = args[5].capitalize()+" "+args[6].capitalize()+" "+args[7].capitalize();
 		}
 		
 		let pokemonName = pokemon.capitalize();
@@ -475,7 +475,8 @@ exports.effect = (message) => {
 		if (args.length < 3) {
 			generalFunc.replyDelete("Spécifiez un Type ou un Pokémon !",message,5000,5000);
 		} else {
-			let typeName = args[2].toLowerCase.capitalize();
+			let typeName = args[2].toLowerCase();
+			typeName = typeName.capitalize();
 			let typeNumber = movesTypesStats.typeName[0].indexOf(typeName);
 			if (typeNumber === -1) {
 				typeNumber = movesTypesStats.typeName[1].indexOf(typeName);
@@ -524,7 +525,8 @@ exports.effect = (message) => {
 					.addField("En défense",defEffect)
 				generalFunc.replyDelete({embed},message,1000,60000);			
 			} else {
-				let pokemonName = args[2].toLowerCase.capitalize();
+				let pokemonName = args[2].toLowerCase();
+				pokemonName = pokemonName.capitalize();
 				let pokemonNumber = pokedex.pokemonName[0].indexOf(pokemonName);
 				if (pokemonNumber === -1) {
 					pokemonNumber = pokedex.pokemonName[1].indexOf(pokemonName);
