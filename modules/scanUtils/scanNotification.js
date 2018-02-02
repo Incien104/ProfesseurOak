@@ -81,10 +81,9 @@ exports.process = (message,contributors) => {
 			areasName = "à Fleurimont";
 		}
 		
+		let weatherBoosted = "";
 		if (remainingTimeText[2] !== '*None*') {
-			let weatherBoosted = "\n**Boosté** (météo)";
-		} else {
-			let weatherBoosted = "";
+			weatherBoosted = "\n**Boosté** (météo)";
 		}
 		
 		// Create Rich Embed									
