@@ -17,7 +17,7 @@ exports.ping = (message) => {
 	let userRoles = message.member.roles;
 	if (userRoles.find("name",rolesList.admin)) {
 		let returnedLog = new Array();
-		generalFunc.botPostLog(botVersion+" running !",message.guild.channels.find("name",chansLists.chanBotLog));
+		generalFunc.botPostLog("Oak running !",message.guild.channels.find("name",chansLists.chanBotLog));
 	} else {
 		generalFunc.replyDelete("tu n'es pas autorisé à utiliser cette commande ! :no_entry: ",message);
 	}
