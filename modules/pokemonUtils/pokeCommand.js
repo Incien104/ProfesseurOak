@@ -472,107 +472,111 @@ exports.effect = (message) => {
 	if (message.channel.name === chansLists.chanOak) {
 		// !oak counter [Pokemon]
 		let args = message.content.split(' ');
-		let typeName = args[2].toLowerCase.capitalize();
-		let typeNumber = movesTypesStats.typeName[0].indexOf(typeName);
-		if (typeNumber === -1) {
-			typeNumber = movesTypesStats.typeName[1].indexOf(typeName);
-		}
-		if (typeNumber !== -1) {
-			let attEffect = "";
-			let defEffect = "";
-			let attStrong = " ";
-			let attWeak = " ";
-			let attSuperWeak = " ";
-			let defSuperStrong = " ";
-			let defStrong = " ";
-			let defWeak = " ";
-			for (i = 0;i<movesTypesStats.typeName[0].length;i++) {
-				if (movesTypesStats.typeEffectiveness[typeNumber][i] > 1) {
-					attStrong = attStrong+movesTypesStats.typeName[1][i]+",";
-				} else if (movesTypesStats.typeEffectiveness[typeNumber][i] < 1 && movesTypesStats.typeEffectiveness[typeNumber][i] > 0.6) {
-					attWeak = attWeak+movesTypesStats.typeName[1][i]+",";
-				} else if (movesTypesStats.typeEffectiveness[typeNumber][i] < 0.6) {
-					attSuperWeak = attSuperWeak+movesTypesStats.typeName[1][i]+",";
-				}
-				if (movesTypesStats.typeEffectiveness[i][typeNumber] > 0.6 && movesTypesStats.typeEffectiveness[i][typeNumber] < 1) {
-					defStrong = defStrong+movesTypesStats.typeName[1][i]+",";
-				} else if (movesTypesStats.typeEffectiveness[i][typeNumber] > 1) {
-					defWeak = defWeak+movesTypesStats.typeName[1][i]+",";
-				} else if (movesTypesStats.typeEffectiveness[i][typeNumber] < 0.6) {
-					defSuperStrong = defSuperStrong+movesTypesStats.typeName[1][i]+",";
-				}
-			}
-			attStrong = attStrong.substring(0,attStrong.length-2);
-			attWeak = attWeak.substring(0,attWeak.length-2);
-			attSuperWeak = attSuperWeak.substring(0,attSuperWeak.length-2);
-			defSuperStrong = defSuperStrong.substring(0,defSuperStrong.length-2);
-			defStrong = defStrong.substring(0,defStrong.length-2);
-			defWeak = defWeak.substring(0,defWeak.length-2);
-			
-			attEffect = "Très efficace contre : "+attStrong+"\nPeu efficace contre : "+attWeak+"\nTrès peu efficace contre : "+attSuperWeak;
-			defEffect = "Très résistant contre : "+defSuperStrong+"\nRésistant contre : "+defStrong+"\nFaible contre : "+defWeak;
-			
-			// Create Rich Embed
-			let colorForEmbed = "#43B581";
-			let embed = new Discord.RichEmbed()
-				.setTitle("Type "+typeName)
-				.setColor(colorForEmbed)
-				.addField("En attaque",attEffect)
-				.addField("En défense",defEffect)
-			generalFunc.replyDelete({embed},message,1000,60000);			
+		if (args.length < 3) {
+			generalFunc.replyDelete("Spécifiez un Type ou un Pokémon !",message,5000,5000);
 		} else {
-			let pokemonName = args[2].toLowerCase.capitalize();
-			let pokemonNumber = pokedex.pokemonName[0].indexOf(pokemonName);
-			if (pokemonNumber === -1) {
-				pokemonNumber = pokedex.pokemonName[1].indexOf(pokemonName);
+			let typeName = args[2].toLowerCase.capitalize();
+			let typeNumber = movesTypesStats.typeName[0].indexOf(typeName);
+			if (typeNumber === -1) {
+				typeNumber = movesTypesStats.typeName[1].indexOf(typeName);
 			}
-			if (pokemonNumber !== -1) {
+			if (typeNumber !== -1) {
+				let attEffect = "";
 				let defEffect = "";
+				let attStrong = " ";
+				let attWeak = " ";
+				let attSuperWeak = " ";
 				let defSuperStrong = " ";
 				let defStrong = " ";
 				let defWeak = " ";
-				let defSuperWeak = " ";
-				let effectiveness = 0;
-				let pokemonType = pokedex.pokemonType[pokemonNumber];
-				let pokemonTypes = "";
-				if (pokemonType.length === 1) {
-					pokemonTypes = movesTypesStats.typeName[1][movesTypesStats.typeName[0].indexOf(pokemonType[0])];
-				} else {
-					pokemonTypes = movesTypesStats.typeName[1][movesTypesStats.typeName[0].indexOf(pokemonType[0])]+"/"+movesTypesStats.typeName[1][movesTypesStats.typeName[0].indexOf(pokemonType[1])];
-				}
 				for (i = 0;i<movesTypesStats.typeName[0].length;i++) {
-					if (pokemonType.length === 1) {
-						effectiveness = movesTypesStats.typeEffectiveness[i][movesTypesStats.typeName[0].indexOf(pokemonType[0])];
-					} else {
-						effectiveness = movesTypesStats.typeEffectiveness[i][movesTypesStats.typeName[0].indexOf(pokemonType[0])]*movesTypesStats.typeEffectiveness[i][movesTypesStats.typeName[0].indexOf(pokemonType[1])];
+					if (movesTypesStats.typeEffectiveness[typeNumber][i] > 1) {
+						attStrong = attStrong+movesTypesStats.typeName[1][i]+",";
+					} else if (movesTypesStats.typeEffectiveness[typeNumber][i] < 1 && movesTypesStats.typeEffectiveness[typeNumber][i] > 0.6) {
+						attWeak = attWeak+movesTypesStats.typeName[1][i]+",";
+					} else if (movesTypesStats.typeEffectiveness[typeNumber][i] < 0.6) {
+						attSuperWeak = attSuperWeak+movesTypesStats.typeName[1][i]+",";
 					}
-					if (effectiveness > 0.6 && effectiveness < 0.99) {
+					if (movesTypesStats.typeEffectiveness[i][typeNumber] > 0.6 && movesTypesStats.typeEffectiveness[i][typeNumber] < 1) {
 						defStrong = defStrong+movesTypesStats.typeName[1][i]+",";
-					} else if (effectiveness > 1 && effectiveness < 1.5) {
+					} else if (movesTypesStats.typeEffectiveness[i][typeNumber] > 1) {
 						defWeak = defWeak+movesTypesStats.typeName[1][i]+",";
-					} else if (effectiveness < 0.6) {
+					} else if (movesTypesStats.typeEffectiveness[i][typeNumber] < 0.6) {
 						defSuperStrong = defSuperStrong+movesTypesStats.typeName[1][i]+",";
-					} else if (effectiveness > 1.5) {
-						defSuperWeak = defSuperWeak+movesTypesStats.typeName[1][i]+",";
 					}
 				}
+				attStrong = attStrong.substring(0,attStrong.length-2);
+				attWeak = attWeak.substring(0,attWeak.length-2);
+				attSuperWeak = attSuperWeak.substring(0,attSuperWeak.length-2);
 				defSuperStrong = defSuperStrong.substring(0,defSuperStrong.length-2);
 				defStrong = defStrong.substring(0,defStrong.length-2);
 				defWeak = defWeak.substring(0,defWeak.length-2);
-				defSuperWeak = defSuperWeak.substring(0,defSuperWeak.length-2);
 				
-				defEffect = "Très résistant contre : "+defSuperStrong+"\nRésistant contre : "+defStrong+"\nFaible contre : "+defWeak+"\nTrès faible contre : "+defSuperWeak;
+				attEffect = "Très efficace contre : "+attStrong+"\nPeu efficace contre : "+attWeak+"\nTrès peu efficace contre : "+attSuperWeak;
+				defEffect = "Très résistant contre : "+defSuperStrong+"\nRésistant contre : "+defStrong+"\nFaible contre : "+defWeak;
 				
 				// Create Rich Embed
 				let colorForEmbed = "#43B581";
 				let embed = new Discord.RichEmbed()
-					.setTitle("#"+(pokemonNumber+1)+" - "+pokemonName+" - "+pokemonTypes)
+					.setTitle("Type "+typeName)
 					.setColor(colorForEmbed)
-					.addField("En attaque","voir effet du type de l'attaque")
+					.addField("En attaque",attEffect)
 					.addField("En défense",defEffect)
-				generalFunc.replyDelete({embed},message,1000,60000);
+				generalFunc.replyDelete({embed},message,1000,60000);			
 			} else {
-				generalFunc.replyDelete("Type ou Pokémon introuvable ! Vérifiez l'orthographe...",message,5000,5000);
+				let pokemonName = args[2].toLowerCase.capitalize();
+				let pokemonNumber = pokedex.pokemonName[0].indexOf(pokemonName);
+				if (pokemonNumber === -1) {
+					pokemonNumber = pokedex.pokemonName[1].indexOf(pokemonName);
+				}
+				if (pokemonNumber !== -1) {
+					let defEffect = "";
+					let defSuperStrong = " ";
+					let defStrong = " ";
+					let defWeak = " ";
+					let defSuperWeak = " ";
+					let effectiveness = 0;
+					let pokemonType = pokedex.pokemonType[pokemonNumber];
+					let pokemonTypes = "";
+					if (pokemonType.length === 1) {
+						pokemonTypes = movesTypesStats.typeName[1][movesTypesStats.typeName[0].indexOf(pokemonType[0])];
+					} else {
+						pokemonTypes = movesTypesStats.typeName[1][movesTypesStats.typeName[0].indexOf(pokemonType[0])]+"/"+movesTypesStats.typeName[1][movesTypesStats.typeName[0].indexOf(pokemonType[1])];
+					}
+					for (i = 0;i<movesTypesStats.typeName[0].length;i++) {
+						if (pokemonType.length === 1) {
+							effectiveness = movesTypesStats.typeEffectiveness[i][movesTypesStats.typeName[0].indexOf(pokemonType[0])];
+						} else {
+							effectiveness = movesTypesStats.typeEffectiveness[i][movesTypesStats.typeName[0].indexOf(pokemonType[0])]*movesTypesStats.typeEffectiveness[i][movesTypesStats.typeName[0].indexOf(pokemonType[1])];
+						}
+						if (effectiveness > 0.6 && effectiveness < 0.99) {
+							defStrong = defStrong+movesTypesStats.typeName[1][i]+",";
+						} else if (effectiveness > 1 && effectiveness < 1.5) {
+							defWeak = defWeak+movesTypesStats.typeName[1][i]+",";
+						} else if (effectiveness < 0.6) {
+							defSuperStrong = defSuperStrong+movesTypesStats.typeName[1][i]+",";
+						} else if (effectiveness > 1.5) {
+							defSuperWeak = defSuperWeak+movesTypesStats.typeName[1][i]+",";
+						}
+					}
+					defSuperStrong = defSuperStrong.substring(0,defSuperStrong.length-2);
+					defStrong = defStrong.substring(0,defStrong.length-2);
+					defWeak = defWeak.substring(0,defWeak.length-2);
+					defSuperWeak = defSuperWeak.substring(0,defSuperWeak.length-2);
+					
+					defEffect = "Très résistant contre : "+defSuperStrong+"\nRésistant contre : "+defStrong+"\nFaible contre : "+defWeak+"\nTrès faible contre : "+defSuperWeak;
+					
+					// Create Rich Embed
+					let colorForEmbed = "#43B581";
+					let embed = new Discord.RichEmbed()
+						.setTitle("#"+(pokemonNumber+1)+" - "+pokemonName+" - "+pokemonTypes)
+						.setColor(colorForEmbed)
+						.addField("En attaque","voir effet du type de l'attaque")
+						.addField("En défense",defEffect)
+					generalFunc.replyDelete({embed},message,1000,60000);
+				} else {
+					generalFunc.replyDelete("Type ou Pokémon introuvable ! Vérifiez l'orthographe...",message,5000,5000);
+				}
 			}
 		}
 	}
