@@ -471,7 +471,6 @@ exports.effect = (message) => {
 		// !oak counter [Pokemon]
 		let args = message.content.split(' ');
 		let typeName = args[2].toLowerCase.capitalize();
-		let typeNumber = 0;
 		let typeNumber = movesTypesStats.typeName[0].indexOf(typeName);
 		if (typeNumber === -1) {
 			typeNumber = movesTypesStats.typeName[1].indexOf(typeName);
@@ -521,7 +520,6 @@ exports.effect = (message) => {
 			generalFunc.replyDelete({embed},message,1000,60000);			
 		} else {
 			let pokemonName = args[2].toLowerCase.capitalize();
-			let pokemonNumber = 0;
 			let pokemonNumber = pokedex.pokemonName[0].indexOf(pokemonName);
 			if (pokemonNumber === -1) {
 				pokemonNumber = pokedex.pokemonName[1].indexOf(pokemonName);
