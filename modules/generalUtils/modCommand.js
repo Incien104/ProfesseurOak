@@ -78,24 +78,25 @@ exports.announcement = (message) => {
 	let userRoles = message.member.roles;	
 	let args = message.content.split(' ');
 	let announce = args[2].toLowerCase();
-	if (userRoles.find("name",rolesList.admin)) {		
+	if (userRoles.find("name",rolesList.admin)) {
+		let channelAnnouncements;
 		switch(announce) {
 			case config.announce[0]:
-				let channelAnnouncements = message.guild.channels.find('name', chansLists.chanNests);	
+				channelAnnouncements = message.guild.channels.find('name', chansLists.chanNests);	
 				if (!channelAnnouncements) return;
 				// Send the message, mentioning the members
 				channelAnnouncements.send("@everyone Dresseurs, les nids de pokémon viennent de changer. Aidez-nous à les découvrir et à les répertorier sur https://thesilphroad.com/atlas#12.12/45.4027/-71.8959 ! :smiley:").catch(console.error);
 				generalFunc.botPostLog('Annonce de changement des nids effectuée',message.guild.channels.find("name",chansLists.chanBotLog));
 			break;
 			case config.announce[1]:
-				let channelAnnouncements = message.guild.channels.find('name', chansLists.chanGeneral);	
+				channelAnnouncements = message.guild.channels.find('name', chansLists.chanGeneral);	
 				if (!channelAnnouncements) return;
 				// Send the message, mentioning the members
 				channelAnnouncements.send("@"+rolesList.noTeam+" Pour ceux qui ne sont pas encore intégrés à leur équipe, veuillez envoyer par message privé un screenshot de votre écran de joueur (où l'on voit pseudo, niveau et équipe) à un administrateur, pour qu'il puisse vous donner les accès au salon privilégié de votre couleur ! :wink:").catch(console.error);
 				generalFunc.botPostLog('Annonce aux NoTeam effectuée',message.guild.channels.find("name",chansLists.chanBotLog));
 			break;
 			case config.announce[2]:
-				let channelAnnouncements = message.guild.channels.find('name', chansLists.chanContributors);	
+				channelAnnouncements = message.guild.channels.find('name', chansLists.chanContributors);	
 				if (!channelAnnouncements) return;
 				// Send the message, mentioning the members
 				channelAnnouncements.send("@"+rolesList.contributor+" De nouveaux pokémons sont apparus et on été ajoutés aux notifications ! RDV sur http://professeur-oak-sherbrooke.online pour les ajouter à vos notifications ! :smiley:").catch(console.error);
