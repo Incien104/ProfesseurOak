@@ -422,10 +422,11 @@ exports.counters = (message) => {
 		let args = message.content.split(' ');
 		let parameter = args[2];
 		let pokemonNumber = 0;
+		let pokemonNameEn = "";
 		let pokeOk = false;
 		if (generalFunc.isInt(parameter) && parameter >= 1 && parameter <= 386) {
 			pokemonNumber = parseInt(parameter);
-			let pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
+			pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
 			pokeOk = true;
 		} else if (generalFunc.isInt(parameter) && (parameter < 1 || parameter > 386)) {
 			generalFunc.replyDelete("Données non disponibles pour ce # de Pokémon !",message,5000,5000);
@@ -437,7 +438,7 @@ exports.counters = (message) => {
 			}
 			if (numPokemon !== -1) {
 				pokemonNumber = numPokemon+1;
-				let pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
+				pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
 				pokeOk = true;							
 			} else {
 				generalFunc.replyDelete("Pokémon introuvable ! Vérifiez l'orthographe...",message,5000,5000);
@@ -462,7 +463,6 @@ exports.counters = (message) => {
 				})
 				.catch(err => {
 					generalFunc.replyDelete("Erreur lors de l'accès aux données. Réessayez !",message,5000,5000);
-					console.log("pokemon number = "+pokemonNumber+"\nurl = "+"https://db.pokemongohub.net/pokemon/"+pokemonNumber+"/counters");
 					console.log(err);
 				});
 		}
