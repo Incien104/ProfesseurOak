@@ -428,6 +428,7 @@ exports.counters = (message) => {
 		if (generalFunc.isInt(parameter) && parameter >= 1 && parameter <= 386) {
 			pokemonNumber = parseInt(parameter);
 			pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
+			pokemonName = pokedex.pokemonName[0][pokemonNumber-1];
 			pokeOk = true;
 		} else if (generalFunc.isInt(parameter) && (parameter < 1 || parameter > 386)) {
 			generalFunc.replyDelete("Données non disponibles pour ce # de Pokémon !",message,5000,5000);
