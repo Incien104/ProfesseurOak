@@ -20,7 +20,7 @@ const movesTypesStats = require('./movesTypesStats.json');
 const mega_primal_xy = require('./mega_primal_xy.json');
 
 // POKEMON NAME TRANSLATION FUNCTION
-exports.trad = (message) => {
+exports.translation = (message) => {
 	if (message.channel.name === chansLists.chanOak) {	
 		let args = message.content.split(' ');
 		let parameter = args[2];
