@@ -1,5 +1,5 @@
 // ** Description **
-// ProfesseurOak, v3.5.2, developed by Incien104
+// ProfesseurOak, v3.5.3, developed by Incien104
 // Oct. 2017 - Jan. 2018
 // Works with Node.js
 // Require discord.js and request
@@ -14,14 +14,14 @@
 
 // -------------------------------------------------
 // Main variables
-const botVersion = "v3.5.2";
-const botVersionDate = "02/02/2018";
+const botVersion = "v3.5.3";
+const botVersionDate = "03/02/2018";
 
 // Required modules, files and variables
 var Discord = require('discord.js');
 
 const config = require('./config/config.json');
-const languages = require('./config/languages.json');
+const lang = require('./config/lang.json');
 
 const chansLists = require('./config/chansLists.json');
 

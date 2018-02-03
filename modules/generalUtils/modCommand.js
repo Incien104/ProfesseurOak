@@ -5,7 +5,7 @@
 var Discord = require('discord.js');
 
 const config = require('../../config/config.json');
-const languages = require('../../config/languages.json');
+const lang = require('../../config/lang.json');
 
 const rolesList = require('../../config/rolesList.json');
 const chansLists = require('../../config/chansLists.json');

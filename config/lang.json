@@ -1,4 +1,5 @@
 {
+	"language": ["English","French"],
 	"dict": [{
 		"lang": "en",
 		"announcements": {
@@ -18,9 +19,10 @@
 	},
 	{
 		"lang": "fr",
+		"unauthorized": "tu n'es pas autorisé à utiliser cette commande ! :no_entry: ",
 		"announcements": {
 			"noteam": {
-				"textMessage": "@@NoTeam Pour ceux qui ne sont pas encore intégrés à leur équipe, veuillez envoyer par message privé un screenshot de votre écran de joueur (où l'on voit pseudo, niveau et équipe) à un administrateur, pour qu'il puisse vous donner les accès au salon privilégié de votre couleur ! :wink:",
+				"textMessage": " Pour ceux qui ne sont pas encore intégrés à leur équipe, veuillez envoyer par message privé un screenshot de votre écran de joueur (où l'on voit pseudo, niveau et équipe) à un administrateur, pour qu'il puisse vous donner les accès au salon privilégié de votre couleur ! :wink:",
 				"log": "Annonce aux NoTeam effectuée"
 			},
 			"nests": {
@@ -28,7 +30,7 @@
 				"log": "Annonce de changement des nids effectuée"
 			},
 			"scans": {
-				"textMessage": "@@Contributeur-trice De nouveaux pokémons sont apparus et on été ajoutés aux notifications ! RDV sur http://professeur-oak-sherbrooke.online pour les ajouter à vos notifications ! :smiley:",
+				"textMessage": " De nouveaux pokémons sont apparus et on été ajoutés aux notifications ! RDV sur http://professeur-oak-sherbrooke.online pour les ajouter à vos notifications ! :smiley:",
 				"log": "Annonce d'ajout de pokémons aux scanners effectuée"
 			}
 		}

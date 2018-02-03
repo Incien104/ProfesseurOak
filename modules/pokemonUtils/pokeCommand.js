@@ -5,7 +5,7 @@
 var Discord = require('discord.js');
 
 const config = require('../../config/config.json');
-const languages = require('../../config/languages.json');
+const lang = require('../../config/lang.json');
 
 const rolesList = require('../../config/rolesList.json');
 const chansLists = require('../../config/chansLists.json');
@@ -36,7 +36,7 @@ exports.translation = (message) => {
 				.setColor(colorForEmbed)
 				.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
 				.setThumbnail(thumbnail)
-			generalFunc.replyDelete({embed},message,1000,60000);
+			generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 		} else if (generalFunc.isInt(parameter) && (parameter < 1 || parameter > 807)) {
 			generalFunc.replyDelete("Ne correspond pas au numéro d'un pokémon !",message,5000,5000);
 		} else {
@@ -58,7 +58,7 @@ exports.translation = (message) => {
 					.setColor(colorForEmbed)
 					.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
 					.setThumbnail(thumbnail)
-				generalFunc.replyDelete({embed},message,1000,60000);							
+				generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);							
 			} else {
 				generalFunc.replyDelete("Pokémon introuvable ! Vérifiez l'orthographe...",message,5000,5000);
 			}
@@ -92,7 +92,7 @@ exports.shiny = (message) => {
 				.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
 				.setImage("http://www.psypokes.com/dex/shiny/"+pokemonNumberZeros+".png")
 				.setThumbnail(thumbnail)
-			generalFunc.replyDelete({embed},message,1000,60000);
+			generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 		} else if (generalFunc.isInt(parameter) && (parameter < 1 || parameter > 807)) {
 			generalFunc.replyDelete("Ne correspond pas au numéro d'un pokémon !",message,5000,5000);
 		} else {
@@ -123,7 +123,7 @@ exports.shiny = (message) => {
 					.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
 					.setImage("http://www.psypokes.com/dex/shiny/"+pokemonNumberZeros+".png")
 					.setThumbnail(thumbnail)
-				generalFunc.replyDelete({embed},message,1000,60000);							
+				generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);							
 			} else {
 				generalFunc.replyDelete("Pokémon introuvable ! Vérifiez l'orthographe...",message,5000,5000);
 			}
@@ -140,7 +140,7 @@ exports.unown = (message) => {
 			.setTitle("Formes de Unown/Zarbi (201) : ")
 			.setColor(colorForEmbed)
 			.setImage("https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/unown_alphabet.png")
-		generalFunc.replyDelete({embed},message,1000,60000);
+		generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 	}
 }
 
@@ -164,7 +164,7 @@ exports.mega = (message) => {
 				listMega = listMega+"#"+mega_primal_xy.primal[i]+" Primo-"+pokedex.pokemonName[0][mega_primal_xy.primal[i]-1];
 				listMega = listMega+", ";
 			}
-			generalFunc.replyDelete(listMega,message,1000,60000);
+			generalFunc.replyDelete(listMega,message,1000,config.oakMessageDuration);
 		} else if (generalFunc.isInt(parameter) && (mega_primal_xy.mega.indexOf(parameter) !== -1 || mega_primal_xy.primal.indexOf(parameter) !== -1)) {
 			var pokemonNumber = parameter;
 			var pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
@@ -196,7 +196,7 @@ exports.mega = (message) => {
 					.setDescription(forme+pokemonNameFr+" (fr) - "+forme+pokemonNameEn+" (en)\nForme Méga/Antique : ")
 					.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe+".png")
 					.setThumbnail(thumbnail)
-				generalFunc.replyDelete({embed},message,1000,60000);
+				generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 			} else {
 				forme = "Méga-";
 				suffixe = "_xmega";
@@ -209,7 +209,7 @@ exports.mega = (message) => {
 					.setDescription(forme+pokemonNameFr+" X (fr) - "+forme+pokemonNameEn+" X (en)\nForme Méga/Antique : ")
 					.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe+".png")
 					.setThumbnail(thumbnail)
-				generalFunc.replyDelete({embed},message,1000,60000);
+				generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 				forme = "Méga-";
 				suffixe = "_ymega";
 				// Create Rich Embed
@@ -219,7 +219,7 @@ exports.mega = (message) => {
 					.setDescription(forme+pokemonNameFr+" Y (fr) - "+forme+pokemonNameEn+" Y (en)\nForme Méga/Antique : ")
 					.setImage("http://www.psypokes.com/dex/regular/"+pokemonNumberZeros+suffixe+".png")
 					.setThumbnail(thumbnail)
-				generalFunc.replyDelete({embed},message,1000,60000);
+				generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 			}
 		} else if (generalFunc.isInt(parameter) && (mega_primal_xy.mega.indexOf(mega_primal_xy.mega[i]) === -1 && mega_primal_xy.primal.indexOf(mega_primal_xy.primal[i]) === -1)) {
 			generalFunc.replyDelete("Ne correspond pas au numéro d'un pokémon ou n'a pas de forme Méga!",message,5000,5000);
@@ -260,7 +260,7 @@ exports.breakpoint = (message) => {
 			numAttack = movesTypesStats.moveName[1].indexOf(attackName);
 		}
 		
-		if (numPokemon !== -1 && numBoss !== -1 && numAttack !== -1) {
+		if (numPokemon !== -1 && iv >= 0 && iv <= 15 && numBoss !== -1 && numAttack !== -1) {
 			var weatherBoost = 1.2;
 			var movePower = movesTypesStats.movePower[numAttack];
 			var moveType = movesTypesStats.moveType[numAttack];
@@ -321,7 +321,7 @@ exports.breakpoint = (message) => {
 				.setColor(colorForEmbed)
 				.setDescription("Dégâts (DPS) max = "+lvlBreakpoint[maxIndexBreakpoint]+" au niveau **"+lvl+"** (**sans** boost météo)\nDégâts (DPS) max = "+lvlBreakpointWeather[maxIndexBreakpointWeather]+" au niveau **"+lvlWeather+"** (**avec** boost météo)")
 				.setThumbnail(thumbnail)
-			generalFunc.replyDelete({embed},message,1000,60000);
+			generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 		} else {
 			generalFunc.replyDelete("**Pokémon** __ou__ **Boss** __ou__ **Attaque** introuvable ! Vérifiez l'orthographe...\nCommande de la forme !oak breakpoint [Pokémon Attaquant] [IV ATK] [Pokémon Opposant] [Attaque Pokémon Attaquant]",message,5000,5000);
 		}
@@ -355,6 +355,10 @@ exports.iv = (message) => {
 				
 				// Use stardust to find lvl range
 				var numFirstLvl = movesTypesStats.levelStardust.indexOf(stardust);
+				if (numFirstLvl !== -1) {
+					generalFunc.replyDelete("IV non calculables, vérifie tes données !",message,5000,5000);
+					return;
+				}
 				
 				// Use lvl range to find lvls and STA IV
 				var numLvls = new Array();
@@ -368,6 +372,11 @@ exports.iv = (message) => {
 							ivHP.push(j);
 						}
 					}
+				}
+				
+				if (numLvls.length > 0) {
+					generalFunc.replyDelete("IV non calculables, vérifie tes données !",message,5000,5000);
+					return;
 				}
 				
 				// Use results to find possible legal ATK and DEF values
@@ -398,16 +407,20 @@ exports.iv = (message) => {
 				for (k = 0; k < lvl.length; k++) {
 					ivResults = ivResults+"Niveau **"+lvl[k]+"**, **"+Math.round(percentage[k]*1000)/10+"%**, ATK **"+ivATK[k]+"** / DEF **"+ivDEF[k]+"** / STA **"+ivSTA[k]+"**\n";
 				}
-		
-				// Create Rich Embed
-				var colorForEmbed = "#43B581";
-				var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
-				embed = new Discord.RichEmbed()
-					.setTitle("IV de "+pokemonName+" (CP "+cp+" / HP "+hp+")")
-					.setColor(colorForEmbed)
-					.setDescription(ivResults)
-					.setThumbnail(thumbnail)
-				generalFunc.replyDelete({embed},message,1000,60000);							
+				
+				if (ivATK.length > 0) {
+					// Create Rich Embed
+					var colorForEmbed = "#43B581";
+					var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
+					embed = new Discord.RichEmbed()
+						.setTitle("IV de "+pokemonName+" (CP "+cp+" / HP "+hp+")")
+						.setColor(colorForEmbed)
+						.setDescription(ivResults)
+						.setThumbnail(thumbnail)
+					generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
+				} else {
+					generalFunc.replyDelete("IV non calculables, vérifie tes données !",message,5000,5000);
+				}							
 			} else {
 				generalFunc.replyDelete("informations manquantes, ou nom de pokémon introuvable, je ne peux pas calculer les IV de ton pokémon !\nCommande de la forme !oak iv [Pokémon] [CP] [HP] [Stardust]",message,5000,5000);
 			}
@@ -463,7 +476,7 @@ exports.counters = (message) => {
 						.setColor(colorForEmbed)
 						.setDescription(counters)
 						.setThumbnail(thumbnail)
-					generalFunc.replyDelete({embed},message,1000,60000);
+					generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 				})
 				.catch(err => {
 					generalFunc.replyDelete("Erreur lors de l'accès aux données. Réessayez !",message,5000,5000);
@@ -529,7 +542,7 @@ exports.effect = (message) => {
 					.setColor(colorForEmbed)
 					.addField("En attaque",attEffect)
 					.addField("En défense",defEffect)
-				generalFunc.replyDelete({embed},message,1000,60000);			
+				generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);			
 			} else {
 				var pokemonName = args[2].toLowerCase();
 				pokemonName = pokemonName.capitalize();
@@ -581,7 +594,7 @@ exports.effect = (message) => {
 						.setColor(colorForEmbed)
 						.addField("En attaque","voir effet du type de l'attaque")
 						.addField("En défense",defEffect)
-					generalFunc.replyDelete({embed},message,1000,60000);
+					generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 				} else {
 					generalFunc.replyDelete("Type ou Pokémon introuvable ! Vérifiez l'orthographe...",message,5000,5000);
 				}
@@ -611,7 +624,7 @@ exports.pokedex = (message) => {
 					.addField("Type(s)", pokedex.pokemonType[pokemonNumber-1])
 					.addField("Évolution", pokedex.pokemonEvoFamily[0][evoFamily])
 					.setThumbnail(thumbnail)
-				generalFunc.replyDelete({embed},message,1000,60000);
+				generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 			} else {
 				// Create Rich Embed
 				var colorForEmbed = "#43B581";
@@ -622,7 +635,7 @@ exports.pokedex = (message) => {
 					.setDescription("Français : "+pokemonNameFr+"/Anglais : "+pokemonNameEn)
 					.addField("Type(s)", pokedex.pokemonType[pokemonNumber-1])
 					.setThumbnail(thumbnail)
-				generalFunc.replyDelete({embed},message,1000,60000);
+				generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 			}
 		} else if (generalFunc.isInt(parameter) && (parameter < 1 || parameter > 807)) {
 			generalFunc.replyDelete("Ne correspond pas au numéro d'un pokémon !",message,5000,5000);
@@ -649,7 +662,7 @@ exports.pokedex = (message) => {
 						.addField("Type(s)", pokedex.pokemonType[pokemonNumber-1])
 						.addField("Évolution", pokedex.pokemonEvoFamily[0][evoFamily])
 						.setThumbnail(thumbnail)
-					generalFunc.replyDelete({embed},message,1000,60000);
+					generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 				} else {
 					// Create Rich Embed
 					var colorForEmbed = "#43B581";
@@ -660,7 +673,7 @@ exports.pokedex = (message) => {
 						.setDescription("Français : "+pokemonNameFr+"/Anglais : "+pokemonNameEn)
 						.addField("Type(s)", pokedex.pokemonType[pokemonNumber-1])
 						.setThumbnail(thumbnail)
-					generalFunc.replyDelete({embed},message,1000,60000);
+					generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);
 				}			
 			} else {
 				generalFunc.replyDelete("Pokémon introuvable ! Vérifiez l'orthographe...",message,5000,5000);
@@ -684,7 +697,7 @@ exports.cp = (message) => {
 				numPokemon = pokedex.pokemonName[1].indexOf(pokemonName);
 			}
 			
-			if (numPokemon !== -1) {
+			if (numPokemon !== -1 && lvl <= 40) {
 				var pokemonNumber = numPokemon+1;
 				
 				// Base values
@@ -705,7 +718,7 @@ exports.cp = (message) => {
 					.setColor(colorForEmbed)
 					.setDescription("CP Min : "+cpMin+" / CP Max : "+cpMax)
 					.setThumbnail(thumbnail)
-				generalFunc.replyDelete({embed},message,1000,60000);							
+				generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);							
 			} else {
 				generalFunc.replyDelete("informations manquantes, ou nom de pokémon introuvable !\nCommande de la forme !oak cp [Pokémon] [LVL]",message,5000,5000);
 			}
@@ -723,7 +736,7 @@ exports.easterEgg = (message) => {
 			.setTitle("Un Incien sauvage apparaît !!!")
 			.setColor("#43B581")
 			.setImage('https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/incien.gif')
-		generalFunc.replyDelete({embed},message,1000,60000);	
+		generalFunc.replyDelete({embed},message,1000,config.oakMessageDuration);	
 	} else {
 		generalFunc.replyDelete("tu n'es pas autorisé à utiliser cette commande ici ! :no_entry: ",message);
 	}

@@ -3,6 +3,7 @@
 	"language": "fr",
 	"bilingual-en": true,
 	"timeFromUTC": 5,
+	"oakMessageDuration": 300000,
 	"devCommand" : {
 		"scanHuntrConfig": "confighuntr",
 		"scanGymhuntrConfig": "configgymhuntr",
