@@ -22,16 +22,16 @@ const mega_primal_xy = require('./mega_primal_xy.json');
 // POKEMON NAME TRANSLATION FUNCTION
 exports.translation = (message) => {
 	if (message.channel.name === chansLists.chanOak) {	
-		let args = message.content.split(' ');
-		let parameter = args[2];
+		var args = message.content.split(' ');
+		var parameter = args[2];
 		if (generalFunc.isInt(parameter) && parameter >= 1 && parameter <= 807) {
-			let pokemonNumber = parameter;
-			let pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
-			let pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
+			var pokemonNumber = parameter;
+			var pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
+			var pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
 			// Create Rich Embed
-			let colorForEmbed = "#43B581";
-			let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-			let embed = new Discord.RichEmbed()
+			var colorForEmbed = "#43B581";
+			var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+			var embed = new Discord.RichEmbed()
 				.setTitle("#"+pokemonNumber)
 				.setColor(colorForEmbed)
 				.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
@@ -40,20 +40,20 @@ exports.translation = (message) => {
 		} else if (generalFunc.isInt(parameter) && (parameter < 1 || parameter > 807)) {
 			generalFunc.replyDelete("Ne correspond pas au numéro d'un pokémon !",message,5000,5000);
 		} else {
-			let pokemonName = parameter.capitalize();
-			let pokemonNumber = 0;
-			let numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
+			var pokemonName = parameter.capitalize();
+			var pokemonNumber = 0;
+			var numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
 			if (numPokemon === -1) {
 				numPokemon = pokedex.pokemonName[1].indexOf(pokemonName);
 			}
 			if (numPokemon !== -1) {
-				let pokemonNumber = numPokemon+1;
-				let pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
-				let pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
+				var pokemonNumber = numPokemon+1;
+				var pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
+				var pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
 				// Create Rich Embed
-				let colorForEmbed = "#43B581";
-				let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-				let embed = new Discord.RichEmbed()
+				var colorForEmbed = "#43B581";
+				var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+				var embed = new Discord.RichEmbed()
 					.setTitle("#"+pokemonNumber)
 					.setColor(colorForEmbed)
 					.setDescription("Français : "+pokemonNameFr+"\nAnglais : "+pokemonNameEn)
@@ -69,13 +69,13 @@ exports.translation = (message) => {
 // POKEMON SHINY FUNCTION
 exports.shiny = (message) => {
 	if (message.channel.name === chansLists.chanOak) {	
-		let args = message.content.split(' ');
-		let parameter = args[2];
+		var args = message.content.split(' ');
+		var parameter = args[2];
 		if (generalFunc.isInt(parameter) && parameter >= 1 && parameter <= 807) {
-			let pokemonNumber = parameter;
-			let pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
-			let pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
-			let pokemonNumberZeros = null;
+			var pokemonNumber = parameter;
+			var pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
+			var pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
+			var pokemonNumberZeros = null;
 			if (pokemonNumber < 10) {
 				pokemonNumberZeros = "00"+pokemonNumber;
 			} else if (pokemonNumber >= 10 && pokemonNumber < 100) {
@@ -84,9 +84,9 @@ exports.shiny = (message) => {
 				pokemonNumberZeros = pokemonNumber;
 			}
 			// Create Rich Embed
-			let colorForEmbed = "#43B581";
-			let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-			let embed = new Discord.RichEmbed()
+			var colorForEmbed = "#43B581";
+			var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+			var embed = new Discord.RichEmbed()
 				.setTitle("#"+pokemonNumber)
 				.setColor(colorForEmbed)
 				.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
@@ -96,17 +96,17 @@ exports.shiny = (message) => {
 		} else if (generalFunc.isInt(parameter) && (parameter < 1 || parameter > 807)) {
 			generalFunc.replyDelete("Ne correspond pas au numéro d'un pokémon !",message,5000,5000);
 		} else {
-			let pokemonName = parameter.capitalize();
-			let pokemonNumber = 0;
-			let numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
+			var pokemonName = parameter.capitalize();
+			var pokemonNumber = 0;
+			var numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
 			if (numPokemon === -1) {
 				numPokemon = pokedex.pokemonName[1].indexOf(pokemonName);
 			}
 			if (numPokemon !== -1) {
-				let pokemonNumber = numPokemon+1;
-				let pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
-				let pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
-				let pokemonNumberZeros = null;
+				var pokemonNumber = numPokemon+1;
+				var pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
+				var pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
+				var pokemonNumberZeros = null;
 				if (pokemonNumber < 10) {
 					pokemonNumberZeros = "00"+pokemonNumber;
 				} else if (pokemonNumber >= 10 && pokemonNumber < 100) {
@@ -115,9 +115,9 @@ exports.shiny = (message) => {
 					pokemonNumberZeros = pokemonNumber;
 				}
 				// Create Rich Embed
-				let colorForEmbed = "#43B581";
-				let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-				let embed = new Discord.RichEmbed()
+				var colorForEmbed = "#43B581";
+				var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+				var embed = new Discord.RichEmbed()
 					.setTitle("#"+pokemonNumber)
 					.setColor(colorForEmbed)
 					.setDescription(pokemonNameFr+" (fr) - "+pokemonNameEn+" (en)\nForme shiny : ")
@@ -135,8 +135,8 @@ exports.shiny = (message) => {
 exports.unown = (message) => {
 	if (message.channel.name === chansLists.chanOak) {
 		// Create Rich Embed
-		let colorForEmbed = "#43B581";
-		let embed = new Discord.RichEmbed()
+		var colorForEmbed = "#43B581";
+		var embed = new Discord.RichEmbed()
 			.setTitle("Formes de Unown/Zarbi (201) : ")
 			.setColor(colorForEmbed)
 			.setImage("https://raw.githubusercontent.com/Incien104/ProfesseurOak/master/img/unown_alphabet.png")
@@ -147,9 +147,9 @@ exports.unown = (message) => {
 // POKEMON MEGA FUNCTION
 exports.mega = (message) => {
 	if (message.channel.name === chansLists.chanOak) {	
-		let args = message.content.split(' ');
-		let parameter = args[2];
-		let listMega = null;
+		var args = message.content.split(' ');
+		var parameter = args[2];
+		var listMega = null;
 		if (parameter === null || parameter === undefined) {
 			listMega = "Méga-Évolution :\n";
 			for (i in mega_primal_xy.mega) {
@@ -166,10 +166,10 @@ exports.mega = (message) => {
 			}
 			generalFunc.replyDelete(listMega,message,1000,60000);
 		} else if (generalFunc.isInt(parameter) && (mega_primal_xy.mega.indexOf(parameter) !== -1 || mega_primal_xy.primal.indexOf(parameter) !== -1)) {
-			let pokemonNumber = parameter;
-			let pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
-			let pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
-			let pokemonNumberZeros = null;
+			var pokemonNumber = parameter;
+			var pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
+			var pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
+			var pokemonNumberZeros = null;
 			if (pokemonNumber < 10) {
 				pokemonNumberZeros = "00"+pokemonNumber;
 			} else if (pokemonNumber >= 10 && pokemonNumber < 100) {
@@ -177,8 +177,8 @@ exports.mega = (message) => {
 			} else {
 				pokemonNumberZeros = pokemonNumber;
 			}
-			let forme = null;
-			let suffixe = null;
+			var forme = null;
+			var suffixe = null;
 			if (mega_primal_xy.xy.indexOf(pokemonNumber) === -1) {
 				if (mega_primal_xy.mega.indexOf(pokemonNumber) !== -1) {
 					forme = "Méga-";
@@ -188,9 +188,9 @@ exports.mega = (message) => {
 					suffixe = "_primal";
 				}
 				// Create Rich Embed
-				let colorForEmbed = "#43B581";
-				let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-				let embed = new Discord.RichEmbed()
+				var colorForEmbed = "#43B581";
+				var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+				var embed = new Discord.RichEmbed()
 					.setTitle("#"+pokemonNumber)
 					.setColor(colorForEmbed)
 					.setDescription(forme+pokemonNameFr+" (fr) - "+forme+pokemonNameEn+" (en)\nForme Méga/Antique : ")
@@ -201,9 +201,9 @@ exports.mega = (message) => {
 				forme = "Méga-";
 				suffixe = "_xmega";
 				// Create Rich Embed
-				let colorForEmbed = "#43B581";
-				let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-				let embed = new Discord.RichEmbed()
+				var colorForEmbed = "#43B581";
+				var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+				var embed = new Discord.RichEmbed()
 					.setTitle("#"+pokemonNumber)
 					.setColor(colorForEmbed)
 					.setDescription(forme+pokemonNameFr+" X (fr) - "+forme+pokemonNameEn+" X (en)\nForme Méga/Antique : ")
@@ -231,89 +231,91 @@ exports.mega = (message) => {
 
 // BREAKPOINT CALC FUNCTION
 exports.breakpoint = (message) => {	
-	let args = message.content.split(' ');
+	var args = message.content.split(' ');
 	if (message.channel.name === chansLists.chanOak && args.length >= 6) {
-		let pokemon = args[2];
-		let iv = parseInt(args[3]);
-		let boss = args[4];
-		let attack = args[5].capitalize();
+		var pokemon = args[2];
+		var iv = parseInt(args[3]);
+		var boss = args[4];
+		var attack = args[5].capitalize();
 		if (args.length === 7) {
 			attack = args[5].capitalize()+" "+args[6].capitalize();
 		} else if (args.length === 8) {
 			attack = args[5].capitalize()+" "+args[6].capitalize()+" "+args[7].capitalize();
 		}
 		
-		let pokemonName = pokemon.capitalize();
-		let numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
+		var pokemonName = pokemon.capitalize();
+		var numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
 		if (numPokemon === -1) {
 			numPokemon = pokedex.pokemonName[1].indexOf(pokemonName);
 		}
-		let pokemonNumber = numPokemon+1;
-		let bossName = boss.capitalize();
-		let numBoss = pokedex.pokemonName[0].indexOf(bossName);
+		var pokemonNumber = numPokemon+1;
+		var bossName = boss.capitalize();
+		var numBoss = pokedex.pokemonName[0].indexOf(bossName);
 		if (numBoss === -1) {
 			numBoss = pokedex.pokemonName[1].indexOf(bossName);
 		}
-		let attackName = attack;
-		let numAttack = movesTypesStats.moveName[0].indexOf(attackName);
+		var attackName = attack;
+		var numAttack = movesTypesStats.moveName[0].indexOf(attackName);
 		if (numAttack === -1) {
 			numAttack = movesTypesStats.moveName[1].indexOf(attackName);
 		}
 		
 		if (numPokemon !== -1 && numBoss !== -1 && numAttack !== -1) {
-			let weatherBoost = 1.2;
-			let movePower = movesTypesStats.movePower[numAttack];
-			let moveType = movesTypesStats.moveType[numAttack];
-			let numBossLvl = movesTypesStats.raidBossName.indexOf(pokedex.pokemonName[0][numBoss]);
+			var weatherBoost = 1.2;
+			var movePower = movesTypesStats.movePower[numAttack];
+			var moveType = movesTypesStats.moveType[numAttack];
+			var numBossLvl = movesTypesStats.raidBossName.indexOf(pokedex.pokemonName[0][numBoss]);
+			var bossCpM = 0;
+			var defenderText = "";
+			var bossLvl = 0;
 			if (numBossLvl === -1) {
-				let bossCpM = movesTypesStats.attackerCpM[movesTypesStats.attackerCpM.length-9];
-				let defenderText = " (lvl 36)";
+				bossCpM = movesTypesStats.attackerCpM[movesTypesStats.attackerCpM.length-9];
+				defenderText = " (lvl 36)";
 			} else {
-				let bossLvl = movesTypesStats.raidBossLvl[numBossLvl];
-				let bossCpM = movesTypesStats.bossCpM[bossLvl-1];
-				let defenderText = "";
+				bossLvl = movesTypesStats.raidBossLvl[numBossLvl];
+				bossCpM = movesTypesStats.bossCpM[bossLvl-1];				
 			}
 			
 			// Check if STAB
+			var STAB = 1;
 			if (pokedex.pokemonType[numPokemon].indexOf(moveType) !== -1) {
-				let STAB = 1.2;
-			} else {
-				let STAB = 1;
+				STAB = 1.2;
 			}
 			
 			// Compute effectiveness
-			let effectiveness = 1;
-			let moveTypeEffectiveness = movesTypesStats.typeEffectiveness[movesTypesStats.typeName[0].indexOf(moveType)];
-			let typeBoss = pokedex.pokemonType[numBoss];
+			var effectiveness = 1;
+			var moveTypeEffectiveness = movesTypesStats.typeEffectiveness[movesTypesStats.typeName[0].indexOf(moveType)];
+			var typeBoss = pokedex.pokemonType[numBoss];
 			for (i in typeBoss) {
 				effectiveness = effectiveness*moveTypeEffectiveness[movesTypesStats.typeName[0].indexOf(typeBoss[i])];
 			}
 			
-			let attackerBaseATK = movesTypesStats.pokemonStat[numPokemon][0];
-			let bossBaseDEF = movesTypesStats.pokemonStat[numBoss][1];
-			let lvlBreakpoint = new Array();
-			let lvlBreakpointWeather = new Array();
+			var attackerBaseATK = movesTypesStats.pokemonStat[numPokemon][0];
+			var bossBaseDEF = movesTypesStats.pokemonStat[numBoss][1];
+			var lvlBreakpoint = new Array();
+			var lvlBreakpointWeather = new Array();
 			
-			let movePowerCalc = 0.5 * (movePower * STAB * effectiveness);
-			let movePowerCalcWeather = 0.5 * (movePower * weatherBoost * STAB * effectiveness);
-			let pokeRatio = ((attackerBaseATK + iv) / (bossBaseDEF + 15));
-			
+			var movePowerCalc = 0.5 * (movePower * STAB * effectiveness);
+			var movePowerCalcWeather = 0.5 * (movePower * weatherBoost * STAB * effectiveness);
+			var pokeRatio = ((attackerBaseATK + iv) / (bossBaseDEF + 15));
+						
 			// Compute Breakpoints
+			var cpMRatio = 0;
 			for (j in movesTypesStats.attackerCpM) {
-				let cpMRatio = (movesTypesStats.attackerCpM[j] / bossCpM);
+				cpMRatio = (movesTypesStats.attackerCpM[j] / bossCpM);
 				
 				lvlBreakpoint.push(Math.floor(1 + movePowerCalc * pokeRatio * cpMRatio));
 				lvlBreakpointWeather.push(Math.floor(1 + movePowerCalcWeather * pokeRatio * cpMRatio));
 			}
 			
-			let maxIndexBreakpoint = generalFunc.indexOfMax(lvlBreakpoint);
-			let maxIndexBreakpointWeather = generalFunc.indexOfMax(lvlBreakpointWeather);
-			let lvl = movesTypesStats.levelAttacker[maxIndexBreakpoint];
-			let lvlWeather = movesTypesStats.levelAttacker[maxIndexBreakpointWeather];
+			var maxIndexBreakpoint = generalFunc.indexOfMax(lvlBreakpoint);
+			var maxIndexBreakpointWeather = generalFunc.indexOfMax(lvlBreakpointWeather);
+			var lvl = movesTypesStats.levelAttacker[maxIndexBreakpoint];
+			var lvlWeather = movesTypesStats.levelAttacker[maxIndexBreakpointWeather];
 			
 			// Create Rich Embed
-			let colorForEmbed = "#43B581";
-			let thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
+			var colorForEmbed = "#43B581";
+			var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
 			embed = new Discord.RichEmbed()
 				.setTitle(pokemonName+" (ATK "+iv+" - "+attackName+")"+" vs "+bossName+defenderText)
 				.setColor(colorForEmbed)
@@ -330,34 +332,34 @@ exports.breakpoint = (message) => {
 exports.iv = (message) => {
 	if (message.channel.name === chansLists.chanOak) {
 		// !oak iv [Pokemon] [CP] [HP] [Stardust]	
-		let args = message.content.split(' ');
+		var args = message.content.split(' ');
 		if (args.length === 6) {
-			let pokemon = args[2];
-			let cp = parseInt(args[3]);
-			let hp = parseInt(args[4]);
-			let stardust = parseInt(args[5]);
+			var pokemon = args[2];
+			var cp = parseInt(args[3]);
+			var hp = parseInt(args[4]);
+			var stardust = parseInt(args[5]);
 		
-			let pokemonName = pokemon.capitalize();
-			let numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
+			var pokemonName = pokemon.capitalize();
+			var numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
 			if (numPokemon === -1) {
 				numPokemon = pokedex.pokemonName[1].indexOf(pokemonName);
 			}
 			
 			if (numPokemon !== -1) {
-				let pokemonNumber = numPokemon+1;
+				var pokemonNumber = numPokemon+1;
 				
 				// Base values
-				let baseATK = movesTypesStats.pokemonStat[numPokemon][0];
-				let baseDEF = movesTypesStats.pokemonStat[numPokemon][1];
-				let baseSTA = movesTypesStats.pokemonStat[numPokemon][2];
+				var baseATK = movesTypesStats.pokemonStat[numPokemon][0];
+				var baseDEF = movesTypesStats.pokemonStat[numPokemon][1];
+				var baseSTA = movesTypesStats.pokemonStat[numPokemon][2];
 				
 				// Use stardust to find lvl range
-				let numFirstLvl = movesTypesStats.levelStardust.indexOf(stardust);
+				var numFirstLvl = movesTypesStats.levelStardust.indexOf(stardust);
 				
 				// Use lvl range to find lvls and STA IV
-				let numLvls = new Array();
-				let ivHP = new Array();
-				let calcHP = 0;
+				var numLvls = new Array();
+				var ivHP = new Array();
+				var calcHP = 0;
 				for (i = 0; i < 4; i++) {
 					for (j = 0; j < 16; j++) {
 						calcHP = Math.floor((baseSTA+j)*movesTypesStats.cpMultiplier[numFirstLvl+i]);
@@ -369,12 +371,12 @@ exports.iv = (message) => {
 				}
 				
 				// Use results to find possible legal ATK and DEF values
-				let calcCP = 0;
-				let lvl = new Array();
-				let percentage = new Array();
-				let ivATK = new Array();
-				let ivDEF = new Array();
-				let ivSTA = new Array();
+				var calcCP = 0;
+				var lvl = new Array();
+				var percentage = new Array();
+				var ivATK = new Array();
+				var ivDEF = new Array();
+				var ivSTA = new Array();
 				for (k = 0; k < ivHP.length; k++) {
 					for (i = 0; i < 16; i++) {
 						for (j = 0; j < 16; j++) {
@@ -392,14 +394,14 @@ exports.iv = (message) => {
 					}
 				}
 				
-				let ivResults = "";
+				var ivResults = "";
 				for (k = 0; k < lvl.length; k++) {
 					ivResults = ivResults+"Niveau **"+lvl[k]+"**, **"+Math.round(percentage[k]*1000)/10+"%**, ATK **"+ivATK[k]+"** / DEF **"+ivDEF[k]+"** / STA **"+ivSTA[k]+"**\n";
 				}
 		
 				// Create Rich Embed
-				let colorForEmbed = "#43B581";
-				let thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
+				var colorForEmbed = "#43B581";
+				var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
 				embed = new Discord.RichEmbed()
 					.setTitle("IV de "+pokemonName+" (CP "+cp+" / HP "+hp+")")
 					.setColor(colorForEmbed)
@@ -419,12 +421,12 @@ exports.iv = (message) => {
 exports.counters = (message) => {
 	if (message.channel.name === chansLists.chanOak) {
 		// !oak counter [Pokemon]
-		let args = message.content.split(' ');
-		let parameter = args[2];
-		let pokemonNumber = 0;
-		let pokemonNameEn = "";
-		let pokemonName = "";
-		let pokeOk = false;
+		var args = message.content.split(' ');
+		var parameter = args[2];
+		var pokemonNumber = 0;
+		var pokemonNameEn = "";
+		var pokemonName = "";
+		var pokeOk = false;
 		if (generalFunc.isInt(parameter) && parameter >= 1 && parameter <= 386) {
 			pokemonNumber = parseInt(parameter);
 			pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
@@ -434,7 +436,7 @@ exports.counters = (message) => {
 			generalFunc.replyDelete("Données non disponibles pour ce # de Pokémon !",message,5000,5000);
 		} else {
 			pokemonName = parameter.capitalize();
-			let numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
+			var numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
 			if (numPokemon === -1) {
 				numPokemon = pokedex.pokemonName[1].indexOf(pokemonName);
 			}
@@ -449,14 +451,14 @@ exports.counters = (message) => {
 		if (pokeOk === true && pokemonNumber !== 0) {
 			jsonQuery.get("https://db.pokemongohub.net/pokemon/"+pokemonNumber+"/counters")
 				.then(res => {
-					let counters = "Meilleurs opposants :\n";
+					var counters = "Meilleurs opposants :\n";
 					for (i=0;i<res.counters.length;i++) {
 						counters = counters + (i+1) + ". : " + res.counters[i].pokemon + " - " + res.counters[i].bmQuick + "/" + res.counters[i].bmCharge + " - " + res.counters[i].averageDPS + " DPS moyen\n"
 					}
 					// Create Rich Embed
-					let colorForEmbed = "#43B581";
-					let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-					let embed = new Discord.RichEmbed()
+					var colorForEmbed = "#43B581";
+					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+					var embed = new Discord.RichEmbed()
 						.setTitle("#"+pokemonNumber+" - "+pokemonName)
 						.setColor(colorForEmbed)
 						.setDescription(counters)
@@ -475,25 +477,25 @@ exports.counters = (message) => {
 exports.effect = (message) => {
 	if (message.channel.name === chansLists.chanOak) {
 		// !oak counter [Pokemon]
-		let args = message.content.split(' ');
+		var args = message.content.split(' ');
 		if (args.length < 3) {
 			generalFunc.replyDelete("Spécifiez un Type ou un Pokémon !",message,5000,5000);
 		} else {
-			let typeName = args[2].toLowerCase();
+			var typeName = args[2].toLowerCase();
 			typeName = typeName.capitalize();
-			let typeNumber = movesTypesStats.typeName[0].indexOf(typeName);
+			var typeNumber = movesTypesStats.typeName[0].indexOf(typeName);
 			if (typeNumber === -1) {
 				typeNumber = movesTypesStats.typeName[1].indexOf(typeName);
 			}
 			if (typeNumber !== -1) {
-				let attEffect = "";
-				let defEffect = "";
-				let attStrong = " ";
-				let attWeak = " ";
-				let attSuperWeak = " ";
-				let defSuperStrong = " ";
-				let defStrong = " ";
-				let defWeak = " ";
+				var attEffect = "";
+				var defEffect = "";
+				var attStrong = " ";
+				var attWeak = " ";
+				var attSuperWeak = " ";
+				var defSuperStrong = " ";
+				var defStrong = " ";
+				var defWeak = " ";
 				for (i = 0;i<movesTypesStats.typeName[0].length;i++) {
 					if (movesTypesStats.typeEffectiveness[typeNumber][i] > 1) {
 						attStrong = attStrong+movesTypesStats.typeName[1][i]+",";
@@ -521,29 +523,29 @@ exports.effect = (message) => {
 				defEffect = "Très résistant contre : "+defSuperStrong+"\nRésistant contre : "+defStrong+"\nFaible contre : "+defWeak;
 				
 				// Create Rich Embed
-				let colorForEmbed = "#43B581";
-				let embed = new Discord.RichEmbed()
+				var colorForEmbed = "#43B581";
+				var embed = new Discord.RichEmbed()
 					.setTitle("Type "+typeName)
 					.setColor(colorForEmbed)
 					.addField("En attaque",attEffect)
 					.addField("En défense",defEffect)
 				generalFunc.replyDelete({embed},message,1000,60000);			
 			} else {
-				let pokemonName = args[2].toLowerCase();
+				var pokemonName = args[2].toLowerCase();
 				pokemonName = pokemonName.capitalize();
-				let pokemonNumber = pokedex.pokemonName[0].indexOf(pokemonName);
+				var pokemonNumber = pokedex.pokemonName[0].indexOf(pokemonName);
 				if (pokemonNumber === -1) {
 					pokemonNumber = pokedex.pokemonName[1].indexOf(pokemonName);
 				}
 				if (pokemonNumber !== -1) {
-					let defEffect = "";
-					let defSuperStrong = " ";
-					let defStrong = " ";
-					let defWeak = " ";
-					let defSuperWeak = " ";
-					let effectiveness = 0;
-					let pokemonType = pokedex.pokemonType[pokemonNumber];
-					let pokemonTypes = "";
+					var defEffect = "";
+					var defSuperStrong = " ";
+					var defStrong = " ";
+					var defWeak = " ";
+					var defSuperWeak = " ";
+					var effectiveness = 0;
+					var pokemonType = pokedex.pokemonType[pokemonNumber];
+					var pokemonTypes = "";
 					if (pokemonType.length === 1) {
 						pokemonTypes = movesTypesStats.typeName[1][movesTypesStats.typeName[0].indexOf(pokemonType[0])];
 					} else {
@@ -573,8 +575,8 @@ exports.effect = (message) => {
 					defEffect = "Très résistant contre : "+defSuperStrong+"\nRésistant contre : "+defStrong+"\nFaible contre : "+defWeak+"\nTrès faible contre : "+defSuperWeak;
 					
 					// Create Rich Embed
-					let colorForEmbed = "#43B581";
-					let embed = new Discord.RichEmbed()
+					var colorForEmbed = "#43B581";
+					var embed = new Discord.RichEmbed()
 						.setTitle("#"+(pokemonNumber+1)+" - "+pokemonName+" - "+pokemonTypes)
 						.setColor(colorForEmbed)
 						.addField("En attaque","voir effet du type de l'attaque")
@@ -591,18 +593,18 @@ exports.effect = (message) => {
 // POKEDEX FUNCTION
 exports.pokedex = (message) => {
 	if (message.channel.name === chansLists.chanOak) {
-		let args = message.content.split(' ');
-		let parameter = args[2];
+		var args = message.content.split(' ');
+		var parameter = args[2];
 		if (generalFunc.isInt(parameter) && parameter >= 1 && parameter <= 807) {
-			let pokemonNumber = parameter;
-			let pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
-			let pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
-			let evoFamily = pokedex.pokemonEvoFamilyNumber[pokemonNumber-1];
+			var pokemonNumber = parameter;
+			var pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
+			var pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
+			var evoFamily = pokedex.pokemonEvoFamilyNumber[pokemonNumber-1];
 			if (evoFamily !== -1) {
 				// Create Rich Embed
-				let colorForEmbed = "#43B581";
-				let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-				let embed = new Discord.RichEmbed()
+				var colorForEmbed = "#43B581";
+				var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+				var embed = new Discord.RichEmbed()
 					.setTitle("#"+pokemonNumber)
 					.setColor(colorForEmbed)
 					.setDescription("Français : "+pokemonNameFr+"/Anglais : "+pokemonNameEn)
@@ -612,9 +614,9 @@ exports.pokedex = (message) => {
 				generalFunc.replyDelete({embed},message,1000,60000);
 			} else {
 				// Create Rich Embed
-				let colorForEmbed = "#43B581";
-				let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-				let embed = new Discord.RichEmbed()
+				var colorForEmbed = "#43B581";
+				var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+				var embed = new Discord.RichEmbed()
 					.setTitle("#"+pokemonNumber)
 					.setColor(colorForEmbed)
 					.setDescription("Français : "+pokemonNameFr+"/Anglais : "+pokemonNameEn)
@@ -625,22 +627,22 @@ exports.pokedex = (message) => {
 		} else if (generalFunc.isInt(parameter) && (parameter < 1 || parameter > 807)) {
 			generalFunc.replyDelete("Ne correspond pas au numéro d'un pokémon !",message,5000,5000);
 		} else {
-			let pokemonName = parameter.capitalize();
-			let pokemonNumber = 0;
-			let numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
+			var pokemonName = parameter.capitalize();
+			var pokemonNumber = 0;
+			var numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
 			if (numPokemon === -1) {
 				numPokemon = pokedex.pokemonName[1].indexOf(pokemonName);
 			}
 			if (numPokemon !== -1) {
-				let pokemonNumber = numPokemon+1;
-				let pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
-				let pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
-				let evoFamily = pokedex.pokemonEvoFamilyNumber[pokemonNumber-1];
+				var pokemonNumber = numPokemon+1;
+				var pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
+				var pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
+				var evoFamily = pokedex.pokemonEvoFamilyNumber[pokemonNumber-1];
 				if (evoFamily !== -1) {
 					// Create Rich Embed
-					let colorForEmbed = "#43B581";
-					let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-					let embed = new Discord.RichEmbed()
+					var colorForEmbed = "#43B581";
+					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+					var embed = new Discord.RichEmbed()
 						.setTitle("#"+pokemonNumber)
 						.setColor(colorForEmbed)
 						.setDescription("Français : "+pokemonNameFr+"/Anglais : "+pokemonNameEn)
@@ -650,9 +652,9 @@ exports.pokedex = (message) => {
 					generalFunc.replyDelete({embed},message,1000,60000);
 				} else {
 					// Create Rich Embed
-					let colorForEmbed = "#43B581";
-					let thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
-					let embed = new Discord.RichEmbed()
+					var colorForEmbed = "#43B581";
+					var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
+					var embed = new Discord.RichEmbed()
 						.setTitle("#"+pokemonNumber)
 						.setColor(colorForEmbed)
 						.setDescription("Français : "+pokemonNameFr+"/Anglais : "+pokemonNameEn)
@@ -671,33 +673,33 @@ exports.pokedex = (message) => {
 exports.cp = (message) => {
 	if (message.channel.name === chansLists.chanOak) {
 		// !oak cp [Pokemon] [LVL]	
-		let args = message.content.split(' ');
+		var args = message.content.split(' ');
 		if (args.length === 4) {
-			let pokemon = args[2];
-			let lvl = parseInt(args[3]);
+			var pokemon = args[2];
+			var lvl = parseInt(args[3]);
 		
-			let pokemonName = pokemon.capitalize();
-			let numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
+			var pokemonName = pokemon.capitalize();
+			var numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
 			if (numPokemon === -1) {
 				numPokemon = pokedex.pokemonName[1].indexOf(pokemonName);
 			}
 			
 			if (numPokemon !== -1) {
-				let pokemonNumber = numPokemon+1;
+				var pokemonNumber = numPokemon+1;
 				
 				// Base values
-				let baseATK = movesTypesStats.pokemonStat[numPokemon][0];
-				let baseDEF = movesTypesStats.pokemonStat[numPokemon][1];
-				let baseSTA = movesTypesStats.pokemonStat[numPokemon][2];
+				var baseATK = movesTypesStats.pokemonStat[numPokemon][0];
+				var baseDEF = movesTypesStats.pokemonStat[numPokemon][1];
+				var baseSTA = movesTypesStats.pokemonStat[numPokemon][2];
 				
-				let numLvl = movesTypesStats.levelCpMultiplier.indexOf(lvl);
+				var numLvl = movesTypesStats.levelCpMultiplier.indexOf(lvl);
 				
-				let cpMin = Math.floor(((baseATK)*Math.sqrt(baseDEF)*Math.sqrt(baseSTA)*Math.pow(movesTypesStats.cpMultiplier[numLvl],2))/10);
-				let cpMax = Math.floor(((baseATK+15)*Math.sqrt(baseDEF+15)*Math.sqrt(baseSTA+15)*Math.pow(movesTypesStats.cpMultiplier[numLvl],2))/10);
+				var cpMin = Math.floor(((baseATK)*Math.sqrt(baseDEF)*Math.sqrt(baseSTA)*Math.pow(movesTypesStats.cpMultiplier[numLvl],2))/10);
+				var cpMax = Math.floor(((baseATK+15)*Math.sqrt(baseDEF+15)*Math.sqrt(baseSTA+15)*Math.pow(movesTypesStats.cpMultiplier[numLvl],2))/10);
 		
 				// Create Rich Embed
-				let colorForEmbed = "#43B581";
-				let thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
+				var colorForEmbed = "#43B581";
+				var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
 				embed = new Discord.RichEmbed()
 					.setTitle(pokemonName+" niveau "+lvl)
 					.setColor(colorForEmbed)

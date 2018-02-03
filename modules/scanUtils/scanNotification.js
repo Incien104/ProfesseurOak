@@ -17,26 +17,26 @@ const contributors_backup = require('./contributors.json');
 
 exports.process = (message,contributors) => {
 	// Scanned Pokemon Personal Alert : check HuntrBot messages to alert people with private messages
-	let pokemonNumber = "";
-	let pokemonNameFr = "";
-	let pokemonNameEn = "";
-	let memberToAlert = "";
-	let colorForEmbed = "#43B581";
+	var pokemonNumber = "";
+	var pokemonNameFr = "";
+	var pokemonNameEn = "";
+	var memberToAlert = "";
+	var colorForEmbed = "#43B581";
 	
 	// Read message embeds
 	if (message.embeds[0] !== undefined) { //
 		// Get informations from the bot's message					
-		let argsTitle = message.embeds[0].title.split('(');
+		var argsTitle = message.embeds[0].title.split('(');
 		argsTitle = argsTitle[1].split(')');
-		let argsPokemonNumber = argsTitle[0];
-		let remainingTimeText = message.embeds[0].description.split(': ');
-		let remainingTime = remainingTimeText[1];
-		let mapURL = message.embeds[0].url;
-		let textURL = mapURL.split('#');
-		let coords = textURL[1];
-		let remainingTimeSplit = remainingTime.split(' min ');
-		let minutes = parseInt(remainingTimeSplit[0]);
-		let seconds = parseInt(remainingTimeSplit[1]);
+		var argsPokemonNumber = argsTitle[0];
+		var remainingTimeText = message.embeds[0].description.split(': ');
+		var remainingTime = remainingTimeText[1];
+		var mapURL = message.embeds[0].url;
+		var textURL = mapURL.split('#');
+		var coords = textURL[1];
+		var remainingTimeSplit = remainingTime.split(' min ');
+		var minutes = parseInt(remainingTimeSplit[0]);
+		var seconds = parseInt(remainingTimeSplit[1]);
 		if (seconds < 10) {
 			remainingTime = minutes+"m 0"+seconds+"s";
 		} else {
@@ -44,23 +44,23 @@ exports.process = (message,contributors) => {
 		}
 		// Find the pokemon of the alert
 		pokemonNumber = parseInt(argsPokemonNumber);
-		let t = new Date();	
+		var t = new Date();	
 		t = t - config.timeFromUTC*60*60*1000 + minutes*60*1000 + seconds*1000;
-		let disappearingTime = new Date(t);
+		var disappearingTime = new Date(t);
 		disappearingTime = disappearingTime.toString();
 		disappearingTime = disappearingTime.substring(16,disappearingTime.length-18);
 		disappearingTime = disappearingTime.replace(":"," h ");
 		pokemonNameFr = pokedex.pokemonName[1][pokemonNumber-1];
 		pokemonNameEn = pokedex.pokemonName[0][pokemonNumber-1];
-		let thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
+		var thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
 		// var thumbnail = "http://static.pokemonpets.com/images/monsters-images-60-60/"+pokemonNumber+"-"+pokemonNameEn+".png";
 		
 		// Define the zone
-		let areasNumber = 0;
-		let areasName = "à Sherbrooke";
-		let coordsSplited = coords.split(',');
-		let latGPS = coordsSplited[0];
-		let lonGPS = coordsSplited[1];
+		var areasNumber = 0;
+		var areasName = "à Sherbrooke";
+		var coordsSplited = coords.split(',');
+		var latGPS = coordsSplited[0];
+		var lonGPS = coordsSplited[1];
 		if ((latGPS >= 45.353965 && latGPS < 45.403884) && (lonGPS >= -72.021852 && lonGPS < -71.960569)) {
 			areasNumber = 1;
 			areasName = "à Rock Forest";
@@ -81,13 +81,13 @@ exports.process = (message,contributors) => {
 			areasName = "à Fleurimont";
 		}
 		
-		let weatherBoosted = "";
+		var weatherBoosted = "";
 		if (remainingTimeText[2] !== '*None*') {
 			weatherBoosted = "\n**Boosté** (météo)";
 		}
 		
 		// Create Rich Embed									
-		let embed = new Discord.RichEmbed()
+		var embed = new Discord.RichEmbed()
 			.setTitle(pokemonNameEn+"/"+pokemonNameFr+" ("+pokemonNumber+") "+areasName+" !")
 			.setColor(colorForEmbed)
 			.setDescription("Disparaît à **"+disappearingTime+"** (reste **"+remainingTime+"**)"+weatherBoosted)
@@ -96,7 +96,7 @@ exports.process = (message,contributors) => {
 			.setURL(mapURL);
 			
 		// Send messages to persons seeking for that pokemon
-		let contributorID = "";
+		var contributorID = "";
 		for (k in contributors.list) {
 			contributorID = contributors.list[k].id;
 			if (contributors.list[k].activated === 1 && contributors.list[k].notify === 1 && ((contributors.list[k].pokemons.indexOf(pokemonNumber) !== -1 && contributors.list[k].areas.indexOf(areasNumber) !== -1) || pokemonNumber === 201)) {

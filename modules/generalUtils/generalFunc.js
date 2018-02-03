@@ -41,9 +41,9 @@ exports.botPostLog = (messageToPost = 0,logsChannel = null) => {
 	// If message is int 0, no log
 	
 	if (messageToPost !== 0) {
-		let d = new Date();	
+		var d = new Date();	
 		d = d - config.timeFromUTC*60*60*1000;
-		let dateLog = new Date(d);
+		var dateLog = new Date(d);
 		dateLog = dateLog.toString();
 		dateLog = dateLog.substring(0,dateLog.length-15);
 		if (logsChannel !== null) {
@@ -55,7 +55,7 @@ exports.botPostLog = (messageToPost = 0,logsChannel = null) => {
 
 // BUILD AN ARRAY FROM TWO SEPARATE VARIABLES
 exports.buildArray = (paramOne,paramTwo) => {
-	let resArray = new Array();
+	var resArray = new Array();
 	resArray.push(paramOne);
 	resArray.push(paramTwo);
 	return resArray;
@@ -72,8 +72,8 @@ exports.indexOfMax = (arr) => {
         return -1;
     }
 
-    let max = arr[0];
-    let maxIndex = 0;
+    var max = arr[0];
+    var maxIndex = 0;
 
     for (let i = 1; i < arr.length; i++) {
         if (arr[i] > max) {

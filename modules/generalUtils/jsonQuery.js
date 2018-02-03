@@ -5,7 +5,6 @@
 // REQUEST AND RETURN JSON FILE
 exports.get = (url) => {
 	url = url || 0;
-	let result = new Array();
 	if (url !== 0) {
 		if(url[4] !== "s") {
 			return new Promise((resolve,reject)=>{

@@ -14,7 +14,7 @@ const generalFunc = require('./generalFunc.js');
 
 // PING FUNCTION
 exports.ping = (message) => {
-	let userRoles = message.member.roles;
+	var userRoles = message.member.roles;
 	if (userRoles.find("name",rolesList.admin)) {
 		generalFunc.botPostLog("Oak running !",message.guild.channels.find("name",chansLists.chanBotLog));
 	} else {
@@ -24,8 +24,8 @@ exports.ping = (message) => {
 
 // HELP FUNCTION
 exports.help = (message) => {
-	let userRoles = message.member.roles;	
-	let args = message.content.split(' ');
+	var userRoles = message.member.roles;	
+	var args = message.content.split(' ');
 	if (userRoles.find("name",rolesList.admin)) {		
 		if (args.length < 3) {
 			generalFunc.sendDelete("Commandes de Oak (commencer par !oak) :\n\
@@ -74,11 +74,11 @@ exports.help = (message) => {
 
 // ANNOUNCEMENT FUNCTION
 exports.announcement = (message) => {
-	let userRoles = message.member.roles;	
-	let args = message.content.split(' ');
-	let announce = args[2].toLowerCase();
+	var userRoles = message.member.roles;	
+	var args = message.content.split(' ');
+	var announce = args[2].toLowerCase();
 	if (userRoles.find("name",rolesList.admin)) {
-		let channelAnnouncements;
+		var channelAnnouncements;
 		switch(announce) {
 			case config.announce[0]:
 				channelAnnouncements = message.guild.channels.find('name', chansLists.chanNests);	
@@ -114,9 +114,9 @@ exports.team = (message) => {
 	if (message.guild.name === chansLists.guildName) {
 		generalFunc.replyDelete("commande désactivée !",message);
 	} else {
-		let userRoles = message.member.roles;	
-		let args = message.content.split(' ');
-		let askedRole = args[2];
+		var userRoles = message.member.roles;	
+		var args = message.content.split(' ');
+		var askedRole = args[2];
 		askedRole = askedRole.toLowerCase();
 		
 		if (askedRole === "intuition" || askedRole === "jaune" || askedRole === "yellow") {
@@ -132,23 +132,23 @@ exports.team = (message) => {
 		} else if (userRoles.find("name",rolesList.multi)) {
 			generalFunc.replyDelete(" :no_entry: Pas de multi-compte autorisé ! Contacte les administrateurs (@"+rolesList.admin+") pour plus d'infos.",message);
 		} else {
-			let roleRem = message.guild.roles.find("name", rolesList.noTeam);
+			var roleRem = message.guild.roles.find("name", rolesList.noTeam);
 			user.removeRole(roleRem).catch(console.error);                
 			switch(askedRole) {
 				case 'instinct':
-					let roleI = message.guild.roles.find("name", rolesList.instinct);
+					var roleI = message.guild.roles.find("name", rolesList.instinct);
 					user.addRole(roleI).catch(console.error);
 					generalFunc.replyDelete("bienvenue dans la team Instinct ! :wink:",message);
 					generalFunc.botPostLog(`Équipe choisie : ${user} -> Instinct`,message.guild.channels.find("name",chansLists.chanBotLog));
 				break;
 				case 'mystic':
-					let roleM = message.guild.roles.find("name", rolesList.mystic);
+					var roleM = message.guild.roles.find("name", rolesList.mystic);
 					user.addRole(roleM).catch(console.error);
 					generalFunc.replyDelete("bienvenue dans la team Mystic ! :wink:",message);
 					generalFunc.botPostLog(`Équipe choisie : ${user} -> Mystic`,message.guild.channels.find("name",chansLists.chanBotLog));
 				break;
 				case 'valor':
-					let roleV = message.guild.roles.find("name", rolesList.valor);
+					var roleV = message.guild.roles.find("name", rolesList.valor);
 					user.addRole(roleV).catch(console.error);
 					generalFunc.replyDelete("bienvenue dans la team Valor ! :wink:",message);
 					generalFunc.botPostLog(`Équipe choisie : ${user} -> Valor`,message.guild.channels.find("name",chansLists.chanBotLog));
@@ -162,10 +162,10 @@ exports.team = (message) => {
 
 // CHANNEL MUTE FUNCTION
 exports.chanMute = (message) => {
-	let userRoles = message.member.roles;
+	var userRoles = message.member.roles;
 	if (userRoles.find("name",rolesList.admin) || userRoles.find("name",rolesList.mod)) {					
-		let memberToMute = message.mentions.members.first();
-		let channelForMute = message.channel;
+		var memberToMute = message.mentions.members.first();
+		var channelForMute = message.channel;
 		
 		if (memberToMute !== undefined) {
 			if (memberToMute.roles.find("name",rolesList.admin) || memberToMute.roles.find("name",rolesList.mod) || memberToMute.roles.find("name",rolesList.bot)) {
@@ -193,10 +193,10 @@ exports.chanMute = (message) => {
 
 // CHANNEL UNMUTE FUNCTION
 exports.chanUnmute = (message) => {
-	let userRoles = message.member.roles;
+	var userRoles = message.member.roles;
 	if (userRoles.find("name",rolesList.admin) || userRoles.find("name",rolesList.mod)) {					
-		let memberToUnmute = message.mentions.members.first();
-		let channelForUnmute = message.channel;
+		var memberToUnmute = message.mentions.members.first();
+		var channelForUnmute = message.channel;
 		
 		if (memberToUnmute !== undefined) {
 			if (memberToUnmute.roles.find("name",rolesList.admin) || memberToUnmute.roles.find("name",rolesList.mod) || memberToUnmute.roles.find("name",rolesList.bot)) {
@@ -221,9 +221,9 @@ exports.chanUnmute = (message) => {
 
 // GLOBAL (WHOLE SERVER) MUTE FUNCTION
 exports.globalMute = (message) => {
-	let userRoles = message.member.roles;
+	var userRoles = message.member.roles;
 	if (userRoles.find("name",rolesList.admin)) {					
-		let memberToMute = message.mentions.members.first();
+		var memberToMute = message.mentions.members.first();
 		
 		if (memberToMute !== undefined) {
 			if (memberToMute.roles.find("name",rolesList.admin) || memberToMute.roles.find("name",rolesList.mod) || memberToMute.roles.find("name",rolesList.bot)) {
@@ -232,21 +232,21 @@ exports.globalMute = (message) => {
 				generalFunc.replyDelete(` :warning: ${memberToMute} est déjà supermute !`,message);
 			} else {
 				if (memberToMute.roles.find("name",rolesList.instinct)) {
-					let roleI = message.guild.roles.find("name", rolesList.instinct);
+					var roleI = message.guild.roles.find("name", rolesList.instinct);
 					memberToMute.removeRole(roleI).catch(console.error);
-					let team = "Instinct";
+					var team = "Instinct";
 				} else if (memberToMute.roles.find("name",rolesList.mystic)) {
-					let roleM = message.guild.roles.find("name", rolesList.mystic);
+					var roleM = message.guild.roles.find("name", rolesList.mystic);
 					memberToMute.removeRole(roleM).catch(console.error);
-					let team = "Mystic";
+					var team = "Mystic";
 				} else if (memberToMute.roles.find("name",rolesList.valor)) {
-					let roleV = message.guild.roles.find("name", rolesList.valor);
+					var roleV = message.guild.roles.find("name", rolesList.valor);
 					memberToMute.removeRole(roleV).catch(console.error);
-					let team = "Valor";
+					var team = "Valor";
 				} else {
-					let team = "No Team";
+					var team = "No Team";
 				}
-				let roleMute = message.guild.roles.find("name", rolesList.muted);									
+				var roleMute = message.guild.roles.find("name", rolesList.muted);									
 				memberToMute.addRole(roleMute).catch(console.error);
 				generalFunc.replyDelete(`${memberToMute} (`+team+`) est maintenant **super** :mute: !`,message);
 				generalFunc.botPostLog(`${memberToMute} (`+team+`) a été SUPER MUTE par ${user} !`,message.guild.channels.find("name",chansLists.chanBotLog));
@@ -261,9 +261,9 @@ exports.globalMute = (message) => {
 
 // GLOBAL (WHOLE SERVER) UNMUTE FUNCTION
 exports.globalUnmute = (message) => {
-	let userRoles = message.member.roles;
+	var userRoles = message.member.roles;
 	if (userRoles.find("name",rolesList.admin)) {					
-		let memberToUnmute = message.mentions.members.first();
+		var memberToUnmute = message.mentions.members.first();
 		
 		if (memberToUnmute !== undefined) {
 			if (memberToUnmute.roles.find("name",rolesList.admin) || memberToUnmute.roles.find("name",rolesList.mod) || memberToMute.roles.find("name",rolesList.bot)) {
@@ -271,7 +271,7 @@ exports.globalUnmute = (message) => {
 			} else if (!memberToUnmute.roles.find("name",rolesList.muted)) {
 				generalFunc.replyDelete(` :warning: ${memberToUnmute} est déjà unmute !`,message);
 			} else {
-				let roleMute = message.guild.roles.find("name", rolesList.muted);
+				var roleMute = message.guild.roles.find("name", rolesList.muted);
 				memberToUnmute.removeRole(roleMute).catch(console.error);
 				generalFunc.replyDelete(`${memberToUnmute} est n'est plus **super** :mute: !`,message);
 				generalFunc.botPostLog(`${memberToUnmute} a été SUPER UnMUTE par ${user} !`,message.guild.channels.find("name",chansLists.chanBotLog));
@@ -286,20 +286,20 @@ exports.globalUnmute = (message) => {
 
 // CLEAR MESSAGES FUNCTION
 exports.clearMessages = (message) => {
-	let userRoles = message.member.roles;
+	var userRoles = message.member.roles;
 	if (userRoles.find("name",rolesList.admin)) {
-		let channelToClear = message.channel;	
-		let args = message.content.split(' ');
-		let nbMessagesToClear = args[2];
+		var channelToClear = message.channel;	
+		var args = message.content.split(' ');
+		var nbMessagesToClear = args[2];
 		if (nbMessagesToClear >= 1 && nbMessagesToClear <= 30) {
-			let fetchedMessages = channelToClear.fetchMessages({limit: nbMessagesToClear})					
+			var fetchedMessages = channelToClear.fetchMessages({limit: nbMessagesToClear})					
 				.then(messages => {
 					message.reply("*"+messages.size+" messages supprimés ! :wastebasket:*");
 					messages.deleteAll();
 				})
 				.catch(console.error);
 		} else if (nbMessagesToClear > 30) {
-			let fetchedMessages = channelToClear.fetchMessages({limit: 30})					
+			var fetchedMessages = channelToClear.fetchMessages({limit: 30})					
 				.then(messages => {
 					message.reply("*"+messages.size+" messages supprimés ! :wastebasket:*");
 					messages.deleteAll();
@@ -313,17 +313,17 @@ exports.clearMessages = (message) => {
 
 // REMOVE ROLE TO MEMBERS FUNCTION
 exports.roleRemoveMembers = (message) => {
-	let userRoles = message.member.roles;
+	var userRoles = message.member.roles;
 	if (userRoles.find("name",rolesList.admin)) {	
-		let args = message.content.split(' ');
-		let role = args[2];
+		var args = message.content.split(' ');
+		var role = args[2];
 		
-		let targetRole = user.guild.roles.find("name",role);
+		var targetRole = user.guild.roles.find("name",role);
 		if (!targetRole) {
 			generalFunc.replyDelete("rôle introuvable !",message);
 		} else {
-			let membersOfTheGuild = Array.from(user.guild.members.values());
-			let j = 0;
+			var membersOfTheGuild = Array.from(user.guild.members.values());
+			var j = 0;
 			for (i in membersOfTheGuild) {
 				if (membersOfTheGuild[i].roles.find("name",role)) {
 					membersOfTheGuild[i].removeRole(targetRole).catch(console.error);
