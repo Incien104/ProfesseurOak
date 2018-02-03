@@ -1,5 +1,5 @@
 // ** Description **
-// ProfesseurOak, v3.4.5, developed by Incien104
+// ProfesseurOak, v3.5.0, developed by Incien104
 // Oct. 2017 - Jan. 2018
 // Works with Node.js
 // Require discord.js and request
@@ -14,7 +14,7 @@
 
 // -------------------------------------------------
 // Main variables
-const botVersion = "v3.4.5";
+const botVersion = "v3.5.0";
 const botVersionDate = "02/02/2018";
 
 // Required modules, files and variables

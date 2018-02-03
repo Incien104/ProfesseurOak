@@ -153,6 +153,11 @@ exports.handle = (message,contributors = 0) => {
 				pokeCommand.effect(message);
 			break;
 			
+			// MinMax CP function
+			case config.pokeCommand.cp:
+				pokeCommand.cp(message);
+			break;
+			
 			// Incien function
 			case config.pokeCommand.easterEgg:
 				pokeCommand.easterEgg(message);

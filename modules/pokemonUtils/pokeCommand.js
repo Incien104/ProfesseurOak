@@ -667,6 +667,52 @@ exports.pokedex = (message) => {
 	}
 }
 
+// MINMAX CP FUNCTION
+exports.cp = (message) => {
+	if (message.channel.name === chansLists.chanOak) {
+		// !oak cp [Pokemon] [LVL]	
+		let args = message.content.split(' ');
+		if (args.length === 4) {
+			let pokemon = args[2];
+			let lvl = parseInt(args[3]);
+		
+			let pokemonName = pokemon.capitalize();
+			let numPokemon = pokedex.pokemonName[0].indexOf(pokemonName);
+			if (numPokemon === -1) {
+				numPokemon = pokedex.pokemonName[1].indexOf(pokemonName);
+			}
+			
+			if (numPokemon !== -1) {
+				let pokemonNumber = numPokemon+1;
+				
+				// Base values
+				let baseATK = movesTypesStats.pokemonStat[numPokemon][0];
+				let baseDEF = movesTypesStats.pokemonStat[numPokemon][1];
+				let baseSTA = movesTypesStats.pokemonStat[numPokemon][2];
+				
+				let numLvl = movesTypesStats.levelCpMultiplier.indexOf(lvl);
+				
+				let cpMin = Math.floor(((baseATK)*Math.sqrt(baseDEF)*Math.sqrt(baseSTA)*Math.pow(movesTypesStats.cpMultiplier[numLvl],2))/10);
+				let cpMax = Math.floor(((baseATK+15)*Math.sqrt(baseDEF+15)*Math.sqrt(baseSTA+15)*Math.pow(movesTypesStats.cpMultiplier[numLvl],2))/10);
+		
+				// Create Rich Embed
+				let colorForEmbed = "#43B581";
+				let thumbnail = "https://poketoolset.com/assets/img/pokemon/thumbnails/"+pokemonNumber+".png";
+				embed = new Discord.RichEmbed()
+					.setTitle(pokemonName+" niveau "+lvl)
+					.setColor(colorForEmbed)
+					.setDescription("CP Min : "+cpMin+" / CP Max : "+cpMax)
+					.setThumbnail(thumbnail)
+				generalFunc.replyDelete({embed},message,1000,60000);							
+			} else {
+				generalFunc.replyDelete("informations manquantes, ou nom de pokémon introuvable !\nCommande de la forme !oak cp [Pokémon] [LVL]",message,5000,5000);
+			}
+		} else {
+			generalFunc.replyDelete("informations manquantes, je ne peux pas te donner les CP Min/Max de ce pokémon !\nCommande de la forme !oak cp [Pokémon] [LVL]",message,5000,5000);
+		}
+	}
+}
+
 // EASTER EGG FUNCTION
 exports.easterEgg = (message) => {
 	if (message.channel.name === chansLists.chanOak) {
