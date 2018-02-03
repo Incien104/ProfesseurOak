@@ -24,7 +24,8 @@ exports.arrivingMember = (member) => {
 		// Giving default role
 		let defaultRole = member.guild.roles.find("name", rolesList.noTeam);
 		member.addRole(defaultRole).catch(console.error);
-		channelAdmins.send("@"+rolesList.admin+` Nouveau membre : ${member} !`);
+		let adminRole = member.guild.roles.find("name", rolesList.admin);
+		channelAdmins.send(`${adminRole} Nouveau membre : ${member} !`);
 		generalFunc.botPostLog(`Nouveau membre : ${member} !`,member.guild.channels.find("name",chansLists.chanBotLog));
 }
 

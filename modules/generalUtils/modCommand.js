@@ -91,14 +91,16 @@ exports.announcement = (message) => {
 				channelAnnouncements = message.guild.channels.find('name', chansLists.chanGeneral);	
 				if (!channelAnnouncements) return;
 				// Send the message, mentioning the members
-				channelAnnouncements.send("@"+rolesList.noTeam+" Pour ceux qui ne sont pas encore intégrés à leur équipe, veuillez envoyer par message privé un screenshot de votre écran de joueur (où l'on voit pseudo, niveau et équipe) à un administrateur, pour qu'il puisse vous donner les accès au salon privilégié de votre couleur ! :wink:").catch(console.error);
+				var noTeamRole = message.guild.roles.find('name',rolesList.noTeam);
+				channelAnnouncements.send(`${noTeamRole}`+" Pour ceux qui ne sont pas encore intégrés à leur équipe, veuillez envoyer par message privé un screenshot de votre écran de joueur (où l'on voit pseudo, niveau et équipe) à un administrateur, pour qu'il puisse vous donner les accès au salon privilégié de votre couleur ! :wink:").catch(console.error);
 				generalFunc.botPostLog('Annonce aux NoTeam effectuée',message.guild.channels.find("name",chansLists.chanBotLog));
 			break;
 			case config.announce[2]:
 				channelAnnouncements = message.guild.channels.find('name', chansLists.chanContributors);	
 				if (!channelAnnouncements) return;
 				// Send the message, mentioning the members
-				channelAnnouncements.send("@"+rolesList.contributor+" De nouveaux pokémons sont apparus et on été ajoutés aux notifications ! RDV sur http://professeur-oak-sherbrooke.online pour les ajouter à vos notifications ! :smiley:").catch(console.error);
+				var contributorRole = message.guild.roles.find('name',rolesList.contributor);
+				channelAnnouncements.send(`${contributorRole}`+" De nouveaux pokémons sont apparus et on été ajoutés aux notifications ! RDV sur http://professeur-oak-sherbrooke.online pour les ajouter à vos notifications ! :smiley:").catch(console.error);
 				generalFunc.botPostLog('Annonce d\'ajout de pokémons aux scanners effectuée',message.guild.channels.find("name",chansLists.chanBotLog));
 			break;	
 			default:
