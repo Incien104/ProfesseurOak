@@ -19,7 +19,7 @@ Firebase.initializeApp({
   credential: Firebase.credential.cert({
     projectId: 'professeuroakmap-1513030094447',
     clientEmail: 'firebase-adminsdk-03wf4@professeuroakmap-1513030094447.iam.gserviceaccount.com',
-    privateKey: '-----BEGIN PRIVATE KEY-----\n'+process.env.FIREBASE_KEY+'\n-----END PRIVATE KEY-----\n'
+    privateKey: process.env.FIREBASE_KEY
   }),
   databaseURL: 'https://professeuroakmap-1513030094447.firebaseio.com'
 });
