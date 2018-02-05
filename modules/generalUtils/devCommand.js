@@ -26,7 +26,7 @@ Firebase.initializeApp({
 
 // TEST FUNCTION
 exports.test = (message) => {
-	if () {
+	if (message.guild.name === chansLists.guildName && message.member.roles.find("name",rolesList.admin)) {
 		var guildRef = Firebase.database().ref('/guilds/' + message.guild.name);
 		guildRef.once('value')
 			.then(function(guildData) {
