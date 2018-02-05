@@ -3,7 +3,7 @@
 // DEV COMMANDS MODULE
 
 var Discord = require('discord.js');
-var Firebase = require('firebase');
+var Firebase = require('firebase-admin');
 
 const config = require('../../config/config.json');
 const lang = require('../../config/lang.json');
