@@ -32,7 +32,7 @@ exports.test = (message) => {
 			.then(function(guildData) {
 				var idGuild = guildData.id;
 				message.channel.send(idGuild);
-			}
+			})
 			.catch(function(error) {
 				console.log('Failed to get data :', error);
 			});
