@@ -7,6 +7,7 @@
 	"devCommand" : {
 		"scanHuntrConfig": "confighuntr",
 		"scanGymhuntrConfig": "configgymhuntr",
+		"guildsNumber": "guilds",
 		"restart": "restart",
 		"test": "test"
 	},
@@ -14,7 +15,7 @@
 		"ping": "ping",		
 		"help": "help",
 		"team": "team",
-		"annoucement": "announcement",
+		"announcement": "annonce",
 		"chanMute": "mute",
 		"chanUnmute": "unmute",
 		"globalMute": "globalmute",
